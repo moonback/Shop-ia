@@ -92,9 +92,9 @@ export default function Home() {
   ];
 
   const categories = [
-    { name: "Épicerie Salée", slug: "epicerie-salee", img: "https://images.unsplash.com/photo-1534939561122-3d290a019d21?w=800", count: "45 produits" },
+    { name: "Épicerie Salée", slug: "epicerie-salee", img: "https://images.unsplash.com/photo-1506368249639-73a05d6f6488?w=800", count: "45 produits" },
     { name: "Épicerie Sucrée", slug: "epicerie-sucree", img: "https://images.unsplash.com/photo-1481391319762-47dff72954d9?w=800", count: "32 délices" },
-    { name: "Boissons", slug: "boissons", img: "https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?w=800", count: "24 références" },
+    { name: "Boissons", slug: "boissons", img: "https://images.unsplash.com/photo-1510626176961-4b57d4fbadf3?w=800", count: "24 références" },
     { name: "Produits Frais", slug: "produits-frais", img: "https://images.unsplash.com/photo-1542223189-67a03fa0f0bd?w=800", count: "15 arrivages" },
   ];
 
@@ -500,7 +500,7 @@ export default function Home() {
             <Link to="/catalogue" className="group block p-8 md:p-12 rounded-[2.5rem] border border-white/5 bg-zinc-900/50 hover:border-green-neon/30 transition-all relative overflow-hidden">
               <div className="flex flex-col md:flex-row items-center gap-10">
                 <div className="w-full md:w-1/3 aspect-square rounded-[2rem] overflow-hidden">
-                  <img src="https://images.unsplash.com/photo-1542838132-92c53300491e?w=800" alt="Nouveau produit" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+                  <img src="https://images.unsplash.com/photo-1506368249639-73a05d6f6488?w=800" alt="Nouveau produit" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
                 </div>
                 <div className="flex-1 space-y-6">
                   <span className="inline-block px-4 py-1.5 bg-green-neon text-black text-[10px] font-bold uppercase tracking-widest rounded-full">Nouveau</span>

@@ -11,7 +11,7 @@ import {
 } from 'recharts';
 import { supabase } from '../../lib/supabase';
 
-import { ShopiaAssistantSettings as AssistantSettings, ASSISTANT_DEFAULTS, ASSISTANT_LS_KEY } from '../../lib/shopiaAssistantSettings';
+import { ShopiaAssistantSettings as AssistantSettings, SHOPIA_ASSISTANT_DEFAULTS as ASSISTANT_DEFAULTS, SHOPIA_ASSISTANT_LS_KEY as ASSISTANT_LS_KEY } from '../../lib/shopiaAssistantSettings';
 import { useSettingsStore } from '../../store/settingsStore';
 
 const INPUT =
@@ -175,7 +175,7 @@ export default function AdminAssistantTab() {
                 { data: paidOrders }
             ] = await Promise.all([
                 supabase
-                    .from('Assistant_interactions')
+                    .from('assistant_interactions')
                     .select('*')
                     .gte('created_at', sinceISO),
                 supabase
@@ -505,22 +505,22 @@ export default function AdminAssistantTab() {
                                 <div className={!settings.memory_enabled ? 'opacity-40 pointer-events-none space-y-4' : 'space-y-4'}>
                                     <SliderField
                                         label="Épicerie & Produits Secs"
-                                        value={settings.restock_threshold_oils}
+                                        value={settings.restock_threshold_savory}
                                         min={7}
                                         max={90}
                                         step={1}
                                         unit="jours"
-                                        onChange={(v) => update({ restock_threshold_oils: v })}
+                                        onChange={(v) => update({ restock_threshold_savory: v })}
                                         hint="Durée estimée d'un pack de pâtes ou riz. Recommandé : 25-35 jours."
                                     />
                                     <SliderField
                                         label="Produits Frais"
-                                        value={settings.restock_threshold_flowers}
+                                        value={settings.restock_threshold_fresh}
                                         min={3}
                                         max={60}
                                         step={1}
                                         unit="jours"
-                                        onChange={(v) => update({ restock_threshold_flowers: v })}
+                                        onChange={(v) => update({ restock_threshold_fresh: v })}
                                         hint="Durée estimée pour fruits/légumes. Recommandé : 7-10 jours."
                                     />
                                     <SliderField

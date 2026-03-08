@@ -123,7 +123,7 @@ export default function AdminAnalyticsTab() {
         .select('created_at')
         .gte('created_at', sinceISO),
       supabase
-        .from('Assistant_interactions')
+        .from('assistant_interactions')
         .select('*')
         .gte('created_at', sinceISO),
     ]);
