@@ -190,7 +190,7 @@ export default function Layout() {
     { name: "Accueil", path: "/" },
     { name: "La Boutique", path: "/boutique" },
     { name: "Catalogue", path: "/catalogue" },
-    { name: "Nos Services", path: "/services" },
+    { name: "Nos Services", path: "/boutique" },
     { name: "Qualité & Fraîcheur", path: "/qualite" },
     { name: "Contact", path: "/contact" },
   ];

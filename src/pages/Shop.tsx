@@ -1,257 +1,261 @@
 import { motion } from "motion/react";
 import {
-  MapPin,
-  Clock,
-  ArrowRight,
-  ShieldCheck,
-  Utensils,
-  Eye,
-  Users,
-  Sparkles,
-  Award,
-  CalendarCheck,
-  ChefHat
+  MapPin, Clock, ArrowRight, ShieldCheck, Utensils,
+  Award, Users, Sparkles, CalendarCheck, ChefHat,
+  Truck, Star, Leaf, Package
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import SEO from "../components/SEO";
 import { useSettingsStore } from "../store/settingsStore";
 
+const VALUES = [
+  {
+    icon: <ShieldCheck className="w-6 h-6" />,
+    title: "Qualité Absolue",
+    desc: "Nous sélectionnons rigoureusement chaque producteur pour garantir des saveurs authentiques et une fraîcheur parfaite.",
+    color: "text-green-400",
+    bg: "bg-green-400/10",
+  },
+  {
+    icon: <Award className="w-6 h-6" />,
+    title: "Exigence Gourmet",
+    desc: "Une sélection drastique des meilleurs terroirs français et internationaux pour votre assiette.",
+    color: "text-amber-400",
+    bg: "bg-amber-400/10",
+  },
+  {
+    icon: <Users className="w-6 h-6" />,
+    title: "Conseil Culinaire",
+    desc: "Nos experts et notre IA sont là pour vous guider dans vos choix et vos recettes au quotidien.",
+    color: "text-blue-400",
+    bg: "bg-blue-400/10",
+  },
+  {
+    icon: <ChefHat className="w-6 h-6" />,
+    title: "Savoir-faire",
+    desc: "Des produits issus de méthodes artisanales traditionnelles et respectueuses du goût.",
+    color: "text-purple-400",
+    bg: "bg-purple-400/10",
+  },
+];
+
+const STATS = [
+  { value: "100+", label: "Produits d'Exception" },
+  { value: "4.8★", label: "Note Clients" },
+  { value: "24h", label: "Livraison Fraîcheur" },
+  { value: "2024", label: "Renouveau Shop-ia" },
+];
+
 export default function Shop() {
   const settings = useSettingsStore((s) => s.settings);
 
-  const shopSchema = {
-    "@context": "https://schema.org",
-    "@type": "Store",
-    "name": "Shop-ia",
-    "description": "Un espace pensé pour la gourmandise, la découverte et le conseil personnalisé autour de l'épicerie fine et des produits frais.",
-    "image": "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?q=80&w=2070&auto=format&fit=crop"
-  };
-
-  const values = [
-    {
-      icon: <ShieldCheck className="w-8 h-8 text-green-neon" />,
-      title: "Qualité Absolue",
-      desc: "Nous sélectionnons rigoureusement chaque producteur pour garantir des saveurs authentiques et une fraîcheur parfaite."
-    },
-    {
-      icon: <Award className="w-8 h-8 text-green-neon" />,
-      title: "Exigence Gourmet",
-      desc: "Une sélection drastique des meilleurs terroirs français et internationaux."
-    },
-    {
-      icon: <Users className="w-8 h-8 text-green-neon" />,
-      title: "Conseil Culinaire",
-      desc: "Nos experts et notre IA sont là pour vous guider dans vos choix et vos recettes au quotidien."
-    },
-    {
-      icon: <ChefHat className="w-8 h-8 text-green-neon" />,
-      title: "Savoir-faire",
-      desc: "Des produits issus de méthodes artisanales traditionnelles et respectueuses du goût."
-    }
-  ];
-
   return (
-    <div className="min-h-screen bg-zinc-950 text-white overflow-hidden pb-32">
+    <div className="min-h-screen bg-zinc-950 text-white overflow-hidden">
       <SEO
         title="L'ADN Shop-ia — Notre Boutique & Nos Valeurs"
-        description="Plongez dans l'univers Shop-ia. Découvrez notre histoire, nos valeurs de qualité et d'exigence, et venez nous rencontrer dans notre boutique à Paris."
-        keywords="boutique épicerie fine Paris, produits frais, gastronomie, histoire Shop-ia, alimentation saine"
-        schema={shopSchema}
+        description="Découvrez Shop-ia, votre épicerie fine de confiance. Histoire, valeurs et engagement qualité."
+        keywords="boutique épicerie fine Paris, produits frais, gastronomie, histoire Shop-ia"
       />
 
-      {/* Hero Header */}
-      <section className="relative min-h-[70vh] flex items-center justify-center pt-24 px-4 overflow-hidden">
+      {/* ── Hero ── */}
+      <section className="relative min-h-[70vh] flex items-end pb-20 pt-24 px-6 overflow-hidden">
         <div className="absolute inset-0 z-0">
           <img
             src="https://images.unsplash.com/photo-1542838132-92c53300491e?w=1600"
-            alt="Intérieur de la boutique Shop-ia"
-            className="w-full h-full object-cover opacity-100"
+            alt="Boutique Shop-ia"
+            className="w-full h-full object-cover"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-zinc-950/20 via-zinc-950/60 to-zinc-950" />
+          <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/70 to-zinc-950/20" />
         </div>
 
-        <div className="relative z-10 max-w-7xl mx-auto text-center">
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          className="relative z-10 max-w-7xl mx-auto w-full"
+        >
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-amber-400/10 border border-amber-400/20 text-amber-400 text-xs font-bold uppercase tracking-widest mb-6">
+            <Leaf className="w-4 h-4" /> Notre ADN & Vision
+          </div>
+          <h1 className="text-5xl md:text-7xl font-serif font-bold tracking-tight leading-none mb-6">
+            L'EXPÉRIENCE <br />
+            <span className="text-amber-400 italic">Shop-ia.</span>
+          </h1>
+          <p className="text-xl text-zinc-300 max-w-2xl font-light leading-relaxed">
+            Plus qu'un point de vente — un sanctuaire dédié à la gastronomie et à l'excellence culinaire du quotidien.
+          </p>
+        </motion.div>
+      </section>
+
+      {/* ── Stats bar (Amazon-style quick facts) ── */}
+      <div className="bg-zinc-900 border-y border-white/[0.06]">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="grid grid-cols-2 lg:grid-cols-4 divide-x divide-white/[0.06]">
+            {STATS.map((s, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 10 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.1 }}
+                className="flex flex-col items-center justify-center gap-1 py-8 px-6 text-center"
+              >
+                <span className="text-3xl font-black text-amber-400 tracking-tighter">{s.value}</span>
+                <span className="text-xs font-semibold uppercase tracking-widest text-zinc-500">{s.label}</span>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* ── Brand Story ── */}
+      <section className="py-24 px-6">
+        <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 items-center">
           <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 1 }}
-            className="space-y-6"
+            initial={{ opacity: 0, x: -30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            className="space-y-8"
           >
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-xl text-green-neon text-xs font-black uppercase tracking-[0.3em]">
-              <Eye className="w-4 h-4" />
-              Vision & ADN
+            <div className="space-y-4">
+              <span className="text-amber-400 font-bold tracking-[0.3em] text-[11px] uppercase">Notre Histoire</span>
+              <h2 className="text-4xl md:text-5xl font-serif font-bold text-white leading-tight">
+                Une histoire de <br />
+                <span className="text-amber-400 italic">Goût & Passion.</span>
+              </h2>
+              <div className="w-16 h-1 bg-amber-400 rounded-full" />
             </div>
-            <h1 className="text-5xl md:text-7xl lg:text-8xl font-serif font-bold tracking-tighter leading-none mb-8">
-              L'EXPERIENCE <br />
-              <span className="not-italic text-green-neon glow-green">Shop-ia.</span>
-            </h1>
-            <p className="text-xl md:text-2xl text-zinc-400 max-w-3xl mx-auto font-light leading-relaxed pt-6">
-              Plus qu'un point de vente, un sanctuaire dédié à la gastronomie
-              et à l'excellence culinaire au cœur de Paris.
+            <p className="text-lg text-zinc-400 leading-relaxed font-light">
+              Née de la volonté d'offrir une alternative authentique et exigeante, Shop-ia a été fondée par des amoureux de la bonne cuisine. Notre mission : démocratiser l'accès aux meilleurs produits du terroir tout en élevant les standards de fraîcheur du marché urbain.
             </p>
+            <blockquote className="border-l-2 border-amber-400 pl-5 text-zinc-400 italic">
+              "Nous croyons qu'une alimentation saine ne peut naître que d'une sélection passionnée et d'un respect absolu du produit."
+            </blockquote>
+            <Link
+              to="/catalogue"
+              className="inline-flex items-center gap-2 px-8 py-4 bg-amber-400 text-black font-bold rounded-xl hover:shadow-[0_0_30px_rgba(251,191,36,0.4)] hover:scale-105 active:scale-95 transition-all text-sm uppercase tracking-widest"
+            >
+              Découvrir le catalogue <ArrowRight className="w-4 h-4" />
+            </Link>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            className="relative"
+          >
+            <div className="absolute -top-8 -left-8 w-40 h-40 bg-amber-400/10 blur-[80px] rounded-full" />
+            <div className="aspect-square rounded-3xl overflow-hidden border border-white/10 shadow-2xl">
+              <img
+                src="https://images.unsplash.com/photo-1542838132-92c53300491e?w=800"
+                alt="Boutique"
+                className="w-full h-full object-cover hover:scale-105 transition-transform duration-1000"
+              />
+            </div>
           </motion.div>
         </div>
       </section>
 
-      {/* Brand Story Layout */}
-      <section className="py-32 relative">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-24 items-center">
-            <motion.div
-              initial={{ opacity: 0, x: -50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              className="space-y-10"
-            >
-              <div className="space-y-6">
-                <h2 className="text-5xl md:text-6xl font-serif font-black text-white leading-[1.1]">
-                  Une histoire de <br />
-                  <span className="text-green-neon">Goût & Passion.</span>
-                </h2>
-                <div className="w-20 h-1 bg-green-neon" />
-                <p className="text-xl text-zinc-400 leading-relaxed font-light">
-                  Née de la volonté d'offrir une alternative authentique et exigeante,
-                  Shop-ia a été fondée par des amoureux de la bonne cuisine.
-                  Notre mission : démocratiser l'accès aux meilleurs produits du terroir
-                  tout en élevant les standards de fraîcheur du marché urbain.
-                </p>
-                <p className="text-lg text-zinc-500 leading-relaxed italic">
-                  "Nous croyons qu'une alimentation saine ne peut naître que d'une
-                  sélection passionnée et d'un respect absolu du produit."
-                </p>
-              </div>
-
-              <div className="grid grid-cols-2 gap-4 pt-4">
-                <div className="p-6 rounded-3xl bg-white/5 border border-white/5 backdrop-blur-sm">
-                  <p className="text-4xl font-black text-green-neon tracking-tighter">2024</p>
-                  <p className="text-xs font-bold uppercase tracking-widest text-zinc-500">Renouveau Shop-ia</p>
-                </div>
-                <div className="p-6 rounded-3xl bg-white/5 border border-white/5 backdrop-blur-sm">
-                  <p className="text-4xl font-black text-white tracking-tighter">100+</p>
-                  <p className="text-xs font-bold uppercase tracking-widest text-zinc-500">Produits d'Exception</p>
-                </div>
-              </div>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              className="relative aspect-square"
-            >
-              {/* Decorative elements */}
-              <div className="absolute -top-10 -right-10 w-40 h-40 bg-green-neon/20 rounded-full blur-3xl animate-pulse" />
-              <div className="absolute -bottom-10 -left-10 w-64 h-64 bg-green-neon/10 rounded-full blur-[100px]" />
-
-              <div className="relative h-full w-full rounded-[4rem] overflow-hidden border border-white/10 shadow-3xl">
-                <img
-                  src="https://images.unsplash.com/photo-1542838132-92c53300491e?w=800"
-                  alt="Détails de notre boutique"
-                  className="w-full h-full object-cover grayscale-[20%] hover:grayscale-0 transition-all duration-1000"
-                />
-                <div className="absolute inset-0 bg-gradient-to-tr from-zinc-950/60 via-transparent to-transparent" />
-              </div>
-            </motion.div>
-          </div>
-        </div>
-      </section>
-
-      {/* Values Grid - Cards */}
-      <section className="py-32 bg-zinc-900/40">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-24 space-y-4">
-            <h2 className="text-4xl md:text-6xl font-serif font-black text-white">Nos <span className="text-green-neon">Piliers</span></h2>
-            <p className="text-zinc-500 text-lg">La charte qui définit chaque sélection chez Shop-ia.</p>
+      {/* ── Values — Amazon-style feature grid ── */}
+      <section className="py-20 bg-zinc-900/30 border-y border-white/[0.05] px-6">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-14 space-y-3">
+            <span className="text-amber-400 font-bold tracking-[0.3em] text-[11px] uppercase">Nos piliers</span>
+            <h2 className="text-3xl md:text-4xl font-serif font-bold text-white">
+              La charte qui définit{" "}
+              <span className="text-amber-400 italic">chaque sélection</span>
+            </h2>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {values.map((v, i) => (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {VALUES.map((v, i) => (
               <motion.div
                 key={v.title}
-                initial={{ opacity: 0, y: 30 }}
+                initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1 }}
-                className="p-10 rounded-[2.5rem] bg-zinc-950 border border-white/5 hover:border-green-neon/30 transition-all group"
+                className="group flex flex-col gap-5 p-6 rounded-2xl bg-zinc-900 border border-white/[0.06] hover:border-white/10 transition-all"
               >
-                <div className="mb-8 w-16 h-16 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center group-hover:scale-110 transition-transform">
+                <div className={`w-12 h-12 rounded-xl ${v.bg} flex items-center justify-center ${v.color} group-hover:scale-110 transition-transform`}>
                   {v.icon}
                 </div>
-                <h3 className="text-2xl font-bold font-serif mb-4">{v.title}</h3>
-                <p className="text-zinc-400 font-light leading-relaxed">{v.desc}</p>
+                <div>
+                  <h3 className="text-white font-bold mb-2">{v.title}</h3>
+                  <p className="text-zinc-400 text-sm leading-relaxed">{v.desc}</p>
+                </div>
               </motion.div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Visit Experience CTA */}
-      <section className="py-40 relative px-4">
-        {/* Background Visual */}
-        <div className="absolute inset-x-0 top-0 h-full -z-10 overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-b from-zinc-950 via-zinc-950/80 to-zinc-950" />
-          <img
-            src="https://images.unsplash.com/photo-1542838132-92c53300491e?w=1600"
-            alt="Épicerie Shop-ia"
-            className="w-full h-full object-cover opacity-10"
-          />
-        </div>
+      {/* ── Store Info — Amazon "Seller info" style ── */}
+      <section className="py-20 px-6">
+        <div className="max-w-5xl mx-auto">
+          <div className="text-center mb-12 space-y-3">
+            <h2 className="text-3xl md:text-4xl font-serif font-bold text-white">
+              Passez nous{" "}
+              <span className="text-amber-400 italic">voir à Paris.</span>
+            </h2>
+            <p className="text-zinc-500">Notre boutique physique vous accueille du lundi au samedi.</p>
+          </div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="max-w-4xl mx-auto text-center space-y-12"
-        >
-          <h2 className="text-5xl md:text-8xl font-serif font-black text-white tracking-tight">
-            PASSEZ NOUS <br />
-            <span className="text-green-neon italic">VOIR À PARIS.</span>
-          </h2>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-2xl mx-auto">
-            <div className="p-8 rounded-[2rem] bg-white/5 border border-white/10 backdrop-blur-xl flex flex-col items-center gap-4">
-              <div className="w-12 h-12 rounded-full bg-green-neon/10 flex items-center justify-center">
-                <MapPin className="text-green-neon w-6 h-6" />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
+            <div className="flex items-start gap-5 p-6 bg-zinc-900 border border-white/[0.06] rounded-2xl hover:border-white/10 transition-all">
+              <div className="w-12 h-12 rounded-xl bg-amber-400/10 flex items-center justify-center text-amber-400 flex-shrink-0">
+                <MapPin className="w-6 h-6" />
               </div>
-              <p className="text-zinc-500 font-bold uppercase tracking-widest text-xs">Notre Adresse</p>
-              <p className="text-white font-medium">{settings.store_address || '123 Avenue Gourmet, 75000 Paris'}</p>
+              <div>
+                <p className="text-xs font-bold uppercase tracking-widest text-zinc-500 mb-1">Notre Adresse</p>
+                <p className="text-white font-medium">{settings.store_address || '123 Avenue Gourmet, 75000 Paris'}</p>
+                <a
+                  href={`https://maps.google.com/?q=${encodeURIComponent(settings.store_address || '123 Avenue Gourmet Paris')}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1 text-xs text-amber-400 hover:text-amber-300 mt-2 transition-colors"
+                >
+                  Voir sur la carte <ArrowRight className="w-3 h-3" />
+                </a>
+              </div>
             </div>
 
-            <div className="p-8 rounded-[2rem] bg-white/5 border border-white/10 backdrop-blur-xl flex flex-col items-center gap-4">
-              <div className="w-12 h-12 rounded-full bg-green-neon/10 flex items-center justify-center">
-                <Clock className="text-green-neon w-6 h-6" />
+            <div className="flex items-start gap-5 p-6 bg-zinc-900 border border-white/[0.06] rounded-2xl hover:border-white/10 transition-all">
+              <div className="w-12 h-12 rounded-xl bg-amber-400/10 flex items-center justify-center text-amber-400 flex-shrink-0">
+                <Clock className="w-6 h-6" />
               </div>
-              <p className="text-zinc-500 font-bold uppercase tracking-widest text-xs">Horaires d'ouverture</p>
-              <p className="text-white font-medium whitespace-pre-line">{settings.store_hours || 'Lun-Sam : 09h00 - 20h00'}</p>
+              <div>
+                <p className="text-xs font-bold uppercase tracking-widest text-zinc-500 mb-1">Horaires d'ouverture</p>
+                <p className="text-white font-medium whitespace-pre-line">{settings.store_hours || 'Lun-Sam : 09h00 — 20h00'}</p>
+              </div>
             </div>
           </div>
 
-          <div className="flex flex-col sm:flex-row gap-6 justify-center pt-8">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               to="/contact"
-              className="px-10 py-5 bg-green-neon text-black font-black rounded-2xl transition-all transform hover:scale-105 hover:glow-box-green flex items-center justify-center gap-3"
+              className="flex items-center justify-center gap-2 px-8 py-4 bg-amber-400 text-black font-bold rounded-xl hover:shadow-[0_0_30px_rgba(251,191,36,0.4)] hover:scale-105 active:scale-95 transition-all text-sm uppercase tracking-widest"
             >
-              Calculer l'itinéraire
-              <ArrowRight className="w-5 h-5" />
+              Nous contacter <ArrowRight className="w-4 h-4" />
             </Link>
             <Link
               to="/catalogue"
-              className="px-10 py-5 bg-white/5 border border-white/20 text-white font-bold rounded-2xl hover:bg-white/10 transition-all flex items-center justify-center gap-3"
+              className="flex items-center justify-center gap-2 px-8 py-4 bg-zinc-900 border border-white/10 text-white font-bold rounded-xl hover:bg-zinc-800 transition-all text-sm"
             >
-              <CalendarCheck className="w-5 h-5 text-zinc-500" />
+              <Package className="w-4 h-4 text-zinc-400" />
               Commander en ligne
             </Link>
           </div>
-        </motion.div>
+        </div>
       </section>
 
-      {/* Expert Quote Bar */}
-      <section className="py-24 border-y border-white/5">
-        <div className="max-w-4xl mx-auto px-4 text-center">
-          <Sparkles className="w-10 h-10 text-green-neon mx-auto mb-8 animate-pulse" />
-          <p className="text-2xl md:text-3xl font-serif font-light text-zinc-300 italic leading-relaxed">
-            "L'essence de Shop-ia réside dans l'équilibre parfait entre l'excellence du produit
-            et la fraîcheur du terroir."
+      {/* ── Quote bar ── */}
+      <section className="py-16 border-t border-white/[0.05]">
+        <div className="max-w-4xl mx-auto px-6 text-center">
+          <Sparkles className="w-8 h-8 text-amber-400 mx-auto mb-6 opacity-70" />
+          <p className="text-xl md:text-2xl font-serif font-light text-zinc-300 italic leading-relaxed">
+            "L'essence de Shop-ia réside dans l'équilibre parfait entre l'excellence du produit et la fraîcheur du terroir."
           </p>
         </div>
       </section>
