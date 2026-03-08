@@ -26,7 +26,7 @@ export default function Cart() {
 
   if (items.length === 0) {
     return (
-      <div className="min-h-screen bg-zinc-950 text-white flex flex-col items-center justify-center px-4 overflow-hidden relative">
+      <div className="min-h-screen theme-surface text-[var(--text-primary)] flex flex-col items-center justify-center px-4 overflow-hidden relative">
         <SEO title="Mon Panier — L'Expérience Shop-ia" description="Votre panier d'achats Shop-ia Gourmet." />
 
         {/* Background Glow */}
@@ -59,7 +59,7 @@ export default function Cart() {
   }
 
   return (
-    <div className="min-h-screen bg-zinc-950 text-white pt-24 pb-32 overflow-x-hidden">
+    <div className="min-h-screen theme-surface text-[var(--text-primary)] pt-24 pb-32 overflow-x-hidden">
       <SEO title="Mon Panier — L'Excellence Shop-ia" description="Récapitulatif de votre panier d'achats." />
 
       <div className="max-w-12xl mx-auto px-4 sm:px-6 lg:px-8">

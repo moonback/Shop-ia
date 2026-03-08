@@ -72,7 +72,7 @@ export default function ProductCard({ product, layout = 'grid' }: ProductCardPro
         whileInView={{ opacity: 1, x: 0 }}
         viewport={{ once: true, margin: "-10px" }}
         transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-        className="group relative flex flex-col sm:flex-row bg-zinc-900/30 rounded-3xl border border-white/10 overflow-hidden hover:border-green-neon/30 transition-all duration-500 shadow-xl w-full"
+        className="group relative flex flex-col sm:flex-row theme-product-card rounded-2xl border border-[var(--border-light)] overflow-hidden hover:border-[var(--border-default)] transition-all duration-500 w-full"
       >
         <div className="absolute inset-0 bg-gradient-to-r from-white/[0.02] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
 
@@ -169,7 +169,7 @@ export default function ProductCard({ product, layout = 'grid' }: ProductCardPro
               <button
                 onClick={handleAddToCart}
                 disabled={!product.is_available || product.stock_quantity === 0}
-                className="flex-1 flex items-center justify-center h-12 bg-green-neon text-black rounded-xl font-bold uppercase tracking-widest text-[10px] transition-all duration-300 hover:shadow-[0_0_20px_rgba(57,255,20,0.5)] active:scale-95 disabled:opacity-30 group/btn"
+                className="theme-button-primary flex-1 flex items-center justify-center h-12 rounded-xl font-bold uppercase tracking-widest text-[10px] transition-all duration-300 active:scale-95 disabled:opacity-30 group/btn"
               >
                 <ShoppingCart className="w-4 h-4 md:mr-2 group-hover/btn:scale-110 transition-transform" />
                 <span className="inline">Ajouter</span>
@@ -195,7 +195,7 @@ export default function ProductCard({ product, layout = 'grid' }: ProductCardPro
       viewport={{ once: true, margin: "-40px" }}
       whileHover={{ y: -6 }}
       transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-      className="group relative bg-zinc-900/30 rounded-[2rem] border border-white/10 overflow-hidden hover:border-green-neon/30 transition-all duration-500 shadow-xl"
+      className="group relative theme-product-card rounded-[1rem] border border-[var(--border-light)] overflow-hidden hover:border-[var(--border-default)] transition-all duration-500"
     >
       {/* Background Glow Layer */}
       <div className="absolute inset-0 bg-gradient-to-br from-white/[0.02] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />

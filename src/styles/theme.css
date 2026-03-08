@@ -1,0 +1,102 @@
+:root,
+:root[data-theme="light"] {
+  --color-primary: #ff9900;
+  --color-primary-hover: #e88a00;
+  --bg-main: #ffffff;
+  --bg-secondary: #f6f6f6;
+  --bg-card: #ffffff;
+  --bg-navbar: #131921;
+  --text-primary: #111111;
+  --text-secondary: #565959;
+  --text-inverse: #ffffff;
+  --border-light: #e7e7e7;
+  --border-default: #d5d9d9;
+  --success: #067d62;
+  --warning: #b12704;
+  --info: #007185;
+  --focus-ring: #146eb4;
+  --shadow-card: 0 2px 8px rgba(17, 17, 17, 0.08);
+  --shadow-card-hover: 0 8px 24px rgba(17, 17, 17, 0.14);
+}
+
+:root[data-theme="dark"],
+:root[data-theme="high-contrast"] {
+  /* Placeholder for future expansion with dedicated token sets. */
+}
+
+body {
+  background: var(--bg-main);
+  color: var(--text-primary);
+}
+
+.theme-header,
+.theme-nav {
+  background: var(--bg-navbar);
+  color: var(--text-inverse);
+}
+
+.theme-footer,
+.theme-surface {
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+}
+
+.theme-card,
+.theme-product-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-light);
+  box-shadow: var(--shadow-card);
+}
+
+.theme-product-card:hover {
+  box-shadow: var(--shadow-card-hover);
+}
+
+.theme-button-primary {
+  background: var(--color-primary);
+  color: var(--text-primary);
+}
+
+.theme-button-primary:hover {
+  background: var(--color-primary-hover);
+}
+
+.theme-input,
+.theme-select,
+.theme-dropdown {
+  background: var(--bg-card);
+  border: 1px solid var(--border-default);
+  color: var(--text-primary);
+}
+
+.theme-input::placeholder {
+  color: color-mix(in srgb, var(--text-secondary) 80%, transparent);
+}
+
+.theme-product-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+@media (min-width: 768px) {
+  .theme-product-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1024px) {
+  .theme-product-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1536px) {
+  .theme-product-grid {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+}
+
+*:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}

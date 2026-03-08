@@ -198,7 +198,7 @@ export default function Layout() {
   const navLinks = baseNavLinks;
 
   return (
-    <div className="min-h-screen flex flex-col bg-zinc-950 text-zinc-100 font-sans">
+    <div className="min-h-screen flex flex-col theme-surface text-[var(--text-primary)] font-sans">
       {/* Cart Sidebar */}
       <CartSidebar />
 
@@ -250,7 +250,7 @@ export default function Layout() {
               animate={{ height: "auto", opacity: 1 }}
               exit={{ height: 0, opacity: 0 }}
               transition={{ duration: 0.3 }}
-              className="overflow-hidden bg-zinc-900/60 backdrop-blur-md border-b border-white/[0.04]"
+              className="overflow-hidden theme-nav backdrop-blur-md border-b border-[var(--border-default)]/40"
             >
               <div className="max-w-12xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex items-center justify-between h-9 text-[10px] text-zinc-500 font-semibold tracking-wide">
@@ -298,8 +298,8 @@ export default function Layout() {
 
         {/* ── Main Header Bar ── */}
         <div className={`relative transition-all duration-300 ${isScrolled
-          ? "bg-zinc-950/90 backdrop-blur-3xl shadow-[0_4px_30px_rgba(0,0,0,0.6)] border-b border-white/[0.05]"
-          : "bg-zinc-950/70 backdrop-blur-2xl border-b border-white/[0.03]"
+          ? "theme-header backdrop-blur-3xl border-b border-[var(--border-default)] shadow-[var(--shadow-card)]"
+          : "theme-header backdrop-blur-2xl border-b border-[var(--border-default)]"
           }`}>
           {/* Ambient glow line */}
           <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[40%] h-px bg-gradient-to-r from-transparent via-green-neon/30 to-transparent" />
@@ -684,7 +684,7 @@ export default function Layout() {
       </main>
 
       {/* Footer */}
-      <footer className="bg-black border-t border-white/[0.06] pt-16 pb-8">
+      <footer className="theme-footer border-t border-[var(--border-default)] pt-16 pb-8">
         <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-12">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-10 md:gap-12 mb-12">
             {/* Brand */}
@@ -798,7 +798,7 @@ export default function Layout() {
               initial={{ scale: 0.9, y: 20 }}
               animate={{ scale: 1, y: 0 }}
               exit={{ scale: 0.9, y: 20 }}
-              className="w-full max-w-3xl bg-zinc-900/80 border border-white/10 rounded-[2.5rem] shadow-2xl overflow-hidden glassmorphism"
+              className="w-full max-w-3xl theme-card border border-[var(--border-default)] rounded-[2.5rem] shadow-2xl overflow-hidden"
             >
               <div className="p-8 space-y-8">
                 <div className="relative">
@@ -809,7 +809,7 @@ export default function Layout() {
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     placeholder="Que cherchez-vous ?"
-                    className="w-full bg-white/[0.04] border border-white/5 rounded-2xl pl-16 pr-20 py-5 text-xl text-white placeholder:text-zinc-600 focus:outline-none focus:border-green-neon/30 transition-all font-serif italic"
+                    className="w-full theme-input rounded-2xl pl-16 pr-20 py-5 text-xl text-[var(--text-primary)] placeholder:text-[var(--text-secondary)] focus:outline-none transition-all font-serif italic"
                   />
                   <button
                     onClick={() => setIsSearchOpen(false)}

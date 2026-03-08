@@ -247,7 +247,7 @@ export default function ProductDetail() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-zinc-950 flex items-center justify-center">
+      <div className="min-h-screen theme-surface flex items-center justify-center">
         <div className="w-8 h-8 border-2 border-green-primary border-t-transparent rounded-full animate-spin" />
       </div>
     );
@@ -256,7 +256,7 @@ export default function ProductDetail() {
   if (!product) return null;
 
   return (
-    <div className="min-h-screen bg-zinc-950 text-white pt-24 pb-32">
+    <div className="min-h-screen theme-surface text-[var(--text-primary)] pt-24 pb-32">
       <SEO
         {...buildProductSEO(product)}
         schema={[
@@ -610,7 +610,7 @@ export default function ProductDetail() {
                   <button
                     onClick={handleSubscribe}
                     disabled={subLoading}
-                    className="w-full flex items-center justify-center gap-4 bg-zinc-900 border border-white/10 hover:border-green-neon/50 text-white font-bold uppercase tracking-wider py-5 rounded-2xl transition-all"
+                    className="w-full flex items-center justify-center gap-4 theme-button-primary border border-[var(--border-default)] text-[var(--text-primary)] font-bold uppercase tracking-wider py-5 rounded-2xl transition-all"
                   >
                     {subLoading ? (
                       <svg className="animate-spin h-4 w-4 text-white" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>

@@ -173,7 +173,7 @@ export default function Catalog() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-zinc-950 text-white pb-24 pt-2 overflow-hidden">
+    <div className="min-h-screen theme-surface text-[var(--text-primary)] pb-24 pt-2 overflow-hidden">
       <SEO
         title="CATALOGUE | Shop-ia"
         description="Découvrez tous nos produits premium, naviguez par catégorie et filtrez selon vos besoins."
@@ -439,7 +439,7 @@ export default function Catalog() {
               </div>
             ) : (
               <div className="space-y-12">
-                <div className={`grid ${displayDensity === 'list' ? 'grid-cols-1 gap-4' : displayDensity === 'compact' ? 'grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-4' : 'grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6'}`}>
+                <div className={`grid ${displayDensity === 'list' ? 'grid-cols-1 gap-4' : displayDensity === 'compact' ? 'theme-product-grid gap-3 sm:gap-4' : 'theme-product-grid gap-4 sm:gap-6'}`}>
                   <AnimatePresence mode="popLayout">
                     {paginatedProducts.map((product, idx) => (
                       <motion.div
