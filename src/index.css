@@ -1,201 +1,47 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Dancing+Script:wght@700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap");
 @import "tailwindcss";
+
+:root {
+  --color-bg: #ffffff;
+  --color-text: #111827;
+  --color-primary: #22c55e;
+  --color-secondary: #f3f4f6;
+  --color-border: #e5e7eb;
+}
+
+.dark {
+  --color-bg: #0f172a;
+  --color-text: #f8fafc;
+  --color-primary: #22c55e;
+  --color-secondary: #1e293b;
+  --color-border: #334155;
+}
 
 @theme {
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
-  --font-serif:
-    "Playfair Display", ui-serif, Georgia, Cambria, "Times New Roman", Times,
-    serif;
-  --font-script: "Dancing Script", cursive;
-
-  --color-green-neon: #fbbf24;
-  --color-green-dark: #451a03;
-  --color-green-primary: #d97706;
+  --font-serif: "Playfair Display", ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+  --color-green-neon: #22c55e;
 }
 
 @layer base {
-  html {
-    font-size: 80%;
-    /* Réduction de 20% à tout l'app */
-  }
-
+  html { font-size: 80%; }
   body {
-    @apply bg-zinc-950 text-zinc-100 font-sans antialiased selection:bg-green-neon selection:text-black;
+    @apply font-sans antialiased;
+    background: var(--color-bg);
+    color: var(--color-text);
   }
-
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
-    @apply font-serif;
-  }
-
-  /* Accessibilité : focus visible global */
+  h1, h2, h3, h4, h5, h6 { @apply font-serif; }
   *:focus-visible {
-    outline: 2px solid rgba(251, 191, 36, 0.6);
+    outline: 2px solid var(--color-primary);
     outline-offset: 2px;
     border-radius: 8px;
-  }
-
-  /* Accessibilité : respect du choix utilisateur */
-  @media (prefers-reduced-motion: reduce) {
-
-    *,
-    *::before,
-    *::after {
-      animation-duration: 0.01ms !important;
-      animation-iteration-count: 1 !important;
-      transition-duration: 0.01ms !important;
-      scroll-behavior: auto !important;
-    }
-  }
-
-  /* Scrollbar sobre sur les zones scrollables */
-  .scrollbar-thin {
-    scrollbar-width: thin;
-    scrollbar-color: rgba(255, 255, 255, 0.1) transparent;
-  }
-
-  .scrollbar-thin::-webkit-scrollbar {
-    width: 4px;
-  }
-
-  .scrollbar-thin::-webkit-scrollbar-track {
-    background: transparent;
-  }
-
-  .scrollbar-thin::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 9999px;
   }
 }
 
 @layer utilities {
-  /* ─── Glow system (simplifié : 2 niveaux text + 2 niveaux box) ─── */
-
-  /* Text glow — prix, titres featured */
-  .glow-green {
-    text-shadow:
-      0 0 8px rgba(251, 191, 36, 0.6),
-      0 0 24px rgba(251, 191, 36, 0.25);
-  }
-
-  /* Box glow — boutons primaires, badges actifs */
-  .glow-box-green {
-    box-shadow:
-      0 0 12px rgba(251, 191, 36, 0.35),
-      0 0 24px rgba(251, 191, 36, 0.15),
-      inset 0 0 0 1px rgba(251, 191, 36, 0.12);
-  }
-
-  /* Box glow subtil — bordures, hover secondaires */
-  .glow-box-green-sm {
-    box-shadow:
-      0 0 8px rgba(251, 191, 36, 0.2),
-      0 0 16px rgba(251, 191, 36, 0.08);
-  }
-
-  /* Logo glow */
-  .glow-logo {
-    filter: drop-shadow(0 0 8px rgba(251, 191, 36, 0.5)) drop-shadow(0 0 20px rgba(251, 191, 36, 0.2));
-  }
-
-  /* Pulsation — badges "featured", indicateurs live */
-  .glow-pulse-green {
-    animation: glow-pulse 2.5s ease-in-out infinite;
-  }
-
-  @keyframes glow-pulse {
-
-    0%,
-    100% {
-      box-shadow:
-        0 0 6px rgba(251, 191, 36, 0.3),
-        0 0 14px rgba(251, 191, 36, 0.1);
-    }
-
-    50% {
-      box-shadow:
-        0 0 14px rgba(251, 191, 36, 0.6),
-        0 0 30px rgba(251, 191, 36, 0.25),
-        0 0 50px rgba(251, 191, 36, 0.08);
-    }
-  }
-
-  .font-script {
-    font-family: var(--font-script);
-  }
-
-  /* Assistant slow pulse */
-  .animate-pulse-slow {
-    animation: pulse-slow 2.5s ease-in-out infinite;
-  }
-
-  @keyframes pulse-slow {
-
-    0%,
-    100% {
-      box-shadow:
-        0 0 20px rgba(251, 191, 36, 0.15),
-        0 8px 32px rgba(0, 0, 0, 0.5);
-    }
-
-    50% {
-      box-shadow:
-        0 0 28px rgba(251, 191, 36, 0.4),
-        0 0 50px rgba(251, 191, 36, 0.15),
-        0 8px 32px rgba(0, 0, 0, 0.5);
-    }
-  }
-
   .glassmorphism {
-    @apply bg-zinc-900/60 backdrop-blur-2xl border border-white/10;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
-  }
-
-  .no-scrollbar::-webkit-scrollbar {
-    display: none;
-  }
-
-  .no-scrollbar {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-  }
-
-  /* hide-scrollbar alias */
-  .hide-scrollbar::-webkit-scrollbar {
-    display: none;
-  }
-
-  .hide-scrollbar {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-  }
-
-  /* custom-scrollbar: thin styled scrollbar */
-  .custom-scrollbar {
-    scrollbar-width: thin;
-    scrollbar-color: rgba(251, 191, 36, 0.2) transparent;
-  }
-
-  .custom-scrollbar::-webkit-scrollbar {
-    width: 4px;
-    height: 4px;
-  }
-
-  .custom-scrollbar::-webkit-scrollbar-track {
-    background: transparent;
-  }
-
-  .custom-scrollbar::-webkit-scrollbar-thumb {
-    background: rgba(251, 191, 36, 0.2);
-    border-radius: 9999px;
-  }
-
-  /* Slow spin for subscription icon */
-  .animate-spin-slow {
-    animation: spin 4s linear infinite;
+    background: color-mix(in oklab, var(--color-bg) 86%, transparent);
+    border: 1px solid var(--color-border);
+    backdrop-filter: blur(14px);
   }
 }
