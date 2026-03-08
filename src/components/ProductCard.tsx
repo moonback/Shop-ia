@@ -113,7 +113,7 @@ export default function ProductCard({ product }: ProductCardProps) {
       {/* Image — aspect 4:5 */}
       <Link to={`/catalogue/${product.slug}`} className="relative block aspect-[4/5] overflow-hidden bg-zinc-950/20 group-hover:bg-zinc-950/0 transition-colors duration-500">
         <img
-          src={product.image_url ?? 'https://images.unsplash.com/photo-1617791160505-6f00504e3519?w=400'}
+          src={product.image_url ?? 'https://images.unsplash.com/photo-1540331547168-8b63100a446c?w=400'}
           alt={product.name}
           className="w-full h-full object-cover grayscale-[0.2] transition-all duration-700 group-hover:scale-110 group-hover:grayscale-0"
         />

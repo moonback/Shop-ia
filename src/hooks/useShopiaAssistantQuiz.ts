@@ -88,7 +88,7 @@ export function useShopiaAssistantQuiz({
         const { user } = useAuthStore.getState();
         if (user && scored.length > 0) {
             try {
-                const { error } = await supabase.from('Assistant_interactions').insert({
+                const { error } = await supabase.from('assistant_interactions').insert({
                     user_id: user.id,
                     interaction_type: 'recommendation',
                     recommended_products: scored.map((p) => p.id),

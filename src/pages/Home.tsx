@@ -92,10 +92,10 @@ export default function Home() {
   ];
 
   const categories = [
-    { name: "Épicerie Salée", slug: "epicerie-salee", img: "https://images.unsplash.com/photo-1542838132-92c53300491e?w=800", count: "45 produits" },
+    { name: "Épicerie Salée", slug: "epicerie-salee", img: "https://images.unsplash.com/photo-1534939561122-3d290a019d21?w=800", count: "45 produits" },
     { name: "Épicerie Sucrée", slug: "epicerie-sucree", img: "https://images.unsplash.com/photo-1481391319762-47dff72954d9?w=800", count: "32 délices" },
-    { name: "Boissons", slug: "boissons", img: "https://images.unsplash.com/photo-1544145945-f904253d0c71?w=800", count: "24 références" },
-    { name: "Produits Frais", slug: "produits-frais", img: "https://images.unsplash.com/photo-1546487813-f931b2691761?w=800", count: "15 arrivages" },
+    { name: "Boissons", slug: "boissons", img: "https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?w=800", count: "24 références" },
+    { name: "Produits Frais", slug: "produits-frais", img: "https://images.unsplash.com/photo-1542223189-67a03fa0f0bd?w=800", count: "15 arrivages" },
   ];
 
   return (
