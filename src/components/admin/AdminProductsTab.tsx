@@ -142,19 +142,35 @@ export default function AdminProductsTab({ products, categories, onRefresh }: Ad
     const handleSaveProduct = async (e: FormEvent) => {
         e.preventDefault();
         setIsSaving(true);
-        const { is_subscribable, is_bundle, ...restPayload } = productForm;
-        const payload = { ...restPayload, slug: productForm.slug || slugify(productForm.name) };
+        const payload = {
+            ...productForm,
+            slug: productForm.slug || slugify(productForm.name),
+        };
         let savedId = editingProductId;
         if (editingProductId) {
-            const { error: updateError } = await supabase.from('products').update(payload).eq('id', editingProductId);
+            const { data: updatedProduct, error: updateError } = await supabase
+                .from('products')
+                .update(payload)
+                .eq('id', editingProductId)
+                .select('id, is_subscribable')
+                .single();
             if (updateError) {
                 console.error("Update Error:", updateError);
                 alert("Erreur lors de la mise à jour: " + updateError.message);
                 setIsSaving(false);
                 return;
             }
+            if (updatedProduct?.is_subscribable !== payload.is_subscribable) {
+                alert("Le champ abonnement n'a pas pu être mis à jour en base. Vérifiez la colonne is_subscribable dans la table products.");
+                setIsSaving(false);
+                return;
+            }
         } else {
-            const { data: newProd, error: insertError } = await supabase.from('products').insert(payload).select('id').single();
+            const { data: newProd, error: insertError } = await supabase
+                .from('products')
+                .insert(payload)
+                .select('id, is_subscribable')
+                .single();
             if (insertError) {
                 console.error("Insert Error:", insertError);
                 alert("Erreur lors de la création: " + insertError.message);
