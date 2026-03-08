@@ -1,103 +1,58 @@
-# 🌿 Green Mood CBD Shop - Règles pour l'Assistant IA (Dev Guidelines)
+# Project Context
+- Utilise ce dépôt comme une SPA e-commerce React connectée à Supabase.
+- Considère que le cœur métier est côté frontend + SQL Supabase (RLS, RPC, triggers).
+- Documente tout changement impactant produit, DB, API et sécurité.
 
-## 1. Contexte du Projet
-**Green Mood CBD Shop** est une Single Page Application (SPA) e-commerce conçue pour une boutique physique de CBD premium. L'objectif est de présenter les produits CBD de qualité (fleurs, résines, huiles, infusions), de rassurer quant à la légalité (THC < 0,3%) et de faciliter l'achat (Click & Collect, Livraison, POS en boutique). L'accent est mis sur une interface utilisateur premium (dark mode, glassmorphism, neon green glow), animée et performante, avec un conseiller IA intégré (BudTender — chat texte et voix).
+# Tech Stack
+- Use React 19 + TypeScript pour toute nouvelle UI.
+- Use Vite scripts existants (`dev`, `build`, `preview`) sans créer de tooling parallèle non justifié.
+- Use `@supabase/supabase-js` pour tout accès DB/Auth/Storage.
+- Use Zustand pour l'état global partagé.
+- Use Tailwind CSS utilitaire avant d'ajouter du CSS custom.
 
-## 2. Stack Technique
-- **Frontend** : React 19, Vite 6, TypeScript ~5.8
-- **Style** : Tailwind CSS v4 (plugin Vite), Framer Motion ^12 (animations), Lucide React (icônes)
-- **Gestion d'État** : Zustand 5 (auth, cart, settings, wishlist, toast)
-- **Routage** : React Router DOM v7 (SPA, lazy loading)
-- **Backend/DB** : Supabase (PostgreSQL, Authentification GoTrue, Storage, RLS, pgvector)
-- **IA** : OpenRouter API (chat LLM + embeddings), Google Gemini Live API (voix WebSocket)
-- **Paiement** : Viva Wallet API (variables configurées)
-- **SEO** : sitemaps dynamiques, schema.org (JSON-LD), meta tags, robots.txt/llms.txt AI-friendly
-- **PWA** : manifest.webmanifest, Service Worker (Stale-While-Revalidate)
+# Code Style & Conventions
+- Use composants fonctionnels uniquement.
+- Use TypeScript strict; évite `any` et types implicites.
+- Use `PascalCase` pour composants, `camelCase` pour fonctions/variables.
+- Always centralise types métier dans `src/lib/types.ts` quand pertinent.
+- Never ajoute de `try/catch` autour des imports.
 
-## 3. Style de Code & Conventions
-- **Nommage** :
-  - `PascalCase` pour les composants React (`ProductCard.tsx`, `AdminPOSTab.tsx`).
-  - `camelCase` pour les variables, fonctions, hooks personnalisés, et fichiers utilitaires (`authStore.ts`, `budtenderCache.ts`).
-  - `kebab-case` pour les URL et variables CSS globales.
-- **Organisation des fichiers** : Grouper par fonctionnalité. Placer les composants isolés dans `src/components/`, les vues complètes dans `src/pages/`, les sections d'état dans `src/store/`, les utilitaires/types dans `src/lib/`, les hooks dans `src/hooks/`.
-- **Structure des Composants** : Utiliser exclusivement des composants fonctionnels et des hooks. Préférer la déstructuration explicite des props (`{ title, value }: Props`). Ne *pas* utiliser de composants à base de classes.
-- **Gestion d'État** :
-  - Utiliser `Zustand` pour l'état global (panier, auth, paramètres, wishlist, toast).
-  - Utiliser `useState`/`useReducer` locaux pour de l'état purement UI (onglets actifs, modales).
-  - Persister `cartStore` et `wishlistStore` via le middleware `zustand/persist` dans `localStorage`.
+# Architecture Patterns
+- Keep le routage centralisé dans `src/App.tsx`.
+- Keep les pages dans `src/pages`, composants partagés dans `src/components`.
+- Keep la logique métier réutilisable dans `src/lib` et hooks dans `src/hooks`.
+- Use RPC SQL pour les opérations proches de la donnée (stocks, promo, recommandations).
 
-## 4. Modèles d'Architecture (Architecture Patterns)
-- **Frontend** :
-  - `App.tsx` gère le routage global (BrowserRouter + Routes) et l'initialisation des stores.
-  - Toutes les pages sont lazy-loaded via `React.lazy()` + `Suspense`.
-  - Les pages récupèrent les données directement depuis Supabase via `useEffect` ou actions Zustand.
-  - `ProtectedRoute` vérifie l'authentification, `AdminRoute` vérifie `profile.is_admin`.
-- **Backend/API** : Il n'y a **pas de serveur Node.js**. Toute la logique repose sur :
-  - Le SDK client `@supabase/supabase-js` (CRUD, auth, storage)
-  - Les fonctions RPC PostgreSQL (`match_products`, `sync_bundle_stock`, `create_pos_customer`, `get_product_recommendations`, `increment_promo_uses`)
-  - Les politiques RLS pour la sécurité
-- **IA BudTender** :
-  - Chat texte : quiz guidé → embedding requête (OpenRouter) → `match_products` (pgvector) → prompt LLM (OpenRouter) → réponse
-  - Chat vocal : Gemini Live Audio (WebSocket) avec function calling (`search_catalog`, `add_to_cart`, `view_product`, `navigate_to`, `close_session`)
-  - Mémoire : préférences persistées dans `user_ai_preferences` (Supabase)
-  - Cache : TTL produits (5min), TTL settings (2min), LRU embeddings (50 entrées, 10min)
-- **Accès aux Données** : Formatage strict des types via `src/lib/types.ts`. Source unique de vérité pour les slugs catégories dans `src/lib/constants.ts`.
+# Best Practices
+- Always vérifie les politiques RLS avant d'introduire un nouveau flux data.
+- Always protège les routes sensibles via `ProtectedRoute` ou `AdminRoute`.
+- Always gère les erreurs Supabase/OpenRouter et affiche un feedback utilisateur.
+- Always valide qu'aucun secret serveur n'est exposé au client.
+- Use lazy loading pour les nouvelles pages lourdes.
 
-## 5. Bonnes Pratiques
-- **Gestion des Erreurs** : Utiliser des blocs `try/catch` exhaustifs pour isoler les appels Supabase et OpenRouter. Assigner un état `error` pour notifier l'utilisateur plutôt que de laisser crasher. `ErrorBoundary` global à la racine.
-- **Sécurité Typographique** : Maintenir un haut degré d'exigence TypeScript. Garder les interfaces à jour. Bannir les types `any`.
-- **Sécurité Système** :
-  - La Service Role Key Supabase ne doit **jamais** apparaître côté client.
-  - Toute la sécurité d'accès repose sur les politiques RLS.
-  - Les fonctions RPC sensibles utilisent `SECURITY DEFINER` avec vérification `is_admin` interne.
-- **Performance** :
-  - Lazy loading systématique des pages.
-  - Cache TTL pour éviter les appels Supabase répétés.
-  - Déduplication des fetches en vol (`productsFetchPromise`).
-  - `resolve.dedupe` Vite pour React.
-- **Accessibilité** : Focus visible global, respect `prefers-reduced-motion`.
+# Common Workflows
+- Pour une feature UI: crée composant -> branche la page -> connecte store/hooks -> teste build.
+- Pour une évolution DB: modifie SQL -> documente dans `DB_SCHEMA.md` -> mets à jour `API_DOCS.md`.
+- Pour un endpoint/RPC ajouté: documente paramètres, auth, exemples succès/erreur.
+- Pour une PR: respecte Conventional Commits et fournis un résumé des impacts.
 
-## 6. Tâches Courantes & Workflow (Workflow Patterns)
-- **Ajout d'une fonctionnalité UI** :
-  1. Construire les composants visuels sous `src/components/`.
-  2. Créer ou ajuster la route dans `App.tsx`.
-  3. Lier au contexte métier et données Supabase depuis la page dans `src/pages/`.
-- **Création d'un Nouveau Flux "API" / Table** :
-  1. Introduire le fichier SQL (`CREATE TABLE` + RLS) dans `supabase/migration_vXX_<nom>.sql`.
-  2. Mapper l'interface dans `src/lib/types.ts`.
-  3. Formuler l'action Supabase dans un store Zustand ou le composant page.
-- **Ajout d'un onglet Admin** :
-  1. Créer le composant dans `src/components/admin/AdminXxxTab.tsx`.
-  2. L'importer et l'ajouter dans `src/pages/Admin.tsx`.
-- **Modification du BudTender** :
-  1. Prompts dans `src/lib/budtenderPrompts.ts`.
-  2. Quiz steps dans `src/lib/budtenderSettings.ts`.
-  3. Configuration admin dans `src/components/admin/AdminBudTenderTab.tsx`.
+# Preferred Dependencies
+- Use `lucide-react` pour icônes.
+- Use `recharts` pour visualisations admin.
+- Use `papaparse` pour import CSV.
+- Use `react-markdown` pour rendu markdown assistant.
+- Préfère les dépendances déjà présentes avant d'en ajouter de nouvelles.
 
-## 7. Dépendances à Privilégier
-- **Icônes** : `lucide-react` — pas Heroicons, pas FontAwesome.
-- **Animations** : `motion` (Framer Motion) — transitions complexes, hover, layout animations.
-- **Récupération des Données** : `@supabase/supabase-js` — jamais de fetch direct vers la DB.
-- **Graphiques** : `recharts` — pour les analytics admin.
-- **Markdown** : `react-markdown` — rendu dans le chat BudTender.
-- **CSV** : `papaparse` — import CSV de produits.
+# Anti-patterns to Avoid
+- Never contourne RLS côté client.
+- Never écris une logique critique uniquement côté UI si elle doit être fiable côté DB.
+- Never introduis Redux ou un second state manager global.
+- Never duplique les appels réseau identiques sans cache ou mutualisation.
+- Never invente des fonctionnalités non présentes quand tu rédiges la documentation.
 
-## 8. Anti-Patterns & Choses à Éviter
-- **Éviter Redux** — Préférer strictement Zustand.
-- **Ne pas écrire de CSS ad-hoc complexe** — Utiliser les classes utilitaires Tailwind v4. Les exceptions sont dans `index.css` (glow system, glassmorphism).
-- **Ne pas charger de calcul métier lourd sur le Client** — Utiliser des Views SQL ou fonctions RPC PostgreSQL.
-- **Ne pas inventer de produits dans le BudTender** — Les recommandations IA doivent TOUJOURS provenir du catalogue Supabase (via `match_products` ou fetch direct).
-- **Ne pas exposer de clé secrète** — Toutes les clés côté client utilisent le préfixe `VITE_` (publiques par design Vite).
-- **Ne pas utiliser de composants à base de classes** — Fonctionnel uniquement.
-
-## 9. Design System
-- **Couleurs** : Dark mode (zinc-950 fond), neon green (#39FF14), green-primary (#15803d), green-dark (#0a2e15).
-- **Fonts** : Inter (sans), Playfair Display (serif pour titres), Dancing Script (script).
-- **Effets** : `.glow-green` (text), `.glow-box-green` (box), `.glow-pulse-green` (pulse), `.glassmorphism` (glass).
-- **Langue UI** : Français (routes, labels, messages, prompts IA).
-
-## 10. Documentation
-- Documenter les nouvelles tables dans `DB_SCHEMA.md`.
-- Documenter les nouveaux endpoints/RPC dans `API_DOCS.md`.
-- Mettre à jour `ROADMAP.md` pour toute nouvelle fonctionnalité.
-- Suivre les Conventional Commits (voir `CONTRIBUTING.md`).
+# Documentation Rules
+- Always mets à jour `README.md` si setup, stack ou commandes changent.
+- Always mets à jour `ARCHITECTURE.md` si flux, services ou couches changent.
+- Always mets à jour `API_DOCS.md` pour tout nouveau call externe, table REST ou RPC.
+- Always mets à jour `ROADMAP.md` lors d'une livraison significative.
+- Always garde une documentation factuelle, vérifiable et alignée au code.

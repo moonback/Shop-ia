@@ -1,401 +1,221 @@
-# 📡 API & RPC Documentation — Green Mood CBD
+# API_DOCS
 
-> **Note :** Green Mood n'utilise pas d'API REST traditionnelle.  
-> Toutes les interactions sont effectuées directement via le **SDK client Supabase** (`@supabase/supabase-js`).  
-> La sécurité est assurée par les politiques **Row Level Security (RLS)** de PostgreSQL.  
-> Ce document référence les **tables Supabase** (endpoints CRUD auto-générés) et les **fonctions RPC** PostgreSQL.
+> Cette application consomme majoritairement l'API Supabase (Auth, PostgREST, RPC, Storage) via le SDK JavaScript. Il n'existe pas de serveur REST custom versionné (`/api/*`) implémenté dans `src/`.
 
----
+## Authentification
 
-## 🔐 Authentification
+### POST `/auth/v1/token?grant_type=password`
+- **Description** : connexion utilisateur email/mot de passe (`supabase.auth.signInWithPassword`).
+- **Auth requise** : non.
 
-L'authentification utilise **Supabase GoTrue** (email/password).
-
-### POST — Sign Up
-
-Inscription d'un nouvel utilisateur.
-
-**Auth requise :** Non
-
-```typescript
-supabase.auth.signUp({
-  email: "user@example.com",
-  password: "securePassword",
-  options: { data: { full_name: "Jean Dupont" } }
-})
-```
-
-**Réponse :**
-```json
-{
-  "user": { "id": "uuid", "email": "user@example.com" },
-  "session": { "access_token": "jwt...", "refresh_token": "..." }
-}
-```
-
-> Un trigger PostgreSQL `handle_new_user` crée automatiquement la ligne `profiles` et génère un `referral_code` unique.
-
----
-
-### POST — Sign In
-
-Connexion par email et mot de passe.
-
-**Auth requise :** Non
-
-```typescript
-supabase.auth.signInWithPassword({
-  email: "user@example.com",
-  password: "securePassword"
-})
-```
-
----
-
-### POST — Password Reset Request
-
-Envoi d'un email de réinitialisation.
-
-**Auth requise :** Non
-
-```typescript
-supabase.auth.resetPasswordForEmail("user@example.com", {
-  redirectTo: "https://greenmood.fr/reinitialiser-mot-de-passe"
-})
-```
-
----
-
-### POST — Update Password
-
-Mise à jour du mot de passe (après réception du lien de réinitialisation).
-
-**Auth requise :** Oui
-
-```typescript
-supabase.auth.updateUser({ password: "newSecurePassword" })
-```
-
----
-
-## 📦 Tables CRUD (via SDK Supabase)
-
-### Categories
-
-**RLS :** Lecture publique, écriture admin
-
-| Opération | Exemple |
-|---|---|
-| **SELECT** | `supabase.from('categories').select('*').eq('is_active', true)` |
-| **INSERT** | `supabase.from('categories').insert({ slug, name, description, icon_name, image_url, sort_order })` |
-| **UPDATE** | `supabase.from('categories').update({ name }).eq('id', categoryId)` |
-| **DELETE** | `supabase.from('categories').delete().eq('id', categoryId)` |
-
----
-
-### Products
-
-**RLS :** Lecture publique, écriture admin
-
-| Opération | Exemple |
-|---|---|
-| **SELECT** | `supabase.from('products').select('*, category:categories(slug, name)').eq('is_active', true)` |
-| **SELECT par slug** | `supabase.from('products').select('*').eq('slug', slug).single()` |
-| **INSERT** | `supabase.from('products').insert({ category_id, slug, name, price, ... })` |
-| **UPDATE** | `supabase.from('products').update({ price, stock_quantity }).eq('id', productId)` |
-
----
-
-### Profiles
-
-**RLS :** Lecture owner/admin, écriture owner/admin
-
-```typescript
-// Lecture du profil courant
-supabase.from('profiles').select('*').eq('id', userId).single()
-
-// Mise à jour du profil
-supabase.from('profiles').update({ full_name, phone }).eq('id', userId)
-```
-
----
-
-### Orders
-
-**RLS :** Lecture owner/admin, insertion authentifié, update admin
-
-```typescript
-// Création d'une commande
-supabase.from('orders').insert({
-  user_id, status: 'pending', delivery_type,
-  subtotal, delivery_fee, total, loyalty_points_earned,
-  promo_code, promo_discount
-}).select().single()
-
-// Mise à jour statut (admin)
-supabase.from('orders').update({ status: 'shipped' }).eq('id', orderId)
-```
-
----
-
-### Order Items
-
-**RLS :** Lecture owner/admin, insertion authentifié
-
-```typescript
-supabase.from('order_items').insert(items.map(i => ({
-  order_id, product_id: i.product.id,
-  product_name: i.product.name,
-  unit_price: i.product.price,
-  quantity: i.quantity,
-  total_price: i.product.price * i.quantity
-})))
-```
-
----
-
-### Reviews
-
-**RLS :** Lecture publique (publiées) / owner / admin, insertion owner, update owner (non publiées), admin all
-
-```typescript
-// Récupérer les avis d'un produit
-supabase.from('reviews')
-  .select('*, profile:profiles(full_name)')
-  .eq('product_id', productId)
-  .eq('is_published', true)
-  .order('created_at', { ascending: false })
-
-// Soumettre un avis
-supabase.from('reviews').insert({
-  product_id, user_id, order_id, rating, comment
-})
-```
-
----
-
-### Promo Codes
-
-**RLS :** Lecture authentifié, écriture admin
-
-```typescript
-// Vérifier un code promo
-supabase.from('promo_codes')
-  .select('*')
-  .eq('code', code.toUpperCase())
-  .eq('is_active', true)
-  .single()
-```
-
----
-
-### Store Settings
-
-**RLS :** Lecture publique, écriture admin
-
-```typescript
-// Lire tous les paramètres
-supabase.from('store_settings').select('*')
-
-// Mettre à jour un paramètre
-supabase.from('store_settings').upsert({ key: 'banner_text', value: '...' })
-```
-
----
-
-### Subscriptions
-
-**RLS :** Lecture owner/admin, insertion owner, update owner/admin
-
-```typescript
-supabase.from('subscriptions').insert({
-  user_id, product_id, quantity, frequency, next_delivery_date
-})
-```
-
----
-
-### Referrals
-
-**RLS :** Lecture referrer/referee
-
-```typescript
-supabase.from('referrals').select('*, referee:profiles!referee_id(full_name, created_at)')
-  .eq('referrer_id', userId)
-```
-
----
-
-### User Active Sessions
-
-**RLS :** CRUD owner uniquement
-
-```typescript
-supabase.from('user_active_sessions').upsert({
-  user_id, device_id, device_name, user_agent, last_seen
-}, { onConflict: 'user_id,device_id' })
-```
-
----
-
-### User AI Preferences (BudTender)
-
-**RLS :** CRUD owner, lecture admin
-
-```typescript
-supabase.from('user_ai_preferences').upsert({
-  user_id, goal, experience_level, preferred_format, budget_range, terpene_preferences
-}, { onConflict: 'user_id' })
-```
-
----
-
-## ⚡ Fonctions RPC PostgreSQL
-
-### `match_products`
-
-Recherche sémantique vectorielle via cosine similarity (pgvector).
-
-**Auth requise :** Non (lecture produits publique)
-
-```typescript
-supabase.rpc('match_products', {
-  query_embedding: [0.12, -0.34, ...],  // vector(3072)
-  match_threshold: 0.5,
-  match_count: 5
-})
-```
-
-**Retourne :** Liste de produits avec un champ `similarity` (float).
-
----
-
-### `get_product_recommendations`
-
-Recommandations de produits complémentaires (explicites + fallback catégorie).
-
-**Auth requise :** Non
-
-```typescript
-supabase.rpc('get_product_recommendations', {
-  p_product_id: 'uuid...',
-  p_limit: 4
-})
-```
-
----
-
-### `sync_bundle_stock`
-
-Recalcule le stock d'un bundle = `min(floor(composant.stock / qtité))`.
-
-**Auth requise :** Admin (via trigger automatique ou appel direct)
-
-```typescript
-supabase.rpc('sync_bundle_stock', { p_bundle_id: 'uuid...' })
-```
-
----
-
-### `increment_promo_uses`
-
-Incrémente le compteur d'utilisation d'un code promo.
-
-**Auth requise :** Authentifié (SECURITY DEFINER)
-
-```typescript
-supabase.rpc('increment_promo_uses', { code_text: 'BIENVENUE10' })
-```
-
----
-
-### `create_pos_customer`
-
-Crée un client walk-in depuis le POS (insertion dans `auth.users` + trigger profil).
-
-**Auth requise :** Admin uniquement (vérification interne)
-
-```typescript
-supabase.rpc('create_pos_customer', {
-  p_full_name: 'Client Boutique',
-  p_phone: '06 12 34 56 78'
-})
-```
-
-**Retourne :** `uuid` du nouveau client.
-
----
-
-## 🤖 API Externes
-
-### OpenRouter — Chat LLM
+| Nom | Type | Requis | Description |
+|---|---|---|---|
+| `email` | string | Oui | Email utilisateur |
+| `password` | string | Oui | Mot de passe |
 
 ```bash
-POST https://openrouter.ai/api/v1/chat/completions
-Authorization: Bearer $VITE_OPENROUTER_API_KEY
-Content-Type: application/json
-X-Title: Green Mood Admin AI
+curl -X POST "$VITE_SUPABASE_URL/auth/v1/token?grant_type=password" \
+  -H "apikey: $VITE_SUPABASE_ANON_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"email":"user@example.com","password":"secret"}'
 ```
 
+**Réponse succès (200)**
 ```json
-{
-  "model": "google/gemini-2.0-flash-lite-preview-02-05:free",
-  "messages": [{ "role": "user", "content": "prompt..." }]
-}
+{"access_token":"...","refresh_token":"...","user":{"id":"uuid"}}
 ```
+
+**Réponse erreur (400/401)**
+```json
+{"error":"invalid_grant","error_description":"Invalid login credentials"}
+```
+
+**Codes HTTP** : `200`, `400`, `401`.
+
+### POST `/auth/v1/signup`
+- **Description** : inscription (`supabase.auth.signUp`) avec création de profil via trigger SQL.
+- **Auth requise** : non.
+
+### POST `/auth/v1/recover`
+- **Description** : envoi email de réinitialisation (`supabase.auth.resetPasswordForEmail`).
+- **Auth requise** : non.
+
+### PUT `/auth/v1/user`
+- **Description** : mise à jour du mot de passe (`supabase.auth.updateUser`).
+- **Auth requise** : oui (Bearer JWT).
 
 ---
 
-### OpenRouter — Embeddings
+## Données métier (PostgREST `/rest/v1`)
 
+> Les opérations sont faites via `supabase.from('<table>')`.
+
+### Produits & catalogue
+
+#### GET `/rest/v1/products`
+- **Description** : lecture catalogue (listing, détail, recherche texte, filtres `is_active`/`is_available`).
+- **Auth requise** : non (RLS lecture publique).
+- **Query courantes** : `select`, `eq`, `ilike`, `order`, `limit`.
+
+#### POST/PATCH `/rest/v1/products`
+- **Description** : création/mise à jour produit (admin).
+- **Auth requise** : oui (admin via policy SQL `is_admin`).
+
+### Catégories
+#### GET `/rest/v1/categories`
+- **Description** : récupération catégories actives.
+- **Auth requise** : non.
+
+#### POST/PATCH/DELETE `/rest/v1/categories`
+- **Description** : administration des catégories.
+- **Auth requise** : oui (admin).
+
+### Commandes
+#### POST `/rest/v1/orders`
+- **Description** : création commande client/POS.
+- **Auth requise** : oui.
+
+#### GET `/rest/v1/orders`
+- **Description** : listing commandes utilisateur ou admin.
+- **Auth requise** : oui.
+
+#### PATCH `/rest/v1/orders`
+- **Description** : update statut commande.
+- **Auth requise** : oui (admin pour update).
+
+### Lignes de commande
+#### POST `/rest/v1/order_items`
+- **Description** : insertion des lignes après création commande.
+- **Auth requise** : oui.
+
+### Profil & compte
+- `GET/PATCH /rest/v1/profiles`
+- `GET/POST/PATCH/DELETE /rest/v1/addresses`
+- `GET /rest/v1/loyalty_transactions`
+- `GET/POST/PATCH /rest/v1/subscriptions`
+- `POST /rest/v1/reviews`, `PATCH/DELETE /rest/v1/reviews` (admin modération)
+- `GET /rest/v1/referrals`
+
+### Marketing & paramètres
+- `GET/POST/PATCH/DELETE /rest/v1/promo_codes` (admin écriture)
+- `GET/POST /rest/v1/store_settings` (lecture publique, écriture admin)
+- `GET/POST/PATCH/DELETE /rest/v1/product_recommendations` (admin)
+
+### Assistant IA
+- `GET/POST/PATCH /rest/v1/user_ai_preferences`
+- `GET/POST/PATCH /rest/v1/assistant_interactions`
+
+### POS / Opérations internes
+- `POST /rest/v1/stock_movements`
+- `GET/POST /rest/v1/pos_reports`
+- `GET/POST/PATCH/DELETE /rest/v1/user_active_sessions`
+
+**Exemple requête PostgREST**
 ```bash
-POST https://openrouter.ai/api/v1/embeddings
-Authorization: Bearer $VITE_OPENROUTER_API_KEY
-Content-Type: application/json
+curl "$VITE_SUPABASE_URL/rest/v1/products?select=*&is_active=eq.true&limit=10" \
+  -H "apikey: $VITE_SUPABASE_ANON_KEY" \
+  -H "Authorization: Bearer $SUPABASE_JWT"
 ```
 
+**Réponse succès (200)**
 ```json
-{
-  "model": "openai/text-embedding-3-small",
-  "input": "texte à encoder",
-  "dimensions": 768
-}
+[{"id":"uuid","name":"Huile d'olive","price":"19.90"}]
+```
+
+**Réponse erreur (401/403)**
+```json
+{"message":"new row violates row-level security policy"}
+```
+
+**Codes HTTP usuels** : `200`, `201`, `204`, `400`, `401`, `403`, `409`.
+
+---
+
+## RPC SQL (`/rest/v1/rpc/*`)
+
+### POST `/rest/v1/rpc/match_products`
+- **Description** : recherche vectorielle de produits similaires.
+- **Auth requise** : oui (session requise côté app).
+
+| Nom | Type | Requis | Description |
+|---|---|---|---|
+| `query_embedding` | number[] | Oui | Embedding de requête |
+| `match_threshold` | number | Oui | Seuil de similarité |
+| `match_count` | number | Oui | Nombre max de résultats |
+
+### POST `/rest/v1/rpc/increment_promo_uses`
+- **Description** : incrémente le compteur d'usage d'un code promo.
+- **Auth requise** : oui.
+
+| Nom | Type | Requis | Description |
+|---|---|---|---|
+| `code_text` | string | Oui | Code promo |
+
+### POST `/rest/v1/rpc/sync_bundle_stock`
+- **Description** : recalcule automatiquement le stock d'un bundle.
+- **Auth requise** : oui (admin en pratique).
+
+| Nom | Type | Requis | Description |
+|---|---|---|---|
+| `p_bundle_id` | uuid | Oui | Produit bundle ciblé |
+
+### POST `/rest/v1/rpc/get_product_recommendations`
+- **Description** : récupère recommandations manuelles + fallback catégorie.
+- **Auth requise** : non/oui selon policy lecture produits.
+
+### POST `/rest/v1/rpc/create_pos_customer`
+- **Description** : crée un client depuis POS (auth user + profil).
+- **Auth requise** : oui (admin strict).
+
+### POST `/rest/v1/rpc/admin_get_user_email`
+- **Description** : récupère l'email d'un utilisateur depuis admin.
+- **Auth requise** : oui (admin strict).
+
+**Exemple RPC**
+```bash
+curl -X POST "$VITE_SUPABASE_URL/rest/v1/rpc/match_products" \
+  -H "apikey: $VITE_SUPABASE_ANON_KEY" \
+  -H "Authorization: Bearer $SUPABASE_JWT" \
+  -H "Content-Type: application/json" \
+  -d '{"query_embedding":[0.01,0.02],"match_threshold":0.65,"match_count":6}'
+```
+
+**Réponse succès (200)**
+```json
+[{"id":"uuid","name":"Produit A","similarity":0.82}]
+```
+
+**Réponse erreur (400/403)**
+```json
+{"code":"PGRST301","message":"Unauthorized"}
 ```
 
 ---
 
-### Google Gemini — Live Audio (WebSocket)
+## Storage (Supabase)
 
-Connexion WebSocket pour le conseiller vocal temps réel.
+### POST `/storage/v1/object/product-images/<filename>`
+- **Description** : upload image produit (`supabase.storage.from('product-images').upload`).
+- **Auth requise** : oui (admin policy).
 
-```typescript
-const genAI = new GoogleGenAI({ apiKey: VITE_GEMINI_API_KEY });
-const session = await genAI.live.connect({
-  model: 'models/gemini-2.5-flash-native-audio-preview-12-2025',
-  config: {
-    responseModalities: [Modality.AUDIO],
-    tools: [{ functionDeclarations: [...] }]
-  }
-});
-```
-
-**Tools déclarées :** `search_catalog`, `add_to_cart`, `view_product`, `navigate_to`, `close_session`
+### GET `/storage/v1/object/public/product-images/<filename>`
+- **Description** : URL publique image produit.
+- **Auth requise** : non.
 
 ---
 
-### Supabase Storage — Upload Image
+## Services externes non-Supabase
 
-```typescript
-supabase.storage.from('product-images').upload(filePath, file, {
-  cacheControl: '3600',
-  upsert: true
-})
-```
+### POST `https://openrouter.ai/api/v1/chat/completions`
+- **Description** : génération de réponse assistant / génération marketing IA.
+- **Auth requise** : clé API OpenRouter (`Authorization: Bearer`).
 
-**RLS :** Upload/update/delete admin uniquement, lecture publique.
+### POST `https://openrouter.ai/api/v1/embeddings`
+- **Description** : embeddings texte pour recherche sémantique.
+- **Auth requise** : clé API OpenRouter.
 
----
+### Gemini Live API (WebSocket)
+- **Description** : conversation vocale temps réel (`useGeminiLiveVoice`).
+- **Auth requise** : clé API Gemini.
 
-### Viva Wallet — Paiement
-
-> ⚠️ À compléter : l'intégration Viva Wallet est configurée via variables d'environnement mais le flux de paiement complet n'est pas entièrement détectable dans le code client analysé. Les variables `VITE_VIVA_WALLET_BASE_URL`, `VITE_VIVA_CLIENT_ID`, et `VITE_VIVA_CLIENT_SECRET` sont définies dans `.env.example`.
+> ⚠️ À compléter : la documentation Viva Wallet ne peut pas être détaillée ici car les appels backend de paiement sont commentés dans `Checkout.tsx`.
