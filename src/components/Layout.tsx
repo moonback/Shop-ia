@@ -235,20 +235,13 @@ export default function Layout() {
         <div className="absolute inset-0 bg-zinc-950/80 backdrop-blur-3xl border-b border-white/[0.04] shadow-[0_8px_32px_rgba(0,0,0,0.5)]" />
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="flex flex-col">
-            {/* Top Row: Logo & Actions */}
-            <div className="flex items-center justify-between h-20 md:h-24">
-              {/* Left spacer for desktop symmetry, Mobile menu button for mobile */}
-              <div className="flex-1 lg:flex items-center hidden">
-                <span className="text-[10px] uppercase tracking-[0.3em] text-zinc-500 font-bold hidden xl:block">
-                  Votre Épicerie Intelligente
-                </span>
-              </div>
-
+          <div className="flex items-center justify-between h-20 md:h-28 gap-4">
+            {/* Left Box: Logo & Mobile Menu */}
+            <div className="flex items-center gap-3 md:gap-6 flex-[1.2]">
               {/* Mobile Menu Button - Left on mobile */}
-              <div className="lg:hidden flex-1">
+              <div className="lg:hidden flex-shrink-0">
                 <button
-                  className="p-2.5 text-zinc-400 hover:text-white bg-white/[0.04] rounded-xl border border-white/[0.08] transition-all active:scale-95"
+                  className="p-2.5 text-zinc-400 hover:text-white bg-white/[0.04] rounded-xl border border-white/[0.08] transition-all active:scale-95 shadow-sm"
                   onClick={() => setIsMenuOpen(!isMenuOpen)}
                   aria-label={isMenuOpen ? "Fermer le menu" : "Ouvrir le menu"}
                 >
@@ -256,149 +249,30 @@ export default function Layout() {
                 </button>
               </div>
 
-              {/* Centered Logo */}
-              <div className="flex-shrink-0 flex items-center justify-center">
-                <Link to="/" className="flex items-center group relative z-[1000]" aria-label="Shop-ia — Accueil">
+              {/* Logo */}
+              <div className="flex-shrink-0 flex items-center">
+                <Link to="/" className="flex items-center group relative z-[1000] -ml-2 lg:ml-0" aria-label="Shop-ia — Accueil">
                   <div className="absolute -inset-8 bg-amber-400/10 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
                   <img
                     src="/logo.png"
                     alt="Shop-ia"
-                    className="h-38 md:h-40 w-auto object-contain transition-all duration-700 group-hover:scale-105 group-hover:glow-logo"
+                    className="h-16 md:h-24 lg:h-28 w-auto object-contain transition-all duration-700 group-hover:scale-105 group-hover:glow-logo origin-left"
                   />
                 </Link>
-              </div>
-
-              {/* Right Actions: Search, Cart & Account */}
-              <div className="flex-1 flex justify-end items-center gap-2 md:gap-4">
-                {/* Search Button */}
-                {settings.search_enabled && (
-                  <button
-                    onClick={() => setIsSearchOpen(true)}
-                    className="p-3 text-zinc-400 hover:text-green-neon transition-all duration-300 hover:bg-white/[0.04] rounded-xl border border-transparent hover:border-white/[0.08]"
-                    aria-label="Rechercher"
-                  >
-                    <Search className="h-5 w-5" />
-                  </button>
-                )}
-
-                {/* Cart button */}
-                <button
-                  onClick={openSidebar}
-                  className="group relative p-3 text-zinc-400 hover:text-green-neon transition-all duration-300 hover:bg-white/[0.04] rounded-xl border border-transparent hover:border-white/[0.08]"
-                  aria-label="Ouvrir le panier"
-                >
-                  <ShoppingCart className="h-5 w-5 transition-transform duration-300 group-hover:scale-110" />
-                  {itemCount > 0 && (
-                    <span className="absolute -top-1 -right-1 bg-green-neon text-black text-[10px] font-bold rounded-full w-4.5 h-4.5 flex items-center justify-center shadow-[0_0_12px_rgba(57,255,20,0.5)]">
-                      {itemCount > 99 ? "99+" : itemCount}
-                    </span>
-                  )}
-                </button>
-
-                {/* Loyalty Points (Desktop) */}
-                {user && profile && (
-                  <Link
-                    to="/compte"
-                    className="hidden lg:flex items-center gap-2.5 px-3.5 py-1.5 bg-white/[0.04] border border-white/[0.08] rounded-full hover:border-green-neon/30 hover:bg-white/[0.06] transition-all duration-300 group"
-                  >
-                    <div className="w-5 h-5 rounded-full bg-amber-400/10 flex items-center justify-center group-hover:bg-amber-400/20 transition-colors">
-                      <ShoppingBag className="h-2.5 w-2.5 text-amber-400" />
-                    </div>
-                    <div className="flex flex-col">
-                      <span className="text-[8px] text-zinc-500 uppercase font-black leading-none tracking-tighter">Points</span>
-                      <span className="text-xs font-black text-white leading-none mt-0.5 group-hover:text-green-neon transition-colors">
-                        {profile.loyalty_points ?? 0}
-                      </span>
-                    </div>
-                  </Link>
-                )}
-
-                {/* Account (Desktop) */}
-                {user ? (
-                  <div className="relative hidden md:block">
-                    <button
-                      onClick={() => setIsAccountMenuOpen(!isAccountMenuOpen)}
-                      className={`flex items-center gap-2.5 p-1.5 pr-4 rounded-full border transition-all duration-300 ${isAccountMenuOpen
-                        ? "bg-green-neon border-green-neon text-black"
-                        : "bg-white/[0.04] border-white/[0.08] text-zinc-300 hover:border-green-neon/40 hover:text-white shadow-lg"
-                        }`}
-                    >
-                      <div className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors ${isAccountMenuOpen ? "bg-black/20" : "bg-white/[0.08]"
-                        }`}>
-                        <User className="h-4 w-4" />
-                      </div>
-                      <span className="text-[10px] font-bold uppercase tracking-widest hidden lg:inline">
-                        {profile?.full_name?.split(" ")[0] ?? "Profil"}
-                      </span>
-                    </button>
-
-                    <AnimatePresence>
-                      {isAccountMenuOpen && (
-                        <motion.div
-                          initial={{ opacity: 0, y: 12, scale: 0.95 }}
-                          animate={{ opacity: 1, y: 0, scale: 1 }}
-                          exit={{ opacity: 0, y: 12, scale: 0.95 }}
-                          className="absolute right-0 top-full mt-4 w-56 bg-zinc-900/95 backdrop-blur-2xl border border-white/[0.08] rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] overflow-hidden z-50 p-2"
-                        >
-                          <Link
-                            to="/compte"
-                            className="flex items-center gap-3 px-4 py-3 text-xs font-semibold text-zinc-400 hover:bg-white/[0.04] hover:text-white rounded-xl transition-all"
-                          >
-                            <User className="h-4 w-4" />
-                            Tableau de bord
-                          </Link>
-                          <Link
-                            to="/compte/commandes"
-                            className="flex items-center gap-3 px-4 py-3 text-xs font-semibold text-zinc-400 hover:bg-white/[0.04] hover:text-white rounded-xl transition-all"
-                          >
-                            <Clock className="h-4 w-4" />
-                            Historique
-                          </Link>
-                          <button
-                            onClick={() => {
-                              setIsLoyaltyModalOpen(true);
-                              setIsAccountMenuOpen(false);
-                            }}
-                            className="w-full flex items-center gap-3 px-4 py-3 text-xs font-semibold text-zinc-400 hover:bg-white/[0.04] hover:text-white rounded-xl transition-all"
-                          >
-                            <QrCode className="h-4 w-4 text-amber-400" />
-                            Ma Carte Fidélité
-                          </button>
-                          {profile?.is_admin && (
-                            <Link
-                              to="/admin"
-                              className="flex items-center gap-3 px-4 py-3 text-xs font-bold text-green-neon hover:bg-green-neon/10 rounded-xl transition-all"
-                            >
-                              <ShieldCheck className="h-4 w-4" />
-                              Administration
-                            </Link>
-                          )}
-                          <div className="h-px bg-white/[0.06] my-2 mx-4" />
-                          <button
-                            onClick={signOut}
-                            className="w-full flex items-center gap-3 px-4 py-3 text-xs font-bold text-red-400 hover:bg-red-400/10 rounded-xl transition-all"
-                          >
-                            <LogOut className="h-4 w-4" />
-                            Déconnexion
-                          </button>
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-                  </div>
-                ) : (
-                  <Link
-                    to="/connexion"
-                    className="hidden md:flex items-center gap-3 px-6 py-2.5 bg-white/[0.04] border border-white/[0.08] hover:bg-white/10 hover:border-green-neon/20 text-white rounded-full transition-all duration-300 group"
-                  >
-                    <User className="h-3.5 w-3.5 text-zinc-500 group-hover:text-green-neon transition-colors" />
-                    <span className="text-[10px] font-bold uppercase tracking-widest">Connexion</span>
-                  </Link>
-                )}
+                {/* Desktop decorative text */}
+                <div className="hidden xl:flex flex-col ml-6 pl-6 border-l border-white/[0.08] min-w-max">
+                  <span className="text-[9px] uppercase tracking-[0.3em] text-zinc-500 font-bold mb-0.5">
+                    Votre Épicerie
+                  </span>
+                  <span className="text-[11px] uppercase tracking-[0.2em] text-zinc-100 font-black">
+                    Intelligente
+                  </span>
+                </div>
               </div>
             </div>
 
-            {/* Bottom Row: Navigation (Desktop only) */}
-            <nav className="relative z-[1001] hidden lg:flex items-center justify-center gap-2 pb-5 pt-2 border-t border-white/[0.03]">
+            {/* Center Box: Navigation (Desktop only) */}
+            <nav className="hidden lg:flex flex-[2] items-center justify-center gap-1 xl:gap-2 relative z-[1001]">
               {navLinks.map((link) => {
                 const isActive = location.pathname === link.path ||
                   (link.path !== "/" && location.pathname.startsWith(link.path));
@@ -406,29 +280,157 @@ export default function Layout() {
                   <Link
                     key={link.path}
                     to={link.path}
-                    className={`relative px-5 py-2 text-[10px] font-bold uppercase tracking-[0.2em] transition-all duration-500 group ${isActive ? "text-green-neon" : "text-zinc-400 hover:text-white"
+                    className={`relative px-4 py-2.5 text-[10px] xl:text-[11px] font-bold uppercase tracking-[0.15em] transition-all duration-500 group whitespace-nowrap ${isActive ? "text-green-neon" : "text-zinc-400 hover:text-white"
                       }`}
                   >
                     <span className="relative z-10">{link.name}</span>
                     {isActive ? (
                       <motion.span
                         layoutId="nav-active"
-                        className="absolute inset-0 bg-green-neon/[0.03] rounded-full border border-green-neon/10 -z-0"
+                        className="absolute inset-x-2 -bottom-2 h-[2px] bg-green-neon rounded-full"
                         transition={{ type: "spring", stiffness: 300, damping: 30 }}
                       />
                     ) : (
-                      <span className="absolute inset-0 bg-transparent rounded-full group-hover:bg-white/[0.03] transition-all duration-300 -z-0" />
+                      <span className="absolute inset-x-2 -bottom-2 h-[2px] bg-transparent group-hover:bg-white/20 rounded-full transition-all duration-300" />
                     )}
                     {isActive && (
                       <motion.span
                         layoutId="nav-dot"
-                        className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 bg-green-neon rounded-full shadow-[0_0_8px_rgba(57,255,20,0.8)]"
+                        className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-8 h-[2px] bg-green-neon blur-[4px] opacity-70"
                       />
                     )}
                   </Link>
                 );
               })}
             </nav>
+
+            {/* Right Box: Actions: Search, Cart & Account */}
+            <div className="flex-[1.2] flex justify-end items-center gap-2 md:gap-4 relative z-[1000]">
+              {/* Search Button */}
+              {settings.search_enabled && (
+                <button
+                  onClick={() => setIsSearchOpen(true)}
+                  className="p-3 text-zinc-400 hover:text-green-neon transition-all duration-300 hover:bg-white/[0.04] rounded-xl border border-transparent hover:border-white/[0.08]"
+                  aria-label="Rechercher"
+                >
+                  <Search className="h-5 w-5" />
+                </button>
+              )}
+
+              {/* Cart button */}
+              <button
+                onClick={openSidebar}
+                className="group relative p-3 text-zinc-400 hover:text-green-neon transition-all duration-300 hover:bg-white/[0.04] rounded-xl border border-transparent hover:border-white/[0.08]"
+                aria-label="Ouvrir le panier"
+              >
+                <ShoppingCart className="h-5 w-5 transition-transform duration-300 group-hover:scale-110" />
+                {itemCount > 0 && (
+                  <span className="absolute -top-1 -right-1 bg-green-neon text-black text-[10px] font-bold rounded-full w-4.5 h-4.5 flex items-center justify-center shadow-[0_0_12px_rgba(57,255,20,0.5)]">
+                    {itemCount > 99 ? "99+" : itemCount}
+                  </span>
+                )}
+              </button>
+
+              {/* Loyalty Points (Desktop) */}
+              {user && profile && (
+                <Link
+                  to="/compte"
+                  className="hidden lg:flex items-center gap-2.5 px-3.5 py-1.5 bg-white/[0.04] border border-white/[0.08] rounded-full hover:border-green-neon/30 hover:bg-white/[0.06] transition-all duration-300 group"
+                >
+                  <div className="w-5 h-5 rounded-full bg-amber-400/10 flex items-center justify-center group-hover:bg-amber-400/20 transition-colors">
+                    <ShoppingBag className="h-2.5 w-2.5 text-amber-400" />
+                  </div>
+                  <div className="flex flex-col">
+                    <span className="text-[8px] text-zinc-500 uppercase font-black leading-none tracking-tighter">Points</span>
+                    <span className="text-xs font-black text-white leading-none mt-0.5 group-hover:text-green-neon transition-colors">
+                      {profile.loyalty_points ?? 0}
+                    </span>
+                  </div>
+                </Link>
+              )}
+
+              {/* Account (Desktop) */}
+              {user ? (
+                <div className="relative hidden md:block">
+                  <button
+                    onClick={() => setIsAccountMenuOpen(!isAccountMenuOpen)}
+                    className={`flex items-center gap-2.5 p-1.5 pr-4 rounded-full border transition-all duration-300 ${isAccountMenuOpen
+                      ? "bg-green-neon border-green-neon text-black"
+                      : "bg-white/[0.04] border-white/[0.08] text-zinc-300 hover:border-green-neon/40 hover:text-white shadow-lg"
+                      }`}
+                  >
+                    <div className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors ${isAccountMenuOpen ? "bg-black/20" : "bg-white/[0.08]"
+                      }`}>
+                      <User className="h-4 w-4" />
+                    </div>
+                    <span className="text-[10px] font-bold uppercase tracking-widest hidden lg:inline">
+                      {profile?.full_name?.split(" ")[0] ?? "Profil"}
+                    </span>
+                  </button>
+
+                  <AnimatePresence>
+                    {isAccountMenuOpen && (
+                      <motion.div
+                        initial={{ opacity: 0, y: 12, scale: 0.95 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        exit={{ opacity: 0, y: 12, scale: 0.95 }}
+                        className="absolute right-0 top-full mt-4 w-56 bg-zinc-900/95 backdrop-blur-2xl border border-white/[0.08] rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] overflow-hidden z-[1002] p-2"
+                      >
+                        <Link
+                          to="/compte"
+                          className="flex items-center gap-3 px-4 py-3 text-xs font-semibold text-zinc-400 hover:bg-white/[0.04] hover:text-white rounded-xl transition-all"
+                        >
+                          <User className="h-4 w-4" />
+                          Tableau de bord
+                        </Link>
+                        <Link
+                          to="/compte/commandes"
+                          className="flex items-center gap-3 px-4 py-3 text-xs font-semibold text-zinc-400 hover:bg-white/[0.04] hover:text-white rounded-xl transition-all"
+                        >
+                          <Clock className="h-4 w-4" />
+                          Historique
+                        </Link>
+                        <button
+                          onClick={() => {
+                            setIsLoyaltyModalOpen(true);
+                            setIsAccountMenuOpen(false);
+                          }}
+                          className="w-full flex items-center gap-3 px-4 py-3 text-xs font-semibold text-zinc-400 hover:bg-white/[0.04] hover:text-white rounded-xl transition-all"
+                        >
+                          <QrCode className="h-4 w-4 text-amber-400" />
+                          Ma Carte Fidélité
+                        </button>
+                        {profile?.is_admin && (
+                          <Link
+                            to="/admin"
+                            className="flex items-center gap-3 px-4 py-3 text-xs font-bold text-green-neon hover:bg-green-neon/10 rounded-xl transition-all"
+                          >
+                            <ShieldCheck className="h-4 w-4" />
+                            Administration
+                          </Link>
+                        )}
+                        <div className="h-px bg-white/[0.06] my-2 mx-4" />
+                        <button
+                          onClick={signOut}
+                          className="w-full flex items-center gap-3 px-4 py-3 text-xs font-bold text-red-400 hover:bg-red-400/10 rounded-xl transition-all"
+                        >
+                          <LogOut className="h-4 w-4" />
+                          Déconnexion
+                        </button>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              ) : (
+                <Link
+                  to="/connexion"
+                  className="hidden md:flex items-center gap-3 px-6 py-2.5 bg-white/[0.04] border border-white/[0.08] hover:bg-white/10 hover:border-green-neon/20 text-white rounded-full transition-all duration-300 group"
+                >
+                  <User className="h-3.5 w-3.5 text-zinc-500 group-hover:text-green-neon transition-colors" />
+                  <span className="text-[10px] font-bold uppercase tracking-widest">Connexion</span>
+                </Link>
+              )}
+            </div>
           </div>
         </div>
 
