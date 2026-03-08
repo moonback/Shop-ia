@@ -160,7 +160,7 @@ export function useShopiaAssistantQuiz({
             setAromaSelection([]);
             addBotMessage({
                 type: 'aroma',
-                text: '🍎 En tant que gourmet, affinez votre profil ! Sélectionnez vos arômes et saveurs préférés (optionnel) :',
+                text: '🛍️ Pour personnaliser vos recommandations, affinez votre profil ! Sélectionnez vos critères préférés (optionnel) :',
             });
             return;
         }

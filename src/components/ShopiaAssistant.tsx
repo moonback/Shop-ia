@@ -166,7 +166,7 @@ export default function ShopiaAssistant() {
             const last = pastProducts[0];
             greeting = `Content de te revoir${userName ? `, ${userName}` : ''} ! 👋 La dernière fois tu avais commandé **${last.product_name}** — tu l'as apprécié ? Je suis là pour te trouver quelque chose d'encore mieux.`;
         } else {
-            greeting = `Bienvenue${userName ? `, ${userName}` : ''} ! 🍎 Je suis Assistant, votre conseiller culinaire chez Shop-ia. Prêt à découvrir votre sélection gourmande ?`;
+            greeting = `Bienvenue${userName ? `, ${userName}` : ''} ! 👋 Je suis Assistant, votre guide d'achat chez Shop-ia. Prêt à découvrir notre sélection spécialement pensée pour vous ?`;
         }
 
         // Push greeting first
@@ -265,8 +265,8 @@ export default function ShopiaAssistant() {
 
     const handleShare = async () => {
         const shareData = {
-            title: 'Shop-ia — Mon diagnostic Gourmand',
-            text: 'Je viens de faire mon diagnostic alimentaire avec Assistant IA chez Shop-ia ! Découvrez ma sélection gourmande ici :',
+            title: 'Shop-ia — Mon profil d\'achat',
+            text: 'Je viens d\'utiliser le guide d\'achat IA de Shop-ia ! Découvrez ma sélection sur-mesure ici :',
             url: window.location.origin,
         };
 
@@ -423,7 +423,7 @@ export default function ShopiaAssistant() {
                                             <p className="text-xs sm:text-sm text-zinc-500 font-medium mt-0.5">
                                                 {memory.isLoggedIn && memory.userName
                                                     ? `Session active · Bonjour, ${memory.userName}`
-                                                    : 'Conseiller culinaire & gastronomique'}
+                                                    : 'Guide d\'achat complet & personnalisé'}
                                             </p>
                                         </div>
                                     </div>
@@ -545,7 +545,7 @@ export default function ShopiaAssistant() {
                                                                     </span>
                                                                 </div>
                                                                 <p className="text-sm font-bold text-white line-clamp-2 group-hover:text-green-neon transition-colors leading-relaxed">
-                                                                    {session.title || "Conseil Culinaire personnalisé"}
+                                                                    {session.title || "Guide d'achat personnalisé"}
                                                                 </p>
                                                                 <div className="mt-3 flex items-center gap-4 text-[11px] text-zinc-500 font-medium">
                                                                     <span className="flex items-center gap-1.5 bg-white/5 px-2 py-1 rounded-md">
