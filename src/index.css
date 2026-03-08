@@ -8,9 +8,9 @@
     serif;
   --font-script: "Dancing Script", cursive;
 
-  --color-green-neon: #39ff14;
-  --color-green-dark: #0a2e15;
-  --color-green-primary: #15803d;
+  --color-green-neon: #fbbf24;
+  --color-green-dark: #451a03;
+  --color-green-primary: #d97706;
 }
 
 @layer base {
@@ -34,7 +34,7 @@
 
   /* Accessibilité : focus visible global */
   *:focus-visible {
-    outline: 2px solid rgba(57, 255, 20, 0.6);
+    outline: 2px solid rgba(251, 191, 36, 0.6);
     outline-offset: 2px;
     border-radius: 8px;
   }
@@ -78,28 +78,28 @@
   /* Text glow — prix, titres featured */
   .glow-green {
     text-shadow:
-      0 0 8px rgba(57, 255, 20, 0.6),
-      0 0 24px rgba(57, 255, 20, 0.25);
+      0 0 8px rgba(251, 191, 36, 0.6),
+      0 0 24px rgba(251, 191, 36, 0.25);
   }
 
   /* Box glow — boutons primaires, badges actifs */
   .glow-box-green {
     box-shadow:
-      0 0 12px rgba(57, 255, 20, 0.35),
-      0 0 24px rgba(57, 255, 20, 0.15),
-      inset 0 0 0 1px rgba(57, 255, 20, 0.12);
+      0 0 12px rgba(251, 191, 36, 0.35),
+      0 0 24px rgba(251, 191, 36, 0.15),
+      inset 0 0 0 1px rgba(251, 191, 36, 0.12);
   }
 
   /* Box glow subtil — bordures, hover secondaires */
   .glow-box-green-sm {
     box-shadow:
-      0 0 8px rgba(57, 255, 20, 0.2),
-      0 0 16px rgba(57, 255, 20, 0.08);
+      0 0 8px rgba(251, 191, 36, 0.2),
+      0 0 16px rgba(251, 191, 36, 0.08);
   }
 
   /* Logo glow */
   .glow-logo {
-    filter: drop-shadow(0 0 8px rgba(57, 255, 20, 0.5)) drop-shadow(0 0 20px rgba(57, 255, 20, 0.2));
+    filter: drop-shadow(0 0 8px rgba(251, 191, 36, 0.5)) drop-shadow(0 0 20px rgba(251, 191, 36, 0.2));
   }
 
   /* Pulsation — badges "featured", indicateurs live */
@@ -112,15 +112,15 @@
     0%,
     100% {
       box-shadow:
-        0 0 6px rgba(57, 255, 20, 0.3),
-        0 0 14px rgba(57, 255, 20, 0.1);
+        0 0 6px rgba(251, 191, 36, 0.3),
+        0 0 14px rgba(251, 191, 36, 0.1);
     }
 
     50% {
       box-shadow:
-        0 0 14px rgba(57, 255, 20, 0.6),
-        0 0 30px rgba(57, 255, 20, 0.25),
-        0 0 50px rgba(57, 255, 20, 0.08);
+        0 0 14px rgba(251, 191, 36, 0.6),
+        0 0 30px rgba(251, 191, 36, 0.25),
+        0 0 50px rgba(251, 191, 36, 0.08);
     }
   }
 
@@ -138,14 +138,14 @@
     0%,
     100% {
       box-shadow:
-        0 0 20px rgba(57, 255, 20, 0.15),
+        0 0 20px rgba(251, 191, 36, 0.15),
         0 8px 32px rgba(0, 0, 0, 0.5);
     }
 
     50% {
       box-shadow:
-        0 0 28px rgba(57, 255, 20, 0.4),
-        0 0 50px rgba(57, 255, 20, 0.15),
+        0 0 28px rgba(251, 191, 36, 0.4),
+        0 0 50px rgba(251, 191, 36, 0.15),
         0 8px 32px rgba(0, 0, 0, 0.5);
     }
   }
