@@ -69,8 +69,8 @@ interface AdminPOSTabProps {
 }
 
 function AdminPOSTab({
-    storeName = 'Shop-ia CBD',
-    storeAddress = '123 Rue de la Nature, 75000 Paris',
+    storeName = 'Shop-ia Gourmet',
+    storeAddress = '123 Avenue de la Gastronomie, 75000 Paris',
     storePhone = '01 23 45 67 89',
     onExit,
 }: AdminPOSTabProps) {

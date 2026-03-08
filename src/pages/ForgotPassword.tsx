@@ -33,8 +33,8 @@ export default function ForgotPassword() {
   return (
     <>
       <SEO
-        title="Mot de passe oublié — Shop-ia CBD"
-        description="Recevez un lien de réinitialisation de mot de passe pour votre compte Shop-ia CBD."
+        title="Mot de passe oublié — Shop-ia Gourmet"
+        description="Recevez un lien de réinitialisation de mot de passe pour votre compte Shop-ia Gourmet."
       />
 
       <div className="min-h-[calc(100vh-10rem)] bg-zinc-950 flex items-center justify-center px-4 py-16">

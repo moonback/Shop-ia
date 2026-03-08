@@ -2,7 +2,7 @@ import { motion } from 'motion/react';
 import { Leaf } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 
-type MessageType = 'standard' | 'restock' | 'skip-quiz' | 'terpene';
+type MessageType = 'standard' | 'restock' | 'skip-quiz' | 'aroma';
 
 export interface ShopiaAssistantMessageProps {
     /** Who sent the message */

@@ -95,7 +95,7 @@ export default function POSReceiptModal({
                         </>
                     )}
                     <div className="divider" />
-                    <div className="center italic">♻ Shop-ia CBD</div>
+                    <div className="center italic">♻ Shop-ia Gourmet</div>
                     {sale.loyaltyGained !== undefined && sale.loyaltyGained > 0 && (
                         <>
                             <div className="divider" />

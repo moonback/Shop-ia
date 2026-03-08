@@ -57,7 +57,7 @@ class ErrorBoundary extends Component<Props, State> {
                         </div>
 
                         <h2 className="text-3xl font-black text-white mb-6 tracking-tight">
-                            Oops ! Un grain de CBD s'est glissé dans la machine. 🌿🔧
+                            Oops ! Un grain de poivre s'est glissé dans la recette. 🧂🔧
                         </h2>
 
                         <p className="text-zinc-400 mb-10 leading-relaxed max-w-md mx-auto">

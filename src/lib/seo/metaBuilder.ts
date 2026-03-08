@@ -63,7 +63,7 @@ export function buildSEO(data: Partial<SEOData> & Pick<SEOData, 'title' | 'descr
     topic: data.topic,
     semanticKeywords: Array.isArray(data.semanticKeywords) ? data.semanticKeywords : data.semanticKeywords ? [data.semanticKeywords] : undefined,
     aiSummary: data.aiSummary ?? data.description,
-    aiEntity: data.aiEntity ?? 'Épicerie, Alimentation, Shop-ia',
+    aiEntity: data.aiEntity ?? 'Épicerie',
     og: {
       title: data.og?.title ?? data.title,
       description: data.og?.description ?? data.description,

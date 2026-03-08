@@ -87,7 +87,7 @@ export const useCartStore = create<CartStore>()(
       total: () => get().subtotal() + get().deliveryFee(),
     }),
     {
-      name: 'greenMood-cart',
+      name: 'shopia-cart',
       partialize: (state) => ({ items: state.items, deliveryType: state.deliveryType }),
     }
   )

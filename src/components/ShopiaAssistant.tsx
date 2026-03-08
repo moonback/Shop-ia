@@ -423,7 +423,7 @@ export default function ShopiaAssistant() {
                                             <p className="text-xs sm:text-sm text-zinc-500 font-medium mt-0.5">
                                                 {memory.isLoggedIn && memory.userName
                                                     ? `Session active · Bonjour, ${memory.userName}`
-                                                    : 'Conseiller spécialisé en cannabinoïdes'}
+                                                    : 'Conseiller culinaire & gastronomique'}
                                             </p>
                                         </div>
                                     </div>
@@ -545,7 +545,7 @@ export default function ShopiaAssistant() {
                                                                     </span>
                                                                 </div>
                                                                 <p className="text-sm font-bold text-white line-clamp-2 group-hover:text-green-neon transition-colors leading-relaxed">
-                                                                    {session.title || "Conseil Wellness personnalisé"}
+                                                                    {session.title || "Conseil Culinaire personnalisé"}
                                                                 </p>
                                                                 <div className="mt-3 flex items-center gap-4 text-[11px] text-zinc-500 font-medium">
                                                                     <span className="flex items-center gap-1.5 bg-white/5 px-2 py-1 rounded-md">
@@ -722,9 +722,9 @@ export default function ShopiaAssistant() {
                                                                     className="w-16 h-16 rounded-2xl object-cover bg-zinc-900 shadow-md transition-transform group-hover:scale-105"
                                                                     alt={product.name}
                                                                 />
-                                                                {product.cbd_percentage && (
-                                                                    <span className="absolute -top-1 -left-1 bg-green-neon text-black text-[9px] font-black px-1.5 py-0.5 rounded-lg shadow-sm">
-                                                                        {product.cbd_percentage}%
+                                                                {product.nutriscore && (
+                                                                    <span className="absolute -top-1 -left-1 bg-amber-500 text-black text-[9px] font-black px-1.5 py-0.5 rounded-lg shadow-sm">
+                                                                        {product.nutriscore}
                                                                     </span>
                                                                 )}
                                                             </div>

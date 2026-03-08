@@ -390,7 +390,7 @@ export default function ProductDetail() {
                 {(product.attributes?.benefits || []).length > 0 && (
                   <div className="space-y-4">
                     <p className="text-[10px] text-zinc-500 font-black uppercase tracking-[0.2em] flex items-center gap-2">
-                      <Sparkles className="w-3 h-3 text-green-neon" /> Effets
+                      <Sparkles className="w-3 h-3 text-green-neon" /> Bienfaits
                     </p>
                     <div className="flex flex-wrap gap-2">
                       {product.attributes.benefits!.map(b => (
@@ -530,7 +530,7 @@ export default function ProductDetail() {
                 </div>
               ) : (
                 <div className="py-6 border-2 border-dashed border-white/[0.06] rounded-2xl text-center">
-                  <p className="text-xs text-zinc-500 font-medium uppercase tracking-wider">ÉDITION TEMPORAIREMENT ÉPUISÉE</p>
+                  <p className="text-xs text-zinc-500 font-medium uppercase tracking-wider">PRODUIT TEMPORAIREMENT ÉPUISÉ</p>
                 </div>
               )}
             </div>
@@ -780,8 +780,8 @@ export default function ProductDetail() {
             <div className="py-24 text-center space-y-6 bg-white/[0.01] border border-dashed border-white/[0.06] rounded-2xl">
               <MessageSquare className="w-16 h-16 mx-auto text-zinc-800" />
               <div className="space-y-2">
-                <p className="font-serif text-2xl font-bold text-white italic">Silence Éloquent.</p>
-                <p className="text-zinc-600 text-sm max-w-xs mx-auto font-serif">Aucune impression n'a encore été consignée pour cette édition.</p>
+                <p className="font-serif text-2xl font-bold text-white italic">Premier à donner son avis ?</p>
+                <p className="text-zinc-600 text-sm max-w-xs mx-auto font-serif">Soyez le premier à partager votre expérience culinaire.</p>
               </div>
             </div>
           ) : (

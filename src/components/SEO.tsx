@@ -58,12 +58,12 @@ export default function SEO(props: SEOProps) {
     upsertMeta('meta[name="robots"]', { name: 'robots', content: seo.robots ?? '' });
     upsertMeta('meta[name="author"]', { name: 'author', content: seo.author ?? SEO_SITE.author });
     upsertMeta('meta[name="language"]', { name: 'language', content: seo.language ?? SEO_SITE.language });
-    upsertMeta('meta[name="topic"]', { name: 'topic', content: seo.topic ?? 'CBD, bien-être, cannabidiol' });
+    upsertMeta('meta[name="topic"]', { name: 'topic', content: seo.topic ?? 'Gastronomie, Épicerie Fine, Produits Locaux' });
     upsertMeta('meta[name="semantic-keywords"]', { name: 'semantic-keywords', content: semanticKeywords });
 
     upsertMeta('meta[name="ai-content-type"]', { name: 'ai-content-type', content: props.product ? 'product' : props.article ? 'article' : 'webpage' });
     upsertMeta('meta[name="ai-summary"]', { name: 'ai-summary', content: seo.aiSummary ?? seo.description });
-    upsertMeta('meta[name="ai-entity"]', { name: 'ai-entity', content: seo.aiEntity ?? 'CBD' });
+    upsertMeta('meta[name="ai-entity"]', { name: 'ai-entity', content: seo.aiEntity ?? 'Épicerie' });
 
     upsertMeta('meta[property="og:title"]', { property: 'og:title', content: seo.og.title });
     upsertMeta('meta[property="og:description"]', { property: 'og:description', content: seo.og.description });

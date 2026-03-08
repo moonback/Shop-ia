@@ -19,7 +19,6 @@ import {
 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
-// import AgeGate from "./AgeGate"; // Removed for Shop-ia gourmet domain
 import CartSidebar from "./CartSidebar";
 import ShopiaAssistant from "./ShopiaAssistant";
 import LoyaltyCard from "./LoyaltyCard";
@@ -189,9 +188,6 @@ export default function Layout() {
 
   return (
     <div className="min-h-screen flex flex-col bg-zinc-950 text-zinc-100 font-sans">
-      {/* Age Verification Popup removed for Shop-ia */}
-      {/* <AgeGate /> */}
-
       {/* Cart Sidebar */}
       <CartSidebar />
 

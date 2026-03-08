@@ -69,17 +69,17 @@ export default function AdminMarketingTab({ customers, products, onRefresh }: Ad
                 big_spenders: "Gros Acheteurs (VIP)"
             }[selectedSegment];
 
-            const featuredProducts = products.filter(p => p.is_featured).slice(0, 3).map(p => p.name).join(", ") || "Fleurs CBD Premium, Huiles Relaxantes, Infusions Bio";
+            const featuredProducts = products.filter(p => p.is_featured).slice(0, 3).map(p => p.name).join(", ") || "Huile d'Olive Extra, Fromage de Chèvre Artisanal, Pâtes au Bronze";
 
-            const prompt = `Génie Marketing IA pour Shop-ia CBD.
+            const prompt = `Génie Marketing IA pour Shop-ia Gourmet.
             Cible : ${segmentLabel} (${segmentedCustomers.length} personnes).
             Catalogue star : ${featuredProducts}.
-            Ton : Luxueux, apaisant, premium, expert en CBD, exclusif.
+            Ton : Luxueux, inspirant, premium, expert en gastronomie, exclusif.
             Objectif : Réengagement et vente.
             
             Génère un objet d'email captivant et un corps de texte élégant invitant le client à redécouvrir la boutique. Inclut 3 recommandations de produits du catalogue star.
             Le corps doit être court, percutant et stylé.
-            Génère également un code promo exclusif (ex: GREENMOON20).
+            Génère également un code promo exclusif (ex: GOURMET20).
 
             RÉPONDS UNIQUEMENT AU FORMAT JSON SUIVANT :
             {
@@ -370,7 +370,7 @@ export default function AdminMarketingTab({ customers, products, onRefresh }: Ad
                                         </div>
 
                                         <div className="pt-12 text-center space-y-2 pb-10">
-                                            <p className="text-[10px] text-zinc-600 font-black uppercase tracking-[0.3em]">Shop-ia • L'excellence Naturelle</p>
+                                            <p className="text-[10px] text-zinc-600 font-black uppercase tracking-[0.3em]">Shop-ia • L'Excellence Gastronomique</p>
                                             <p className="text-[9px] text-zinc-700">Vous recevez cet email car vous êtes un client privilégié de Shop-ia.</p>
                                         </div>
                                     </div>

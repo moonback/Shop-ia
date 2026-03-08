@@ -88,7 +88,7 @@ export default function Login() {
   return (
     <>
       <SEO
-        title={mode === 'login' ? 'Connexion — Shop-ia CBD' : 'Créer un compte — Shop-ia CBD'}
+        title={mode === 'login' ? 'Connexion — Shop-ia Gourmet' : 'Créer un compte — Shop-ia Gourmet'}
         description="Connectez-vous ou créez un compte pour accéder à votre historique de commandes et programme de fidélité."
       />
 
@@ -253,7 +253,7 @@ export default function Login() {
               <Link to="/mentions-legales" className="text-green-neon hover:underline">
                 conditions générales
               </Link>
-              . Vous devez avoir 18 ans ou plus.
+              .
             </p>
           </div>
         </motion.div>

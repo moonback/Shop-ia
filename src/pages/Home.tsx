@@ -279,16 +279,16 @@ export default function Home() {
               <div className="space-y-8 mt-6">
                 {[
                   {
-                    t: "Favoriser un sommeil réparateur",
-                    d: "Le CBN est reconnu pour ses propriétés apaisantes, aidant à trouver le sommeil naturellement et à profiter de nuits plus reposantes."
+                    t: "Savourer l'authenticité",
+                    d: "Des produits sélectionnés pour leur goût véritable, loin des standards industriels, pour une expérience gustative intense."
                   },
                   {
-                    t: "Réduire le stress et l'anxiété",
-                    d: "Une solution douce et naturelle pour relâcher la pression quotidienne et retrouver une sensation de calme intérieur."
+                    t: "Optimiser votre nutrition",
+                    d: "Une approche axée sur la qualité nutritionnelle pour soutenir votre vitalité et votre santé au quotidien."
                   },
                   {
-                    t: "Améliorer la détente musculaire",
-                    d: "Particulièrement apprécié après l'effort ou une longue journée pour soulager les tensions et soutenir le bien-être général."
+                    t: "Soutenir le local",
+                    d: "En choisissant Shop-ia, vous participez directement au maintien de l'agriculture de proximité et des savoir-faire artisanaux."
                   }
                 ].map((item, i) => (
                   <motion.div
@@ -321,10 +321,10 @@ export default function Home() {
             <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-8">
               <div className="max-w-2xl space-y-4">
                 <h2 className="text-4xl md:text-6xl font-serif font-bold text-white leading-tight">
-                  Les essentiels <span className="text-green-neon italic">du CBN</span>
+                  Les essentiels <span className="text-green-neon italic">du Terroir</span>
                 </h2>
                 <p className="text-zinc-400 text-lg md:text-xl font-light leading-relaxed">
-                  Explorez notre sélection complète de produits à base de CBN : chaque produit est conçu pour offrir qualité, pureté et efficacité optimale.
+                  Explorez notre sélection complète de produits d'exception : chaque produit est choisi pour offrir qualité, goût et apports nutritionnels optimaux.
                 </p>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-3 gap-x-4 mt-6 text-zinc-300">
                   <div className="flex items-center gap-2"><Utensils className="w-5 h-5 text-amber-400" /> Produits du terroir</div>
@@ -379,26 +379,26 @@ export default function Home() {
                 <span className="text-green-neon font-bold tracking-[0.3em] text-[11px] uppercase">L'art de vivre N10</span>
                 <h2 className="text-4xl md:text-6xl font-serif font-bold text-white leading-tight">
                   Le bien-être <br />
-                  <span className="text-green-neon italic font-light">naturel au quotidien.</span>
+                  <span className="text-green-neon italic font-light">par l'assiette.</span>
                 </h2>
                 <p className="text-lg md:text-xl text-zinc-400 leading-relaxed font-light">
-                  Prendre soin de soi est essentiel. Les cannabinoïdes naturels comme le CBN offrent une alternative douce pour retrouver équilibre et sérénité. Intégrez facilement le CBN dans votre routine.
+                  Prendre soin de soi commence par ce que l'on mange. Les produits naturels et frais offrent une solution durable pour retrouver équilibre et vitalité. Intégrez facilement le meilleur de la nature dans votre quotidien.
                 </p>
               </div>
 
               <div className="grid gap-6">
                 {[
                   {
-                    title: "Améliorer votre sommeil",
-                    desc: "Retrouvez des nuits paisibles et réparatrices grâce aux propriétés relaxantes du CBN."
+                    title: "Équilibrer vos repas",
+                    desc: "Retrouvez de l'énergie et de la légèreté grâce aux apports nutritionnels de nos produits frais."
                   },
                   {
-                    title: "Réduire les tensions",
-                    desc: "Soulagez le stress accumulé et favorisez un relâchement musculaire optimal."
+                    title: "Redécouvrir les saveurs",
+                    desc: "Éveillez vos sens avec des produits cueillis à maturité et préparés avec passion."
                   },
                   {
-                    title: "Favoriser la relaxation",
-                    desc: "Soutenez votre équilibre naturel et profitez de moments de calme tout au long de la journée."
+                    title: "Soutenir votre santé",
+                    desc: "Soutenez votre système immunitaire et profitez d'une alimentation saine tout au long de l'année."
                   }
                 ].map((item, i) => (
                   <motion.div
@@ -429,7 +429,7 @@ export default function Home() {
             >
               <img
                 src="/images/lifestyle-relax.png"
-                alt="Lifestyle Gastronomie"
+                alt="Gastronomie Shop-ia"
                 className="w-full h-full object-cover"
               />
               <div className="absolute inset-0 bg-gradient-to-tr from-green-neon/20 to-transparent mix-blend-overlay" />
@@ -456,10 +456,10 @@ export default function Home() {
                   </div>
                   <h2 className="text-4xl md:text-6xl font-serif font-bold text-white leading-tight">
                     Besoin de conseils <br />
-                    <span className="text-green-neon italic">personnalisés ?</span>
+                    <span className="text-green-neon italic">culinaires ?</span>
                   </h2>
                   <p className="text-lg md:text-xl text-zinc-400 font-light max-w-2xl mx-auto lg:mx-0">
-                    Vous ne savez pas quel produit choisir ? Notre équipe vous accompagne pour trouver le produit CBN le plus adapté à vos besoins : sommeil, détente ou bien-être quotidien. Obtenez des recommandations personnalisées.
+                    Vous ne savez pas quel produit choisir ? Notre équipe vous accompagne pour trouver les ingrédients les plus adaptés à vos envies : recettes, équilibre ou gourmandise. Obtenez des recommandations personnalisées.
                   </p>
                   <div className="pt-4 flex flex-wrap gap-5 justify-center lg:justify-start">
                     <button
@@ -504,8 +504,8 @@ export default function Home() {
                 </div>
                 <div className="flex-1 space-y-6">
                   <span className="inline-block px-4 py-1.5 bg-green-neon text-black text-[10px] font-bold uppercase tracking-widest rounded-full">Nouveau</span>
-                  <h3 className="text-3xl md:text-5xl font-serif font-bold text-white">L'huile N10 Full Spectrum</h3>
-                  <p className="text-xl text-zinc-400 font-light">Découvrez notre dernière innovation pour un bien-être optimal au quotidien.</p>
+                  <h3 className="text-3xl md:text-5xl font-serif font-bold text-white">L'huile d'olive Shop-ia</h3>
+                  <p className="text-xl text-zinc-400 font-light">Découvrez notre dernière sélection d'huile extra-vierge pour sublimer vos plats au quotidien.</p>
                   <div className="pt-4 flex items-center gap-3 text-green-neon font-bold uppercase tracking-[0.2em] text-xs">
                     Explorer l'innovation <ArrowRight className="w-5 h-5 group-hover:translate-x-2 transition-transform" />
                   </div>

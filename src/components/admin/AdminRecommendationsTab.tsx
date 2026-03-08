@@ -26,7 +26,7 @@ export default function AdminRecommendationsTab() {
     useEffect(() => {
         supabase
             .from('products')
-            .select('id, name, slug, image_url, price, category_id, is_bundle, is_active, is_available, is_featured, stock_quantity, cbd_percentage, thc_max, weight_grams, original_value, created_at')
+            .select('id, name, slug, image_url, price, category_id, is_bundle, is_active, is_available, is_featured, stock_quantity, nutriscore, weight_grams, original_value, created_at')
             .eq('is_active', true)
             .order('name')
             .then(({ data }) => {
@@ -39,7 +39,7 @@ export default function AdminRecommendationsTab() {
         setLoading(true);
         const { data } = await supabase
             .from('product_recommendations')
-            .select('*, recommended:products!recommended_id(id, name, slug, image_url, price, cbd_percentage, is_bundle, stock_quantity, is_available, is_active, is_featured, category_id, thc_max, weight_grams, original_value, created_at)')
+            .select('*, recommended:products!recommended_id(id, name, slug, image_url, price, nutriscore, is_bundle, stock_quantity, is_available, is_active, is_featured, category_id, weight_grams, original_value, created_at)')
             .eq('product_id', product.id)
             .order('sort_order');
         setRecommendations((data ?? []) as unknown as Recommendation[]);
@@ -56,7 +56,7 @@ export default function AdminRecommendationsTab() {
         const { data, error } = await supabase
             .from('product_recommendations')
             .insert({ product_id: selectedProduct.id, recommended_id: recommended.id, sort_order: maxOrder })
-            .select('*, recommended:products!recommended_id(id, name, slug, image_url, price, cbd_percentage, is_bundle, stock_quantity, is_available, is_active, is_featured, category_id, thc_max, weight_grams, original_value, created_at)')
+            .select('*, recommended:products!recommended_id(id, name, slug, image_url, price, nutriscore, is_bundle, stock_quantity, is_available, is_active, is_featured, category_id, weight_grams, original_value, created_at)')
             .single();
         setAddingId(null);
         if (!error && data) {
@@ -133,8 +133,8 @@ export default function AdminRecommendationsTab() {
                                 key={p.id}
                                 onClick={() => loadRecommendations(p)}
                                 className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-left transition-all ${selectedProduct?.id === p.id
-                                        ? 'bg-green-neon/10 border border-green-neon/25 text-white'
-                                        : 'hover:bg-zinc-800/80 text-zinc-300 border border-transparent'
+                                    ? 'bg-green-neon/10 border border-green-neon/25 text-white'
+                                    : 'hover:bg-zinc-800/80 text-zinc-300 border border-transparent'
                                     }`}
                             >
                                 {p.image_url && (

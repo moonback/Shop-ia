@@ -111,7 +111,7 @@ export default function ReviewCarousel() {
                             transition={{ delay: 0.1 }}
                             className="text-zinc-400 text-lg font-light leading-relaxed max-w-xl"
                         >
-                            Des centaines de clients font confiance à nos produits CBN pour améliorer leur bien-être. Découvrez leurs expériences et pourquoi ils recommandent notre boutique.
+                            Des dizaines de clients font confiance à nos produits Gourmet pour améliorer leur quotidien. Découvrez leurs expériences et pourquoi ils recommandent notre boutique.
                         </motion.p>
                     </div>
 
@@ -239,7 +239,7 @@ export default function ReviewCarousel() {
                     to="/catalogue"
                     className="group inline-flex items-center gap-3 px-8 py-3 rounded-full border border-white/10 text-zinc-500 hover:text-white hover:border-green-neon/30 transition-all font-bold uppercase tracking-[0.2em] text-[10px]"
                 >
-                    Découvrir toutes les molécules
+                    Découvrir toute la sélection
                     <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                 </Link>
             </div>

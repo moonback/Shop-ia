@@ -25,7 +25,7 @@ export default function OrderConfirmation() {
 
   return (
     <>
-      <SEO title="Commande confirmée — Shop-ia CBD" description="Votre commande a été confirmée." />
+      <SEO title="Commande confirmée — Shop-ia Gourmet" description="Votre commande a été confirmée." />
 
       <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center">
         <motion.div
@@ -107,7 +107,7 @@ export default function OrderConfirmation() {
                   <Clock className="w-4 h-4 text-green-neon" />
                   Retrait en boutique
                 </div>
-                123 Rue de la Nature, 75000 Paris
+                123 Avenue de la Gastronomie, 75000 Paris
                 <br />
                 Lun–Sam 10h00–19h30 | Tél : 01 23 45 67 89
               </div>
