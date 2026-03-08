@@ -50,10 +50,15 @@ CREATE TABLE IF NOT EXISTS products (
   category_id     uuid NOT NULL REFERENCES categories(id),
   slug            text UNIQUE NOT NULL,
   name            text NOT NULL,
+  product_type    text NOT NULL DEFAULT 'standard',
+  brand           text,
   description     text,
   nutriscore      text,
   weight_info     text,
   weight_grams    numeric(8,2),
+  unit_label      text NOT NULL DEFAULT 'unit',
+  min_order_quantity int NOT NULL DEFAULT 1,
+  max_order_quantity int,
   price           numeric(10,2) NOT NULL,
   image_url       text,
   stock_quantity  int NOT NULL DEFAULT 0,
@@ -66,7 +71,9 @@ CREATE TABLE IF NOT EXISTS products (
   attributes      jsonb DEFAULT '{}'::jsonb,
   sku             text UNIQUE,
   embedding       vector(3072),
-  created_at      timestamptz NOT NULL DEFAULT now()
+  created_at      timestamptz NOT NULL DEFAULT now(),
+  CHECK (min_order_quantity >= 1),
+  CHECK (max_order_quantity IS NULL OR max_order_quantity >= min_order_quantity)
 );
 
 -- ─── Profiles ──────────────────────────────────────────────────────────────
