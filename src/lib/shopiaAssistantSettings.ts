@@ -75,7 +75,7 @@ export const SHOPIA_ASSISTANT_DEFAULT_QUIZ: QuizStep[] = [
 export const SHOPIA_ASSISTANT_DEFAULTS: ShopiaAssistantSettings = {
     enabled: true,
     ai_enabled: true,
-    ai_model: 'google/gemini-2.0-flash-lite-preview-02-05:free',
+    ai_model: 'qwen/qwen3.5-flash-02-23',
     ai_temperature: 0.7,
     ai_max_tokens: 1500,
     recommendations_count: 3,

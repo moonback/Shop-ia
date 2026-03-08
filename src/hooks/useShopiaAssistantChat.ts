@@ -116,7 +116,7 @@ export function useShopiaAssistantChat({
             messagesForAI.push({ role: 'user', content: text });
         }
 
-        const modelToUse = settings.ai_model || 'google/gemini-2.0-flash-lite-preview-02-05:free';
+        const modelToUse = settings.ai_model || 'qwen/qwen3.5-flash-02-23';
         console.log('[ShopiaAssistant Chat] Sending messages to:', modelToUse);
 
         const tools = [{

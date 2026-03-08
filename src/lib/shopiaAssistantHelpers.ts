@@ -130,7 +130,7 @@ export async function callAI(
         messages.push({ role: 'user', content: "Basé sur mes réponses et notre échange, donne-moi tes conseils finaux pour ma sélection gourmande." });
     }
 
-    const modelToUse = settings.ai_model || 'google/gemini-2.0-flash-lite-preview-02-05:free';
+    const modelToUse = settings.ai_model || 'qwen/qwen3.5-flash-02-23';
 
     try {
         const res = await fetch(
