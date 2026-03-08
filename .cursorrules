@@ -1,58 +1,39 @@
 # Project Context
-- Utilise ce dépôt comme une SPA e-commerce React connectée à Supabase.
-- Considère que le cœur métier est côté frontend + SQL Supabase (RLS, RPC, triggers).
-- Documente tout changement impactant produit, DB, API et sécurité.
+# Shop-ia est une plateforme e-commerce premium et système POS pour boutique physique. 
+# Orientée intégration IA (GenAI/Supabase Vectors), performances client lourdes et esthétique moderne/sombre "Glassmorphism".
 
-# Tech Stack
-- Use React 19 + TypeScript pour toute nouvelle UI.
-- Use Vite scripts existants (`dev`, `build`, `preview`) sans créer de tooling parallèle non justifié.
-- Use `@supabase/supabase-js` pour tout accès DB/Auth/Storage.
-- Use Zustand pour l'état global partagé.
-- Use Tailwind CSS utilitaire avant d'ajouter du CSS custom.
+# Tech Stack  
+# TypeScript, React 19, Tailwind CSS 4, Zustand, Supabase (PostgreSQL), Vite.
 
 # Code Style & Conventions
-- Use composants fonctionnels uniquement.
-- Use TypeScript strict; évite `any` et types implicites.
-- Use `PascalCase` pour composants, `camelCase` pour fonctions/variables.
-- Always centralise types métier dans `src/lib/types.ts` quand pertinent.
-- Never ajoute de `try/catch` autour des imports.
+- Use strict TypeScript typing: avoid `any` completely, prefer `unknown` if needed.
+- Always use explicit imports from `react` and `lucide-react`.
+- Variables in `camelCase`, components in `PascalCase`.
+- Interfaces and Types must be defined in `src/lib/types.ts` whenever shared.
 
 # Architecture Patterns
-- Keep le routage centralisé dans `src/App.tsx`.
-- Keep les pages dans `src/pages`, composants partagés dans `src/components`.
-- Keep la logique métier réutilisable dans `src/lib` et hooks dans `src/hooks`.
-- Use RPC SQL pour les opérations proches de la donnée (stocks, promo, recommandations).
+- Use "Zustand" for global state. Do not introduce Redux or Context API for state management.
+- Always interact with the database using the official Supabase JS Client exported from `src/lib/supabase.ts`.
+- Treat all UI state (modals, dropdowns) with local `useState` or standalone Zustand slice.
 
 # Best Practices
-- Always vérifie les politiques RLS avant d'introduire un nouveau flux data.
-- Always protège les routes sensibles via `ProtectedRoute` ou `AdminRoute`.
-- Always gère les erreurs Supabase/OpenRouter et affiche un feedback utilisateur.
-- Always valide qu'aucun secret serveur n'est exposé au client.
-- Use lazy loading pour les nouvelles pages lourdes.
+- Always clean up event listeners and `setTimeout` inside `useEffect` with return callbacks.
+- Use `lucide-react` for all icons. Avoid importing SVGs directly unless it is a custom primary logo.
+- Extract complex utility logic into `src/lib/Helpers`. Let Components be strictly UI and binding focused.
 
 # Common Workflows
-- Pour une feature UI: crée composant -> branche la page -> connecte store/hooks -> teste build.
-- Pour une évolution DB: modifie SQL -> documente dans `DB_SCHEMA.md` -> mets à jour `API_DOCS.md`.
-- Pour un endpoint/RPC ajouté: documente paramètres, auth, exemples succès/erreur.
-- Pour une PR: respecte Conventional Commits et fournis un résumé des impacts.
+- When adding a new Tailwind class for a color, ensure it relies on the `--color-xyz` vars defined in `index.css`.
+- When modifying database schemas, you must mention that `init_database.sql` might need an update to reflect the change.
 
 # Preferred Dependencies
-- Use `lucide-react` pour icônes.
-- Use `recharts` pour visualisations admin.
-- Use `papaparse` pour import CSV.
-- Use `react-markdown` pour rendu markdown assistant.
-- Préfère les dépendances déjà présentes avant d'en ajouter de nouvelles.
+- For animations: `motion` (formerly framer-motion) ONLY.
+- For routing: `react-router-dom` hooks (`useNavigate`, `useLocation`).
 
 # Anti-patterns to Avoid
-- Never contourne RLS côté client.
-- Never écris une logique critique uniquement côté UI si elle doit être fiable côté DB.
-- Never introduis Redux ou un second state manager global.
-- Never duplique les appels réseau identiques sans cache ou mutualisation.
-- Never invente des fonctionnalités non présentes quand tu rédiges la documentation.
+- Never fetch data directly inside a `.tsx` view logic without a `useEffect` or dedicated hook.
+- Never hardcode `.env` variables. Use `import.meta.env.VITE_XYZ`.
+- Never create generic `div` soup. Prefer semantic HTML wrappers (`header`, `nav`, `main`, `article`).
 
 # Documentation Rules
-- Always mets à jour `README.md` si setup, stack ou commandes changent.
-- Always mets à jour `ARCHITECTURE.md` si flux, services ou couches changent.
-- Always mets à jour `API_DOCS.md` pour tout nouveau call externe, table REST ou RPC.
-- Always mets à jour `ROADMAP.md` lors d'une livraison significative.
-- Always garde une documentation factuelle, vérifiable et alignée au code.
+- If a function is complex, use JSDoc `/** ... */` annotations to explain parameters and return values.
+- Keep comments in French or English consistently, but technical concepts should be clearly stated.
