@@ -304,6 +304,7 @@ export default function ProductCard({ product, layout = 'grid' }: ProductCardPro
               {(product.price * selectedQuantity).toFixed(2)}<span className="text-green-neon ml-1">€</span>
               {!isPerUnit && <span className="text-[9px] text-zinc-500 font-sans uppercase tracking-widest ml-1">/ {selectedQuantity}g</span>}
             </span>
+            
 
             {product.is_bundle && product.original_value && product.original_value > product.price && (
               <div className="flex items-center gap-2">
@@ -315,8 +316,11 @@ export default function ProductCard({ product, layout = 'grid' }: ProductCardPro
                 </span>
               </div>
             )}
+            
           </div>
-
+          <span className="text-xs text-red-500 line-through">
+            {product.original_value.toFixed(2)}€
+          </span>
           <button
             onClick={handleAddToCart}
             disabled={!product.is_available || product.stock_quantity === 0}
