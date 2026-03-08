@@ -341,14 +341,14 @@ CREATE INDEX IF NOT EXISTS idx_user_active_sessions_user_last_seen ON user_activ
 
 -- ─── is_admin : check if current user is admin (bypassing RLS to avoid infinite recursion)
 CREATE OR REPLACE FUNCTION public.is_admin()
-RETURNS boolean AS $
+RETURNS boolean AS $$
 BEGIN
   RETURN EXISTS (
     SELECT 1 FROM public.profiles
     WHERE id = auth.uid() AND is_admin = true
   );
 END;
-$ LANGUAGE plpgsql SECURITY DEFINER;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
 
 -- ─── handle_new_user : profil auto à l'inscription (v11 : inclut email) ──
 
