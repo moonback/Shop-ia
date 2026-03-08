@@ -163,4 +163,39 @@
     -ms-overflow-style: none;
     scrollbar-width: none;
   }
+
+  /* hide-scrollbar alias */
+  .hide-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .hide-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  /* custom-scrollbar: thin styled scrollbar */
+  .custom-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(251, 191, 36, 0.2) transparent;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: rgba(251, 191, 36, 0.2);
+    border-radius: 9999px;
+  }
+
+  /* Slow spin for subscription icon */
+  .animate-spin-slow {
+    animation: spin 4s linear infinite;
+  }
 }
