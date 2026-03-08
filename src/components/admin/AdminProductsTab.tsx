@@ -25,6 +25,7 @@ import type { Product, Category } from '../../lib/types';
 import CSVImporter from './CSVImporter';
 import MassModifyModal from './MassModifyModal';
 import AdminProductPreviewModal from './AdminProductPreviewModal';
+import ProductImageUpload from './ProductImageUpload';
 import { generateEmbedding } from '../../lib/embeddings';
 import { generateProductInfo } from '../../lib/productAI';
 import { slugify, sleep, isQuotaError } from '../../lib/utils';
@@ -141,12 +142,25 @@ export default function AdminProductsTab({ products, categories, onRefresh }: Ad
     const handleSaveProduct = async (e: FormEvent) => {
         e.preventDefault();
         setIsSaving(true);
-        const payload = { ...productForm, slug: productForm.slug || slugify(productForm.name) };
+        const { is_subscribable, is_bundle, ...restPayload } = productForm;
+        const payload = { ...restPayload, slug: productForm.slug || slugify(productForm.name) };
         let savedId = editingProductId;
         if (editingProductId) {
-            await supabase.from('products').update(payload).eq('id', editingProductId);
+            const { error: updateError } = await supabase.from('products').update(payload).eq('id', editingProductId);
+            if (updateError) {
+                console.error("Update Error:", updateError);
+                alert("Erreur lors de la mise à jour: " + updateError.message);
+                setIsSaving(false);
+                return;
+            }
         } else {
-            const { data: newProd } = await supabase.from('products').insert(payload).select('id').single();
+            const { data: newProd, error: insertError } = await supabase.from('products').insert(payload).select('id').single();
+            if (insertError) {
+                console.error("Insert Error:", insertError);
+                alert("Erreur lors de la création: " + insertError.message);
+                setIsSaving(false);
+                return;
+            }
             if (newProd) savedId = newProd.id;
         }
         if (productForm.is_bundle && savedId) {
@@ -957,13 +971,10 @@ export default function AdminProductsTab({ products, categories, onRefresh }: Ad
                                     </div>
 
                                     <div>
-                                        <label className={LABEL}>URL de l'image</label>
-                                        <input
-                                            type="url"
-                                            value={productForm.image_url ?? ''}
-                                            onChange={(e) => setProductForm({ ...productForm, image_url: e.target.value || null })}
-                                            className={INPUT}
-                                            placeholder="https://..."
+                                        <label className={LABEL}>Image du produit</label>
+                                        <ProductImageUpload
+                                            value={productForm.image_url}
+                                            onChange={(url) => setProductForm({ ...productForm, image_url: url })}
                                         />
                                     </div>
 
