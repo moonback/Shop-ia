@@ -31,6 +31,7 @@ import SEO from '../components/SEO';
 
 // Tab Components
 import AdminDashboardTab, { DashboardStats } from '../components/admin/AdminDashboardTab';
+import AdminDashboardV2 from '../components/admin/AdminDashboardV2';
 import AdminProductsTab from '../components/admin/AdminProductsTab';
 import AdminCategoriesTab from '../components/admin/AdminCategoriesTab';
 import AdminOrdersTab from '../components/admin/AdminOrdersTab';
@@ -411,7 +412,7 @@ export default function Admin() {
               className={tab === 'pos' ? 'h-full' : ''}
             >
               {tab === 'dashboard' && stats && (
-                <AdminDashboardTab
+                <AdminDashboardV2
                   stats={stats}
                   onViewOrders={() => setTab('orders')}
                   onViewStock={() => setTab('stock')}
