@@ -252,7 +252,7 @@ export default function Layout() {
               transition={{ duration: 0.3 }}
               className="overflow-hidden bg-zinc-900/60 backdrop-blur-md border-b border-white/[0.04]"
             >
-              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              <div className="max-w-12xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex items-center justify-between h-9 text-[10px] text-zinc-500 font-semibold tracking-wide">
                   <div className="flex items-center gap-5">
                     <span className="flex items-center gap-1.5">
@@ -304,7 +304,7 @@ export default function Layout() {
           {/* Ambient glow line */}
           <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[40%] h-px bg-gradient-to-r from-transparent via-green-neon/30 to-transparent" />
 
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div className="max-w-12xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <div className={`flex items-center justify-between gap-4 transition-all duration-300 ${isScrolled ? "h-16" : "h-20 md:h-24"
               }`}>
 
