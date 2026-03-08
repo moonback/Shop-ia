@@ -1,55 +1,36 @@
-# ARCHITECTURE
+# Architecture Système — Shop-ia
 
-## Vue d'ensemble
+## 🗺 Vue d'ensemble (Data Flow)
 
-```mermaid
-flowchart LR
-  U[Client Web React] --> R[Routes SPA + Zustand]
-  R --> S[Supabase JS SDK]
-  S --> A[Supabase Auth]
-  S --> D[(PostgreSQL + pgvector)]
-  S --> F[RPC SQL\nmatch_products, sync_bundle_stock, etc.]
-  S --> ST[Supabase Storage\nproduct-images]
-
-  R --> OR[OpenRouter API\nchat + embeddings]
-  R --> G[Gemini Live API\nassistant vocal]
+```text
+[ Client (Navigateur UI) ]
+   │
+   ├──▶ (Zustand Stores) ──▶ État Local (Cart, Auth, Settings)
+   │
+   ├──▶ (API Supabase JS) ──▶ Authentification & Database PostgreSQL
+   │
+   ├──▶ (OpenRouter/GenAI) ──▶ Assistant LLM & Embeddings Vectoriels
+   │
+   └──▶ (Viva Wallet) ──▶ Passerelle de paiement (Checkout)
 ```
 
-> ⚠️ À compléter : aucun backend Node/Express n'est utilisé en runtime applicatif malgré la présence de dépendances `express`/`better-sqlite3` dans `package.json`.
+## 🖥 Frontend (React 19 + Vite)
+- **Routage** : Géré via `react-router-dom`. Les routes protégées (Admin) sont encapsulées dans des Higher-Order Components.
+- **Gestion de l'État** : `Zustand` est utilisé pour la gestion découplée de l'état (pas de prop-drilling).
+- **Styling** : Tailwind CSS v4, utilisation massive du système '@apply' pour les glassmorphisms tactiles et classes utilitaires.
+- **Composants clés** : L'application est divisée entre `Layout` global, `Pages` modulaires et widgets persistants (`ShopiaAssistant`).
 
-## Frontend
-- Architecture SPA React 19 + TypeScript, bootstrappée par Vite.
-- Routing centralisé dans `src/App.tsx` avec lazy-loading des pages (`React.lazy` + `Suspense`).
-- Deux gardes d'accès :
-  - `ProtectedRoute` pour les routes authentifiées (compte, checkout).
-  - `AdminRoute` pour admin + POS.
-- État global via Zustand :
-  - `authStore`, `cartStore`, `wishlistStore`, `settingsStore`, `toastStore`.
-- Intégration IA côté client via hooks dédiés :
-  - `useShopiaAssistantChat`, `useGeminiLiveVoice`, `useShopiaAssistantMemory`, `useShopiaAssistantQuiz`.
+## ⚙️ Backend (Supabase BaaS)
+- **Couche Applicative** : Aucune application Node/Express classique. Les requêtes partent directement du navigateur vers l'API PostgREST de Supabase.
+- **Sécurité** : Les politiques (RLS - Row Level Security) sont configurées au niveau PostgreSQL pour restreindre l'accès en lecture/écriture en fonction de l'UUID de l'utilisateur (`auth.uid()`).
+- **Fonctions Edge (RPC)** : Utilisées côté base de données pour les algorithmes lourds, notamment la recherche sémantique avec la fonction `match_products`.
 
-## Backend / API
-- Modèle backend principal : **BaaS Supabase**.
-- Accès données via `@supabase/supabase-js` depuis le frontend.
-- Couche métier SQL côté base : fonctions RPC et triggers dans `supabase/init_database.sql`.
-- Authentification : Supabase Auth (email/password, reset password, update user).
-- Autorisation : RLS active sur toutes les tables + helper SQL `public.is_admin()`.
-- Stockage de médias : bucket public `product-images` avec policies d'écriture admin.
+## 🤖 Services Externes & IA
+- **OpenRouter / OpenAI** : Convertit les requêtes (text query) de l'utilisateur en un tenseur vectoriel (`768 dimensions`) envoyé à Supabase (pgvector).
+- **Google Gemini** : Moteur derrière l'assistant vocal et textuel. Communication souvent en temps réel/WebSocket.
+- **Viva Wallet** : Gestion de l'iFrame de paiement.
 
-## Base de données
-- Base relationnelle PostgreSQL (Supabase), extension `vector` activée.
-- Tables métier e-commerce + compte client + IA + POS.
-- Migrations : projet orienté script SQL consolidé (`supabase/init_database.sql`) + scripts correctifs (`rescue_assistant_table.sql`, `fix_rls.js`, etc.).
-- Recherche sémantique produits via `products.embedding vector(3072)` + RPC `match_products`.
-
-## Services externes
-- **OpenRouter API** : génération texte assistant + embeddings produits/requêtes.
-- **Gemini Live API** : assistant vocal temps réel dans le navigateur.
-- **Viva Wallet** : variables de config présentes ; intégration de paiement partiellement préparée côté frontend.
-
-## Décisions d'architecture
-- **Supabase-first** pour accélérer le delivery : auth, DB, storage et sécurité RLS dans une même plateforme.
-- **Frontend riche (SPA)** pour UX rapide, navigation fluide et POS intégré sans multiplier les services.
-- **Zustand** pour un état global léger, simple à maintenir, sans boilerplate lourd.
-- **Fonctions SQL RPC** pour déplacer les opérations sensibles/proches de la donnée (promos, bundles, recherche vectorielle, clients POS).
-- **IA hybride** (OpenRouter + Gemini Live) pour séparer les usages texte et voix, et permettre des optimisations indépendantes.
+## 💡 Décisions d'Architecture
+1. **BaaS Supabase** : Choisie pour accélérer la mise en marché et bénéficier de la DB "Realtime" + "pgvector" nativement.
+2. **Recherche Vectorielle** : Solution moderne d'e-commerce évitant les limites des simples recherches par mots-clés SQL `ILIKE`.
+3. **Zustand au lieu de Redux** : Moins de boilerplate, stores plus légers avec un footprint en mémoire minimal pour le navigateur physique (POS).
