@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Search, Coins, ShieldOff, ShieldCheck, Send, CheckCircle2, Eye, MapPin, Package, X, Calendar, Mail, Phone, Award, Clock } from 'lucide-react';
+import { Search, Coins, ShieldOff, ShieldCheck, Send, CheckCircle2, Eye, MapPin, Package, X, Calendar, Mail, Phone, Award, Clock, Pencil, Save } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { supabase } from '../../lib/supabase';
 import type { Profile } from '../../lib/types';
@@ -16,6 +16,9 @@ export default function AdminCustomersTab({ customers, onRefresh }: AdminCustome
     const [selectedCustomer, setSelectedCustomer] = useState<Profile | null>(null);
     const [customerDetailData, setCustomerDetailData] = useState<{ orders: any[], addresses: any[] } | null>(null);
     const [isLoadingDetails, setIsLoadingDetails] = useState(false);
+    const [isEditing, setIsEditing] = useState(false);
+    const [editForm, setEditForm] = useState<Partial<Profile>>({});
+    const [isSaving, setIsSaving] = useState(false);
 
     const handleSendAccess = async (email: string | null, id: string) => {
         if (!email) {
@@ -49,6 +52,7 @@ export default function AdminCustomersTab({ customers, onRefresh }: AdminCustome
     };
 
     const loadCustomerDetails = async (customer: Profile) => {
+        setIsEditing(false);
         setIsLoadingDetails(true);
         setSelectedCustomer(customer);
         try {
@@ -64,6 +68,49 @@ export default function AdminCustomersTab({ customers, onRefresh }: AdminCustome
         }
     };
 
+    const handleEdit = () => {
+        if (selectedCustomer) {
+            setEditForm({
+                full_name: selectedCustomer.full_name,
+                email: selectedCustomer.email,
+                phone: selectedCustomer.phone,
+                loyalty_points: selectedCustomer.loyalty_points,
+                referral_code: selectedCustomer.referral_code,
+            });
+            setIsEditing(true);
+        }
+    };
+
+    const handleCancelEdit = () => {
+        setIsEditing(false);
+        setEditForm({});
+    };
+
+    const handleSaveEdit = async () => {
+        if (!selectedCustomer) return;
+        
+        setIsSaving(true);
+        try {
+            const { error } = await supabase
+                .from('profiles')
+                .update(editForm)
+                .eq('id', selectedCustomer.id);
+
+            if (error) throw error;
+
+            setSuccessMessage('Client modifié avec succès');
+            setTimeout(() => setSuccessMessage(null), 3000);
+            setIsEditing(false);
+            onRefresh();
+            
+            // Update selected customer with new values
+            setSelectedCustomer({ ...selectedCustomer, ...editForm });
+        } catch (err: any) {
+            alert('Erreur lors de la modification : ' + err.message);
+        } finally {
+            setIsSaving(false);
+        }
+    };
     const filteredCustomers = customers.filter(
         (c) =>
             !searchQuery ||
@@ -229,12 +276,23 @@ export default function AdminCustomersTab({ customers, onRefresh }: AdminCustome
                                         </p>
                                     </div>
                                 </div>
-                                <button
-                                    onClick={() => setSelectedCustomer(null)}
-                                    className="p-2 text-zinc-500 hover:text-white bg-white/5 border border-white/10 rounded-xl transition-all"
-                                >
-                                    <X className="w-5 h-5" />
-                                </button>
+                                <div className="flex items-center gap-2">
+                                    {!isEditing && (
+                                        <button
+                                            onClick={handleEdit}
+                                            className="p-2 text-zinc-400 hover:text-white hover:bg-zinc-800 rounded-xl transition-all"
+                                            title="Modifier le client"
+                                        >
+                                            <Pencil className="w-5 h-5" />
+                                        </button>
+                                    )}
+                                    <button
+                                        onClick={() => setSelectedCustomer(null)}
+                                        className="p-2 text-zinc-500 hover:text-white bg-white/5 border border-white/10 rounded-xl transition-all"
+                                    >
+                                        <X className="w-5 h-5" />
+                                    </button>
+                                </div>
                             </div>
 
                             {/* Content Panel */}
@@ -246,7 +304,16 @@ export default function AdminCustomersTab({ customers, onRefresh }: AdminCustome
                                             <Coins className="w-3.5 h-3.5 text-yellow-500" />
                                             <span className="text-[10px] font-black uppercase tracking-widest">Points</span>
                                         </div>
-                                        <p className="text-2xl font-black text-white">{selectedCustomer.loyalty_points}</p>
+                                        {isEditing ? (
+                                            <input
+                                                type="number"
+                                                value={editForm.loyalty_points ?? 0}
+                                                onChange={(e) => setEditForm({ ...editForm, loyalty_points: parseInt(e.target.value) || 0 })}
+                                                className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-white text-sm font-bold focus:outline-none focus:border-green-neon"
+                                            />
+                                        ) : (
+                                            <p className="text-2xl font-black text-white">{selectedCustomer.loyalty_points}</p>
+                                        )}
                                     </div>
                                     <div className="bg-zinc-900/60 border border-zinc-800 p-4 rounded-2xl">
                                         <div className="flex items-center gap-2 text-zinc-500 mb-2">
@@ -260,7 +327,17 @@ export default function AdminCustomersTab({ customers, onRefresh }: AdminCustome
                                             <Award className="w-3.5 h-3.5 text-purple-400" />
                                             <span className="text-[10px] font-black uppercase tracking-widest">Referral</span>
                                         </div>
-                                        <p className="text-xs font-bold text-white truncate">{selectedCustomer.referral_code || 'Aucun'}</p>
+                                        {isEditing ? (
+                                            <input
+                                                type="text"
+                                                value={editForm.referral_code ?? ''}
+                                                onChange={(e) => setEditForm({ ...editForm, referral_code: e.target.value })}
+                                                placeholder="Code parrainage"
+                                                className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-white text-xs font-bold focus:outline-none focus:border-green-neon"
+                                            />
+                                        ) : (
+                                            <p className="text-xs font-bold text-white truncate">{selectedCustomer.referral_code || 'Aucun'}</p>
+                                        )}
                                     </div>
                                 </div>
 
@@ -271,14 +348,51 @@ export default function AdminCustomersTab({ customers, onRefresh }: AdminCustome
                                         Informations de contact
                                     </h3>
                                     <div className="grid grid-cols-2 gap-4">
-                                        <div className="bg-white/5 border border-white/5 p-4 rounded-2xl">
-                                            <p className="text-[9px] font-black uppercase text-zinc-500 mb-1">Email</p>
-                                            <p className="text-sm font-bold text-white truncate">{selectedCustomer.email || 'Non renseigné'}</p>
-                                        </div>
-                                        <div className="bg-white/5 border border-white/5 p-4 rounded-2xl">
-                                            <p className="text-[9px] font-black uppercase text-zinc-500 mb-1">Téléphone</p>
-                                            <p className="text-sm font-bold text-white">{selectedCustomer.phone || 'Non renseigné'}</p>
-                                        </div>
+                                        {isEditing ? (
+                                            <>
+                                                <div className="bg-white/5 border border-white/5 p-4 rounded-2xl">
+                                                    <p className="text-[9px] font-black uppercase text-zinc-500 mb-2">Nom complet</p>
+                                                    <input
+                                                        type="text"
+                                                        value={editForm.full_name ?? ''}
+                                                        onChange={(e) => setEditForm({ ...editForm, full_name: e.target.value })}
+                                                        placeholder="Nom complet"
+                                                        className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-white text-sm font-bold focus:outline-none focus:border-green-neon"
+                                                    />
+                                                </div>
+                                                <div className="bg-white/5 border border-white/5 p-4 rounded-2xl">
+                                                    <p className="text-[9px] font-black uppercase text-zinc-500 mb-2">Email</p>
+                                                    <input
+                                                        type="email"
+                                                        value={editForm.email ?? ''}
+                                                        onChange={(e) => setEditForm({ ...editForm, email: e.target.value })}
+                                                        placeholder="Email"
+                                                        className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-white text-sm font-bold focus:outline-none focus:border-green-neon"
+                                                    />
+                                                </div>
+                                                <div className="bg-white/5 border border-white/5 p-4 rounded-2xl col-span-2">
+                                                    <p className="text-[9px] font-black uppercase text-zinc-500 mb-2">Téléphone</p>
+                                                    <input
+                                                        type="tel"
+                                                        value={editForm.phone ?? ''}
+                                                        onChange={(e) => setEditForm({ ...editForm, phone: e.target.value })}
+                                                        placeholder="Téléphone"
+                                                        className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-white text-sm font-bold focus:outline-none focus:border-green-neon"
+                                                    />
+                                                </div>
+                                            </>
+                                        ) : (
+                                            <>
+                                                <div className="bg-white/5 border border-white/5 p-4 rounded-2xl">
+                                                    <p className="text-[9px] font-black uppercase text-zinc-500 mb-1">Email</p>
+                                                    <p className="text-sm font-bold text-white truncate">{selectedCustomer.email || 'Non renseigné'}</p>
+                                                </div>
+                                                <div className="bg-white/5 border border-white/5 p-4 rounded-2xl">
+                                                    <p className="text-[9px] font-black uppercase text-zinc-500 mb-1">Téléphone</p>
+                                                    <p className="text-sm font-bold text-white">{selectedCustomer.phone || 'Non renseigné'}</p>
+                                                </div>
+                                            </>
+                                        )}
                                     </div>
                                 </section>
 
@@ -362,6 +476,31 @@ export default function AdminCustomersTab({ customers, onRefresh }: AdminCustome
                                         </div>
                                     )}
                                 </section>
+
+                                {/* Edit Actions */}
+                                {isEditing && (
+                                    <section className="flex items-center gap-3 pt-4 border-t border-zinc-800">
+                                        <button
+                                            onClick={handleCancelEdit}
+                                            className="px-4 py-2 text-sm font-bold text-zinc-400 hover:text-white transition-colors"
+                                            disabled={isSaving}
+                                        >
+                                            Annuler
+                                        </button>
+                                        <button
+                                            onClick={handleSaveEdit}
+                                            disabled={isSaving}
+                                            className="flex items-center gap-2 px-6 py-2 bg-green-neon text-black font-black text-sm rounded-xl hover:bg-green-400 transition-colors disabled:opacity-50"
+                                        >
+                                            {isSaving ? (
+                                                <span className="w-4 h-4 border-2 border-black/30 border-t-black rounded-full animate-spin" />
+                                            ) : (
+                                                <Save className="w-4 h-4" />
+                                            )}
+                                            {isSaving ? 'Sauvegarde...' : 'Sauvegarder'}
+                                        </button>
+                                    </section>
+                                )}
                             </div>
                         </motion.div>
                     </>
