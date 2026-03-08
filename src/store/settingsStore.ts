@@ -7,6 +7,7 @@ export interface StoreSettings {
     store_name: string;
     store_address: string;
     store_phone: string;
+    store_email: string;
     store_hours: string;
     banner_text: string;
     banner_enabled: boolean;
@@ -31,6 +32,7 @@ export const DEFAULT_SETTINGS: StoreSettings = {
     store_name: 'Shop-ia',
     store_address: '45 Avenue de la Fraîcheur, 75001 Paris',
     store_phone: '01 99 88 77 66',
+    store_email: 'contact@shop-ia.fr',
     store_hours: 'Lun–Sam 09h00–20h00',
     banner_text: '🛒 Bienvenue chez Shop-ia : Votre panier intelligent livré chez vous !',
     banner_enabled: true,

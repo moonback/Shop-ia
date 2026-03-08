@@ -18,6 +18,7 @@ import {
   Utensils,
   ChevronDown,
   Star,
+  Mail,
 } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence, useScroll, useTransform } from "motion/react";
@@ -263,6 +264,12 @@ export default function Layout() {
                       {settings?.store_phone ?? ""}
                     </span>
                     <span className="hidden md:flex items-center gap-1.5">
+                      <Mail className="h-3 w-3 text-green-neon/70" />
+                      <a href={`mailto:${settings?.store_email ?? ""}`} className="hover:text-white transition-colors">
+                        {settings?.store_email ?? ""}
+                      </a>
+                    </span>
+                    <span className="hidden lg:flex items-center gap-1.5">
                       <Clock className="h-3 w-3 text-green-neon/70" />
                       {settings?.store_hours ?? ""}
                     </span>
@@ -270,7 +277,7 @@ export default function Layout() {
                   <div className="flex items-center gap-3">
                     <span className="hidden sm:flex items-center gap-1 text-green-neon/80">
                       <Star className="h-3 w-3 fill-green-neon text-green-neon" />
-                      Livraison gratuite dès 50€
+                      Livraison gratuite dès {settings?.delivery_free_threshold ?? 60}€
                     </span>
                     <div className="flex items-center gap-2 ml-2">
                       <a href={settings?.social_instagram} target="_blank" rel="noopener noreferrer"
@@ -735,6 +742,12 @@ export default function Layout() {
                 <li className="flex items-center gap-3">
                   <Phone className="h-4 w-4 text-green-neon shrink-0" />
                   <span>{settings.store_phone}</span>
+                </li>
+                <li className="flex items-center gap-3">
+                  <Mail className="h-4 w-4 text-green-neon shrink-0" />
+                  <a href={`mailto:${settings?.store_email ?? ""}`} className="hover:text-green-neon transition-colors">
+                    {settings?.store_email ?? ""}
+                  </a>
                 </li>
               </ul>
             </div>

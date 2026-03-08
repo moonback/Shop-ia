@@ -122,12 +122,21 @@ export default function AdminSettingsTab() {
                         className={INPUT}
                     />
                 </div>
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div>
                         <label className={LABEL}>Téléphone</label>
                         <input
                             value={localSettings.store_phone}
                             onChange={(e) => setLocalSettings({ ...localSettings, store_phone: e.target.value })}
+                            className={INPUT}
+                        />
+                    </div>
+                    <div>
+                        <label className={LABEL}>Email</label>
+                        <input
+                            type="email"
+                            value={localSettings.store_email || ''}
+                            onChange={(e) => setLocalSettings({ ...localSettings, store_email: e.target.value })}
                             className={INPUT}
                         />
                     </div>
