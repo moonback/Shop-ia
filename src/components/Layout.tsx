@@ -19,7 +19,7 @@ import {
 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import AgeGate from "./AgeGate";
+// import AgeGate from "./AgeGate"; // Removed for Shop-ia gourmet domain
 import CartSidebar from "./CartSidebar";
 import ShopiaAssistant from "./ShopiaAssistant";
 import LoyaltyCard from "./LoyaltyCard";
@@ -189,8 +189,8 @@ export default function Layout() {
 
   return (
     <div className="min-h-screen flex flex-col bg-zinc-950 text-zinc-100 font-sans">
-      {/* Age Verification Popup */}
-      <AgeGate />
+      {/* Age Verification Popup removed for Shop-ia */}
+      {/* <AgeGate /> */}
 
       {/* Cart Sidebar */}
       <CartSidebar />
@@ -503,7 +503,7 @@ export default function Layout() {
                       </div>
                       <div className="flex flex-col">
                         <span className="text-xs text-zinc-500 uppercase tracking-widest font-bold">Bienvenue</span>
-                        <span className="text-lg font-serif font-black text-white">{profile?.full_name ?? "Client Mood"}</span>
+                        <span className="text-lg font-serif font-black text-white">{profile?.full_name ?? "Client Shop-ia"}</span>
                       </div>
                     </div>
                     <div className="grid grid-cols-3 gap-3">

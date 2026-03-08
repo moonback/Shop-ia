@@ -6,8 +6,8 @@ const AI_MODEL = 'liquid/lfm-2-24b-a2b:latest';
 
 export interface GeneratedProductData {
     description?: string;
-    cbd_percentage?: number;
-    thc_max?: number;
+    nutriscore?: string;
+    weight_info?: string;
     attributes?: {
         benefits?: string[];
         aromas?: string[];
@@ -31,8 +31,8 @@ export async function generateProductInfo(productName: string, categoryName?: st
     Réponds EXCLUSIVEMENT au format JSON avec la structure suivante :
     {
         "description": "Une description marketing attrayante de 2-3 phrases mettant en avant le goût, l'origine et la qualité du produit.",
-        "cbd_percentage": null, (Laisse à null pour les produits alimentaires, ou utilise pour un indice de fraîcheur de 0 à 100)
-        "thc_max": 0, (Toujours 0 pour l'alimentaire)
+        "nutriscore": "A", (A, B, C, D ou E)
+        "weight_info": "500g", (Spécifie le poids ou le volume probable)
         "attributes": {
             "benefits": ["Sain", "Bio", " Artisanal"], (minimum 3 caractéristiques)
             "aromas": ["Savoureux", "Frais", "Naturel"] (minimum 3 notes gustatives)
@@ -85,8 +85,8 @@ export async function autoFillProductSync(product: Product): Promise<boolean> {
 
     const updates: any = {};
     if (!product.description && generated.description) updates.description = generated.description;
-    if (!product.cbd_percentage && generated.cbd_percentage) updates.cbd_percentage = generated.cbd_percentage;
-    if (!product.thc_max && generated.thc_max) updates.thc_max = generated.thc_max;
+    if (!product.nutriscore && generated.nutriscore) updates.nutriscore = generated.nutriscore;
+    if (!product.weight_info && generated.weight_info) updates.weight_info = generated.weight_info;
 
     const currentAttrs = product.attributes || {};
     const hasBenefits = currentAttrs.benefits && currentAttrs.benefits.length > 0;

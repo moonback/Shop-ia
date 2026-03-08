@@ -624,7 +624,7 @@ export function useGeminiLiveVoice({
                   });
                   if (rpcError) throw rpcError;
                   if (data && data.length > 0) searchResultsRef.current = data as Product[];
-                  const results = (data as any[]).map(p => `• ${p.name} | ${p.price}€ | CBD ${p.cbd_percentage}% | ${p.description}`).join('\n');
+                  const results = (data as any[]).map(p => `• ${p.name} | ${p.price}€ | Nutri-Score: ${p.nutriscore || 'N/A'} | ${p.weight_info || ''} | ${p.description}`).join('\n');
                   return { name: c.name, id: c.id, response: { results, note: 'Ce sont les produits les plus pertinents du catalogue complet.' } };
                 } catch (e) {
                   console.error('[Voice] Search Tool Error:', e);

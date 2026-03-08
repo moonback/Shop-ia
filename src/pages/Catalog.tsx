@@ -220,7 +220,7 @@ export default function Catalog() {
           >
             <img
               src="/images/hero-bg.png"
-              alt="CBN Archives"
+              alt="Shop-ia Gourmet"
               className="w-full h-full object-cover opacity-100 blur-[2px] scale-110 grayscale-[30%]"
             />
           </motion.div>
@@ -629,7 +629,7 @@ export default function Catalog() {
                     Shopia Assistant IA Expérientiel
                   </div>
                   <h3 className="text-4xl md:text-6xl font-serif font-bold leading-none uppercase tracking-tighter">
-                    TROUVEZ VOTRE <br /> <span className="text-green-neon italic hue-rotate-[15deg]">ROUTINE.</span>
+                    TROUVEZ VOTRE <br /> <span className="text-green-neon italic hue-rotate-[15deg]">ÉQUILIBRE.</span>
                   </h3>
                   <p className="text-zinc-500 text-lg md:text-xl font-light leading-relaxed">
                     Laissez notre technologie d'analyse identifier le panier de produits parfaitement calibré pour votre alimentation et votre équilibre personnel.
@@ -644,7 +644,7 @@ export default function Catalog() {
                     }}
                     className="flex-1 lg:flex-none px-12 py-5 bg-green-neon text-black font-bold uppercase tracking-widest rounded-2xl hover:scale-105 hover:shadow-[0_0_30px_rgba(57,255,20,0.4)] transition-all text-sm shadow-xl"
                   >
-                    Démarrer le Diagnostic
+                    Démarrer l'Analyse Culinaire
                   </button>
                   <Link
                     to="/contact"

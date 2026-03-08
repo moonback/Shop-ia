@@ -23,8 +23,8 @@ export interface ShopiaAssistantSettings {
     recommendations_count: number;
     typing_speed: 'normal' | 'fast' | 'slow';
     memory_enabled: boolean;
-    restock_threshold_oils: number;
-    restock_threshold_flowers: number;
+    restock_threshold_savory: number;
+    restock_threshold_fresh: number;
     restock_threshold_other: number;
     welcome_message: string;
     pulse_delay: number;
@@ -81,9 +81,9 @@ export const SHOPIA_ASSISTANT_DEFAULTS: ShopiaAssistantSettings = {
     recommendations_count: 3,
     typing_speed: 'normal',
     memory_enabled: true,
-    restock_threshold_oils: 30,
-    restock_threshold_flowers: 14,
-    restock_threshold_other: 21,
+    restock_threshold_savory: 30,
+    restock_threshold_fresh: 7,
+    restock_threshold_other: 14,
     welcome_message: "Bienvenue chez Shop-ia ! 🍏 Je suis votre assistant culinaire personnel. Envie d'une recette ou besoin d'aide pour vos courses ?",
     pulse_delay: 3,
     quiz_steps: SHOPIA_ASSISTANT_DEFAULT_QUIZ,

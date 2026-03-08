@@ -3,10 +3,10 @@
 // If a slug changes in the DB, update here only.
 
 export const CATEGORY_SLUGS = {
-  OILS: 'huiles',
-  FLOWERS: 'fleurs',
-  RESINS: 'resines',
-  INFUSIONS: 'infusions',
+  SAVORY: 'epicerie-salee',
+  SWEET: 'epicerie-sucree',
+  DRINKS: 'boissons',
+  FRESH: 'produits-frais',
 } as const;
 
 export type CategorySlug = (typeof CATEGORY_SLUGS)[keyof typeof CATEGORY_SLUGS];

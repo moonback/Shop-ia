@@ -60,17 +60,16 @@ interface OrderHistoryItem {
 // Maps a category slug to the matching AssistantSettings threshold key.
 // Any slug not present falls back to 'restock_threshold_other'.
 const CATEGORY_THRESHOLD_KEYS: Partial<Record<string, keyof AssistantSettings>> = {
-    [CATEGORY_SLUGS.OILS]: 'restock_threshold_oils',
-    [CATEGORY_SLUGS.FLOWERS]: 'restock_threshold_flowers',
-    [CATEGORY_SLUGS.RESINS]: 'restock_threshold_flowers',
+    [CATEGORY_SLUGS.SAVORY]: 'restock_threshold_savory',
+    [CATEGORY_SLUGS.FRESH]: 'restock_threshold_fresh',
 };
 
 // Fallback defaults if settings fail
 const FALLBACK_THRESHOLDS: Record<string, number> = {
-    [CATEGORY_SLUGS.OILS]: 30,
-    [CATEGORY_SLUGS.FLOWERS]: 14,
-    [CATEGORY_SLUGS.RESINS]: 14,
-    [CATEGORY_SLUGS.INFUSIONS]: 21,
+    [CATEGORY_SLUGS.SAVORY]: 30,
+    [CATEGORY_SLUGS.FRESH]: 7,
+    [CATEGORY_SLUGS.SWEET]: 14,
+    [CATEGORY_SLUGS.DRINKS]: 14,
 };
 const FALLBACK_DEFAULT = 21;
 
@@ -246,7 +245,7 @@ export function useShopiaAssistantMemory() {
                 // We use a simple session_id based on the first message id or date
                 const sessionId = history[0].id || new Date().toISOString();
 
-                await supabase.from('Assistant_interactions').upsert({
+                await supabase.from('assistant_interactions').upsert({
                     user_id: user.id,
                     session_id: sessionId,
                     interaction_type: 'chat_session',
@@ -264,7 +263,7 @@ export function useShopiaAssistantMemory() {
         setIsHistoryLoading(true);
         try {
             const { data } = await supabase
-                .from('Assistant_interactions')
+                .from('assistant_interactions')
                 .select('session_id, quiz_answers, created_at')
                 .eq('user_id', user.id)
                 .eq('interaction_type', 'chat_session')
@@ -306,7 +305,7 @@ export function useShopiaAssistantMemory() {
     const logQuestion = async (question: string) => {
         if (!user) return;
         try {
-            const { error } = await supabase.from('Assistant_interactions').insert({
+            const { error } = await supabase.from('assistant_interactions').insert({
                 user_id: user.id,
                 interaction_type: 'question',
                 quiz_answers: { question },
@@ -360,7 +359,7 @@ export function useShopiaAssistantMemory() {
 
                 // 2. Fetch Latest Chat Session
                 const { data: interactionData } = await supabase
-                    .from('Assistant_interactions')
+                    .from('assistant_interactions')
                     .select('quiz_answers')
                     .eq('user_id', user.id)
                     .eq('interaction_type', 'chat_session')

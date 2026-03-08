@@ -4,12 +4,13 @@ import {
   Clock,
   ArrowRight,
   ShieldCheck,
-  Leaf,
+  Utensils,
   Eye,
   Users,
   Sparkles,
   Award,
-  CalendarCheck
+  CalendarCheck,
+  ChefHat
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import SEO from "../components/SEO";
@@ -22,30 +23,30 @@ export default function Shop() {
     "@context": "https://schema.org",
     "@type": "Store",
     "name": "Shop-ia",
-    "description": "Un espace pensé pour la détente, la découverte et le conseil personnalisé autour du CBD.",
+    "description": "Un espace pensé pour la gourmandise, la découverte et le conseil personnalisé autour de l'épicerie fine et des produits frais.",
     "image": "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?q=80&w=2070&auto=format&fit=crop"
   };
 
   const values = [
     {
       icon: <ShieldCheck className="w-8 h-8 text-green-neon" />,
-      title: "Transparence",
-      desc: "Nous publions les certificats d'analyse de chaque lot pour garantir pureté et conformité."
+      title: "Qualité Absolue",
+      desc: "Nous sélectionnons rigoureusement chaque producteur pour garantir des saveurs authentiques et une fraîcheur parfaite."
     },
     {
       icon: <Award className="w-8 h-8 text-green-neon" />,
-      title: "Exigence",
-      desc: "Une sélection drastique des producteurs européens les plus qualifiés."
+      title: "Exigence Gourmet",
+      desc: "Une sélection drastique des meilleurs terroirs français et internationaux."
     },
     {
       icon: <Users className="w-8 h-8 text-green-neon" />,
-      title: "Accompagnement",
-      desc: "Nos conseillers sont formés pour vous guider vers la routine adaptée à vos besoins."
+      title: "Conseil Culinaire",
+      desc: "Nos experts et notre IA sont là pour vous guider dans vos choix et vos recettes au quotidien."
     },
     {
-      icon: <Leaf className="w-8 h-8 text-green-neon" />,
-      title: "Éthique",
-      desc: "Des cultures 100% organiques, sans pesticides ni agents chimiques."
+      icon: <ChefHat className="w-8 h-8 text-green-neon" />,
+      title: "Savoir-faire",
+      desc: "Des produits issus de méthodes artisanales traditionnelles et respectueuses du goût."
     }
   ];
 
@@ -53,8 +54,8 @@ export default function Shop() {
     <div className="min-h-screen bg-zinc-950 text-white overflow-hidden pb-32">
       <SEO
         title="L'ADN Shop-ia — Notre Boutique & Nos Valeurs"
-        description="Plongez dans l'univers Shop-ia. Découvrez notre histoire, nos valeurs de transparence et d'exigence, et venez nous rencontrer dans notre boutique à Paris."
-        keywords="boutique CBD Paris, magasin CBD, histoire Shop-ia, valeurs CBD, achat CBD en boutique"
+        description="Plongez dans l'univers Shop-ia. Découvrez notre histoire, nos valeurs de qualité et d'exigence, et venez nous rencontrer dans notre boutique à Paris."
+        keywords="boutique épicerie fine Paris, produits frais, gastronomie, histoire Shop-ia, alimentation saine"
         schema={shopSchema}
       />
 
@@ -62,7 +63,7 @@ export default function Shop() {
       <section className="relative min-h-[70vh] flex items-center justify-center pt-24 px-4 overflow-hidden">
         <div className="absolute inset-0 z-0">
           <img
-            src="./images/hero-bg-shop.png"
+            src="https://images.unsplash.com/photo-1542838132-92c53300491e?w=1600"
             alt="Intérieur de la boutique Shop-ia"
             className="w-full h-full object-cover opacity-100"
           />
@@ -85,8 +86,8 @@ export default function Shop() {
               <span className="not-italic text-green-neon glow-green">Shop-ia.</span>
             </h1>
             <p className="text-xl md:text-2xl text-zinc-400 max-w-3xl mx-auto font-light leading-relaxed pt-6">
-              Plus qu'un point de vente, un sanctuaire dédié à la sérénité
-              et à l'excellence naturelle au cœur de Paris.
+              Plus qu'un point de vente, un sanctuaire dédié à la gastronomie
+              et à l'excellence culinaire au cœur de Paris.
             </p>
           </motion.div>
         </div>
@@ -105,29 +106,29 @@ export default function Shop() {
               <div className="space-y-6">
                 <h2 className="text-5xl md:text-6xl font-serif font-black text-white leading-[1.1]">
                   Une histoire de <br />
-                  <span className="text-green-neon">Passion Purifiée.</span>
+                  <span className="text-green-neon">Goût & Passion.</span>
                 </h2>
                 <div className="w-20 h-1 bg-green-neon" />
                 <p className="text-xl text-zinc-400 leading-relaxed font-light">
                   Née de la volonté d'offrir une alternative authentique et exigeante,
-                  Shop-ia a été fondée par des experts passionnés par les multiples
-                  facettes du chanvre. Notre mission : démocratiser les bienfaits du CBD
-                  tout en élevant les standards de qualité du marché français.
+                  Shop-ia a été fondée par des amoureux de la bonne cuisine.
+                  Notre mission : démocratiser l'accès aux meilleurs produits du terroir
+                  tout en élevant les standards de fraîcheur du marché urbain.
                 </p>
                 <p className="text-lg text-zinc-500 leading-relaxed italic">
-                  "Nous croyons qu'un bien-être durable ne peut naître que d'une
-                  transparence totale et d'un respect absolu de la plante."
+                  "Nous croyons qu'une alimentation saine ne peut naître que d'une
+                  sélection passionnée et d'un respect absolu du produit."
                 </p>
               </div>
 
               <div className="grid grid-cols-2 gap-4 pt-4">
                 <div className="p-6 rounded-3xl bg-white/5 border border-white/5 backdrop-blur-sm">
-                  <p className="text-4xl font-black text-green-neon tracking-tighter">2019</p>
-                  <p className="text-xs font-bold uppercase tracking-widest text-zinc-500">Naissance de Shop-ia</p>
+                  <p className="text-4xl font-black text-green-neon tracking-tighter">2024</p>
+                  <p className="text-xs font-bold uppercase tracking-widest text-zinc-500">Renouveau Shop-ia</p>
                 </div>
                 <div className="p-6 rounded-3xl bg-white/5 border border-white/5 backdrop-blur-sm">
-                  <p className="text-4xl font-black text-white tracking-tighter">50+</p>
-                  <p className="text-xs font-bold uppercase tracking-widest text-zinc-500">Références Premium</p>
+                  <p className="text-4xl font-black text-white tracking-tighter">100+</p>
+                  <p className="text-xs font-bold uppercase tracking-widest text-zinc-500">Produits d'Exception</p>
                 </div>
               </div>
             </motion.div>
@@ -144,7 +145,7 @@ export default function Shop() {
 
               <div className="relative h-full w-full rounded-[4rem] overflow-hidden border border-white/10 shadow-3xl">
                 <img
-                  src="./images/quality-hero-bg.png"
+                  src="https://images.unsplash.com/photo-1542838132-92c53300491e?w=800"
                   alt="Détails de notre boutique"
                   className="w-full h-full object-cover grayscale-[20%] hover:grayscale-0 transition-all duration-1000"
                 />
@@ -160,7 +161,7 @@ export default function Shop() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-24 space-y-4">
             <h2 className="text-4xl md:text-6xl font-serif font-black text-white">Nos <span className="text-green-neon">Piliers</span></h2>
-            <p className="text-zinc-500 text-lg">La charte qui définit chaque décision chez Shop-ia.</p>
+            <p className="text-zinc-500 text-lg">La charte qui définit chaque sélection chez Shop-ia.</p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -190,8 +191,8 @@ export default function Shop() {
         <div className="absolute inset-x-0 top-0 h-full -z-10 overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-b from-zinc-950 via-zinc-950/80 to-zinc-950" />
           <img
-            src="/images/lifestyle-relax.png"
-            alt="Wellness"
+            src="https://images.unsplash.com/photo-1542838132-92c53300491e?w=1600"
+            alt="Épicerie Shop-ia"
             className="w-full h-full object-cover opacity-10"
           />
         </div>
@@ -213,7 +214,7 @@ export default function Shop() {
                 <MapPin className="text-green-neon w-6 h-6" />
               </div>
               <p className="text-zinc-500 font-bold uppercase tracking-widest text-xs">Notre Adresse</p>
-              <p className="text-white font-medium">{settings.store_address || '123 Rue de la Nature, 75000 Paris'}</p>
+              <p className="text-white font-medium">{settings.store_address || '123 Avenue Gourmet, 75000 Paris'}</p>
             </div>
 
             <div className="p-8 rounded-[2rem] bg-white/5 border border-white/10 backdrop-blur-xl flex flex-col items-center gap-4">
@@ -221,7 +222,7 @@ export default function Shop() {
                 <Clock className="text-green-neon w-6 h-6" />
               </div>
               <p className="text-zinc-500 font-bold uppercase tracking-widest text-xs">Horaires d'ouverture</p>
-              <p className="text-white font-medium whitespace-pre-line">{settings.store_hours || 'Lun-Sam : 10h00 - 19h30'}</p>
+              <p className="text-white font-medium whitespace-pre-line">{settings.store_hours || 'Lun-Sam : 09h00 - 20h00'}</p>
             </div>
           </div>
 
@@ -249,8 +250,8 @@ export default function Shop() {
         <div className="max-w-4xl mx-auto px-4 text-center">
           <Sparkles className="w-10 h-10 text-green-neon mx-auto mb-8 animate-pulse" />
           <p className="text-2xl md:text-3xl font-serif font-light text-zinc-300 italic leading-relaxed">
-            "L'essence de Shop-ia réside dans l'équilibre parfait entre la rigueur de la science
-            et la bienveillance de la nature."
+            "L'essence de Shop-ia réside dans l'équilibre parfait entre l'excellence du produit
+            et la fraîcheur du terroir."
           </p>
         </div>
       </section>

@@ -121,8 +121,8 @@ export const getVoicePrompt = (
     }
 
     if (savedPrefs) {
-        const { goal, experience, format, budget, flavor } = savedPrefs;
-        userContext += `\n- PRÉFÉRENCES : Objectif: ${goal}, Niveau cuisine: ${experience}, Rayon: ${format}, Budget: ${budget}, Notes: ${flavor?.join(', ')}.`;
+        const { goal, experience, format, budget, aromas } = savedPrefs;
+        userContext += `\n- PRÉFÉRENCES : Objectif: ${goal}, Niveau cuisine: ${experience}, Rayon: ${format}, Budget: ${budget}, Notes: ${aromas?.join(', ')}.`;
     }
 
     if (cartItems && cartItems.length > 0) {

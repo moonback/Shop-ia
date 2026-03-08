@@ -148,7 +148,7 @@ export default function Quality() {
               <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-transparent to-transparent" />
               <div className="absolute bottom-10 left-10">
                 <span className="px-6 py-3 rounded-full bg-green-neon text-black font-black text-xs uppercase tracking-widest shadow-2xl">
-                  100% Légal & Certifié
+                  100% Frais & Certifié
                 </span>
               </div>
             </motion.div>
@@ -218,7 +218,7 @@ export default function Quality() {
             <h3 className="text-2xl font-serif font-black">Une Transparence Totale</h3>
             <p className="text-zinc-500 max-w-xl mx-auto font-light leading-relaxed">
               Nous vous accueillons en boutique pour échanger sur nos méthodes de sélection,
-              nos origines et vous présenter les derniers certificats officiels de chaque variété en rayon.
+              nos origines et vous présenter les engagements de chaque sélection en rayon.
             </p>
           </div>
         </div>

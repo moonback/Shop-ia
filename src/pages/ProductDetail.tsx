@@ -116,7 +116,7 @@ export default function ProductDetail() {
         if (p.is_bundle) {
           supabase
             .from('bundle_items')
-            .select('*, product:products(id, name, slug, price, image_url, cbd_percentage, weight_grams)')
+            .select('*, product:products(id, name, slug, price, image_url, nutriscore, weight_grams)')
             .eq('bundle_id', p.id)
             .then(({ data: items }) => {
               if (items) setBundleItems(items as BundleItem[]);
@@ -240,13 +240,7 @@ export default function ProductDetail() {
     setQuantity(Math.max(1, Math.min(parseFloat(e.target.value) || 1, product.stock_quantity)));
   }, [product?.stock_quantity]);
 
-  const isBulkProduct = (
-    product?.category?.slug?.includes('fleurs') ||
-    product?.category?.slug?.includes('resines') ||
-    product?.category?.slug === 'nouveautes' ||
-    product?.category?.slug === CATEGORY_SLUGS.FLOWERS ||
-    product?.category?.slug === CATEGORY_SLUGS.RESINS
-  );
+  const isBulkProduct = false; // Simplified for Shop-ia gourmet domain
   const isPerUnit = !isBulkProduct || product?.is_bundle || (!!product?.weight_grams && product?.weight_grams > 1 && !product?.name.toLowerCase().includes('pack'));
   const showWeightSelector = isBulkProduct && !isPerUnit;
 
@@ -278,7 +272,7 @@ export default function ProductDetail() {
           currency: 'EUR',
           availability: product.is_available ? 'instock' : 'oos',
           sku: product.sku ?? undefined,
-          brand: 'Shop-ia CBD',
+          brand: 'Shop-ia',
         }}
       />
 
@@ -426,28 +420,18 @@ export default function ProductDetail() {
 
             {/* Compact Specifications Bar - Above Price */}
             <div className="flex items-center flex-wrap gap-8 py-2 border-y border-white/[0.04]">
-              {product.cbd_percentage != null && (
+              {product.nutriscore != null && (
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-xl bg-green-neon/5 border border-green-neon/10 flex items-center justify-center">
-                    <Leaf className="w-4 h-4 text-green-neon" />
+                    <Zap className="w-4 h-4 text-green-neon" />
                   </div>
                   <div className="flex flex-col">
                     <span className="text-[9px] font-black text-zinc-500 uppercase tracking-[0.1em] leading-tight">Nutri-Score</span>
-                    <span className="text-lg font-serif font-bold text-white leading-tight">A+</span>
+                    <span className="text-lg font-serif font-bold text-white leading-tight">{product.nutriscore}</span>
                   </div>
                 </div>
               )}
-              {product.thc_max != null && (
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center">
-                    <FlaskConical className="w-4 h-4 text-zinc-400" />
-                  </div>
-                  <div className="flex flex-col">
-                    <span className="text-[9px] font-black text-zinc-500 uppercase tracking-[0.1em] leading-tight">THC Légal</span>
-                    <span className="text-lg font-serif font-bold text-white leading-tight">&lt; {product.thc_max}%</span>
-                  </div>
-                </div>
-              )}
+
               {product.weight_grams != null && product.weight_grams > 0 && (
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center">
@@ -539,7 +523,7 @@ export default function ProductDetail() {
                   </div>
 
                   <div className="flex items-center gap-4 text-xs text-zinc-500 font-medium uppercase justify-center">
-                    <span className="flex items-center gap-1.5"><CheckCircle className="w-3 h-3 text-green-neon" /> LIVRAISON DISCRÈTE</span>
+                    <span className="flex items-center gap-1.5"><CheckCircle className="w-3 h-3 text-green-neon" /> LIVRAISON FRAÎCHEUR</span>
                     <div className="w-1 h-1 bg-white/10 rounded-full" />
                     <span className="flex items-center gap-1.5"><Shield className="w-3 h-3 text-zinc-500" /> PAIEMENT SÉCURISÉ</span>
                   </div>
@@ -581,8 +565,8 @@ export default function ProductDetail() {
                           {item.quantity > 1 && <span className="text-green-neon mr-2">{item.quantity}×</span>}
                           {item.product?.name}
                         </Link>
-                        {item.product?.cbd_percentage && (
-                          <p className="text-xs text-zinc-500 font-medium uppercase mt-1">CONCENTRATION : {item.product.cbd_percentage}%</p>
+                        {item.product?.nutriscore && (
+                          <p className="text-xs text-zinc-500 font-medium uppercase mt-1">NUTRI-SCORE : {item.product.nutriscore}</p>
                         )}
                       </div>
                     </motion.div>
@@ -657,9 +641,8 @@ export default function ProductDetail() {
             )}
 
             {/* Legal */}
-            <p className="text-xs text-zinc-600 leading-relaxed">
-              Produit contenant moins de 0,3% de THC. Conforme à la réglementation française (décret n°2021-1282).
-              Vente réservée aux personnes âgées de 18 ans et plus.
+            <p className="text-xs text-zinc-600 leading-relaxed italic">
+              Shop-ia s'engage pour une alimentation durable. Tous nos produits frais sont issus de circuits courts et emballés de manière éco-responsable.
             </p>
 
 

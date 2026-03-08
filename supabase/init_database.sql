@@ -51,8 +51,8 @@ CREATE TABLE IF NOT EXISTS products (
   slug            text UNIQUE NOT NULL,
   name            text NOT NULL,
   description     text,
-  cbd_percentage  numeric(5,2),
-  thc_max         numeric(5,3),
+  nutriscore      text,
+  weight_info     text,
   weight_grams    numeric(8,2),
   price           numeric(10,2) NOT NULL,
   image_url       text,
@@ -281,7 +281,7 @@ CREATE TABLE IF NOT EXISTS user_ai_preferences (
   experience_level     text,
   preferred_format     text,
   budget_range         text,
-  terpene_preferences  text[] DEFAULT '{}',
+  aroma_preferences    text[] DEFAULT '{}',
   age_range            text,
   intensity_preference text,
   extra_prefs          jsonb DEFAULT '{}'::jsonb,
@@ -291,7 +291,7 @@ CREATE TABLE IF NOT EXISTS user_ai_preferences (
 -- ─── BudTender Interactions ────────────────────────────────────────────────
 -- session_id est nullable (fix_budtender_interactions)
 
-CREATE TABLE IF NOT EXISTS budtender_interactions (
+CREATE TABLE IF NOT EXISTS assistant_interactions (
   id                   uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id              uuid REFERENCES auth.users(id) ON DELETE CASCADE,
   session_id           text,
@@ -304,9 +304,9 @@ CREATE TABLE IF NOT EXISTS budtender_interactions (
   UNIQUE(user_id, session_id)
 );
 
-COMMENT ON COLUMN budtender_interactions.clicked_product IS 'ID of the product clicked during a recommendation session';
-COMMENT ON COLUMN budtender_interactions.feedback IS 'User satisfaction feedback: positive or negative';
-COMMENT ON COLUMN budtender_interactions.recommended_products IS 'List of product IDs suggested by the AI in this interaction';
+COMMENT ON COLUMN assistant_interactions.clicked_product IS 'ID of the product clicked during a recommendation session';
+COMMENT ON COLUMN assistant_interactions.feedback IS 'User satisfaction feedback: positive or negative';
+COMMENT ON COLUMN assistant_interactions.recommended_products IS 'List of product IDs suggested by the AI in this interaction';
 
 -- ─── User Active Sessions (v9) ────────────────────────────────────────────
 
@@ -656,7 +656,7 @@ ALTER TABLE product_recommendations ENABLE ROW LEVEL SECURITY;
 ALTER TABLE referrals               ENABLE ROW LEVEL SECURITY;
 ALTER TABLE pos_reports             ENABLE ROW LEVEL SECURITY;
 ALTER TABLE user_ai_preferences     ENABLE ROW LEVEL SECURITY;
-ALTER TABLE budtender_interactions  ENABLE ROW LEVEL SECURITY;
+ALTER TABLE assistant_interactions  ENABLE ROW LEVEL SECURITY;
 ALTER TABLE user_active_sessions    ENABLE ROW LEVEL SECURITY;
 
 -- ─── Categories : lecture publique ─────────────────────────────────────────
@@ -884,16 +884,16 @@ CREATE POLICY "ai_prefs_admin_select" ON user_ai_preferences
   FOR SELECT TO authenticated
   USING (public.is_admin());
 
--- ─── BudTender Interactions ────────────────────────────────────────────────
+-- ─── Assistant Interactions ────────────────────────────────────────────────
 
-DROP POLICY IF EXISTS "interactions_owner_all" ON budtender_interactions;
-CREATE POLICY "interactions_owner_all" ON budtender_interactions
+DROP POLICY IF EXISTS "interactions_owner_all" ON assistant_interactions;
+CREATE POLICY "interactions_owner_all" ON assistant_interactions
   FOR ALL TO authenticated
   USING (auth.uid() = user_id)
   WITH CHECK (auth.uid() = user_id);
 
-DROP POLICY IF EXISTS "interactions_admin_select" ON budtender_interactions;
-CREATE POLICY "interactions_admin_select" ON budtender_interactions
+DROP POLICY IF EXISTS "interactions_admin_select" ON assistant_interactions;
+CREATE POLICY "interactions_admin_select" ON assistant_interactions
   FOR SELECT TO authenticated
   USING (public.is_admin());
 
@@ -923,46 +923,55 @@ CREATE POLICY "sessions_self_delete" ON user_active_sessions FOR DELETE
 
 DO $$
 BEGIN
-  IF NOT EXISTS (SELECT 1 FROM storage.buckets WHERE id = 'product-images') THEN
-    INSERT INTO storage.buckets (id, name, public, file_size_limit, allowed_mime_types)
-    VALUES (
-      'product-images',
-      'product-images',
-      true,
-      5242880,
-      ARRAY['image/jpeg', 'image/jpg', 'image/png', 'image/webp', 'image/gif']
-    );
+  -- We check for storage schema existence to avoid "relation storage.buckets does not exist"
+  -- on environments where storage isn't initialized yet.
+  IF EXISTS (SELECT 1 FROM information_schema.schemata WHERE schema_name = 'storage') THEN
+    IF NOT EXISTS (SELECT 1 FROM storage.buckets WHERE id = 'product-images') THEN
+      INSERT INTO storage.buckets (id, name, public, file_size_limit, allowed_mime_types)
+      VALUES (
+        'product-images',
+        'product-images',
+        true,
+        5242880,
+        ARRAY['image/jpeg', 'image/jpg', 'image/png', 'image/webp', 'image/gif']
+      );
+    END IF;
   END IF;
 END $$;
 
-DROP POLICY IF EXISTS "product_images_public_read" ON storage.objects;
-CREATE POLICY "product_images_public_read"
-  ON storage.objects FOR SELECT
-  USING (bucket_id = 'product-images');
+DO $$
+BEGIN
+  IF EXISTS (SELECT 1 FROM information_schema.schemata WHERE schema_name = 'storage') THEN
+    DROP POLICY IF EXISTS "product_images_public_read" ON storage.objects;
+    CREATE POLICY "product_images_public_read"
+      ON storage.objects FOR SELECT
+      USING (bucket_id = 'product-images');
 
-DROP POLICY IF EXISTS "product_images_admin_insert" ON storage.objects;
-CREATE POLICY "product_images_admin_insert"
-  ON storage.objects FOR INSERT
-  WITH CHECK (
-    bucket_id = 'product-images'
-    AND public.is_admin()
-  );
+    DROP POLICY IF EXISTS "product_images_admin_insert" ON storage.objects;
+    CREATE POLICY "product_images_admin_insert"
+      ON storage.objects FOR INSERT
+      WITH CHECK (
+        bucket_id = 'product-images'
+        AND public.is_admin()
+      );
 
-DROP POLICY IF EXISTS "product_images_admin_update" ON storage.objects;
-CREATE POLICY "product_images_admin_update"
-  ON storage.objects FOR UPDATE
-  USING (
-    bucket_id = 'product-images'
-    AND public.is_admin()
-  );
+    DROP POLICY IF EXISTS "product_images_admin_update" ON storage.objects;
+    CREATE POLICY "product_images_admin_update"
+      ON storage.objects FOR UPDATE
+      USING (
+        bucket_id = 'product-images'
+        AND public.is_admin()
+      );
 
-DROP POLICY IF EXISTS "product_images_admin_delete" ON storage.objects;
-CREATE POLICY "product_images_admin_delete"
-  ON storage.objects FOR DELETE
-  USING (
-    bucket_id = 'product-images'
-    AND public.is_admin()
-  );
+    DROP POLICY IF EXISTS "product_images_admin_delete" ON storage.objects;
+    CREATE POLICY "product_images_admin_delete"
+      ON storage.objects FOR DELETE
+      USING (
+        bucket_id = 'product-images'
+        AND public.is_admin()
+      );
+  END IF;
+END $$;
 
 
 -- ═══════════════════════════════════════════════════════════════════════════

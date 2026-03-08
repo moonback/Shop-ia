@@ -20,8 +20,8 @@ export interface Product {
   name: string;
   sku: string | null;
   description: string | null;
-  cbd_percentage: number | null;
-  thc_max: number | null;
+  nutriscore: string | null;
+  weight_info: string | null;
   weight_grams: number | null;
   price: number;
   original_value: number | null; // prix total des articles séparés
@@ -54,7 +54,7 @@ export interface BundleItem {
   quantity: number;
   created_at: string;
   // joined
-  product?: Pick<Product, 'id' | 'name' | 'slug' | 'price' | 'image_url' | 'cbd_percentage' | 'weight_grams'>;
+  product?: Pick<Product, 'id' | 'name' | 'slug' | 'price' | 'image_url' | 'nutriscore' | 'weight_grams'>;
 }
 
 export interface Profile {
@@ -262,7 +262,7 @@ export interface UserAIPreferences {
   experience_level: string | null;
   preferred_format: string | null;
   budget_range: string | null;
-  terpene_preferences: string[] | null;
+  aroma_preferences: string[] | null;
   updated_at: string | null;
   age_range: string | null;
   intensity_preference: string | null;
