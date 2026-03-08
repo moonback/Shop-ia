@@ -48,37 +48,37 @@ export default function Home() {
   }, [mouseX, mouseY]);
 
   const stats = [
-    { value: "0,05 €/mg", label: "Prix imbattable", icon: <Zap className="w-4 h-4" /> },
+    { value: "Artisanal", label: "Produits sélectionnés", icon: <Leaf className="w-4 h-4" /> },
     { value: "24h", label: "Livraison Paris", icon: <Truck className="w-4 h-4" /> },
-    { value: "Laboratoire", label: "Tests certifiés", icon: <Microscope className="w-4 h-4" /> },
-    { value: "100% Bio", label: "Naturel & Organique", icon: <Leaf className="w-4 h-4" /> },
+    { value: "Circuits Courts", label: "Producteurs locaux", icon: <ShieldCheck className="w-4 h-4" /> },
+    { value: "100% Naturel", label: "Sans additifs", icon: <Sparkles className="w-4 h-4" /> },
   ];
 
   const homeSchemas = [
     {
       "@context": "https://schema.org",
       "@type": "Organization",
-      "name": "Green Mood CBD",
-      "url": "https://greenmood.fr",
-      "logo": "https://greenmood.fr/logo.png",
-      "sameAs": ["https://greenmood.fr/catalogue", "https://greenmood.fr/guides"]
+      "name": "Shop-ia",
+      "url": "https://shop-ia.fr",
+      "logo": "https://shop-ia.fr/logo.png",
+      "sameAs": ["https://shop-ia.fr/catalogue", "https://shop-ia.fr/guides"]
     },
     {
       "@context": "https://schema.org",
       "@type": "Article",
-      "headline": "Guide CBN Premium : effets, usages et critères qualité",
-      "about": ["CBN", "Cannabinoid", "Hemp", "Sleep support", "Relaxation"],
+      "headline": "Épicerie Fine Shop-ia : qualité, traçabilité et saveurs authentiques",
+      "about": ["Épicerie fine", "Alimentation", "Circuits courts", "Artisanal", "Bio"],
       "author": {
         "@type": "Organization",
-        "name": "Équipe éditoriale Green Mood CBD"
+        "name": "Équipe éditoriale Shop-ia"
       },
       "reviewedBy": {
         "@type": "Person",
-        "name": "Conseiller produit Green Mood"
+        "name": "Conseiller culinaire Shop-ia"
       },
       "dateModified": "2026-03-08",
       "datePublished": "2026-03-08",
-      "mainEntityOfPage": "https://greenmood.fr/"
+      "mainEntityOfPage": "https://shop-ia.fr/"
     },
     {
       "@context": "https://schema.org",
@@ -86,34 +86,34 @@ export default function Home() {
       "mainEntity": [
         {
           "@type": "Question",
-          "name": "Qu’est-ce que le CBN ?",
+          "name": "Qu’est-ce que Shop-ia ?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Le CBN, ou cannabinol, est un cannabinoïde issu du chanvre. Il apparaît naturellement lors de l’oxydation d’autres cannabinoïdes. Il est généralement recherché pour ses effets de relaxation et son usage dans les routines du soir. Les produits commercialisés en Europe doivent respecter les seuils légaux de THC."
+            "text": "Shop-ia est une épicerie fine en ligne proposant des produits alimentaires de qualité : épicerie salée et sucrée, boissons artisanales, conserves et condiments. Nous sélectionnons rigoureusement des producteurs locaux et artisanaux en France et en Europe."
           }
         },
         {
           "@type": "Question",
-          "name": "Le CBN est-il légal en Europe ?",
+          "name": "D’où viennent vos produits ?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "La légalité dépend du pays et de la conformité du produit. En pratique, les produits CBN sont autorisés lorsqu’ils proviennent de chanvre légal, respectent les limites de THC en vigueur et disposent d’une traçabilité claire. Il est recommandé de vérifier les analyses laboratoire et la réglementation locale avant achat."
+            "text": "Nos produits proviennent majoritairement de France et d’Europe, sélectionnés directement auprès de producteurs artisanaux. Nous privilégions les circuits courts, les méthodes traditionnelles et la transparence sur les origines."
           }
         },
         {
           "@type": "Question",
-          "name": "Quels sont les effets du CBN ?",
+          "name": "Quels types de produits trouvez-vous sur Shop-ia ?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Les effets les plus souvent recherchés concernent la relaxation, le confort du soir et un meilleur cadre d’endormissement. Les ressentis varient selon la concentration, la forme du produit et la sensibilité individuelle. Le CBN ne remplace pas un avis médical et s’inscrit dans une approche bien-être non thérapeutique."
+            "text": "Shop-ia propose trois gammes principales : l’épicerie salée (pâtes artisanales, huiles, condiments), l’épicerie sucrée (confitures, miels, chocolats, biscuits) et les boissons (thés, cafés, jus de fruits et sirops artisanaux)."
           }
         },
         {
           "@type": "Question",
-          "name": "Comment utiliser l’huile CBN ?",
+          "name": "Comment est assurée la qualité des produits ?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "L’huile CBN est souvent utilisée en sublingual : quelques gouttes sous la langue pendant 60 à 90 secondes, puis avalées. Cette méthode facilite un dosage progressif. Il est conseillé de commencer bas, d’ajuster graduellement et de privilégier une utilisation régulière le soir pour observer les effets."
+            "text": "Chaque produit est sélectionné selon des critères stricts : méthodes de production artisanales, ingrédients naturels sans additifs, traçabilité complète de la source au consommateur et contrôles qualité réguliers."
           }
         }
       ]
@@ -122,38 +122,38 @@ export default function Home() {
       "@context": "https://schema.org",
       "@type": "BreadcrumbList",
       "itemListElement": [
-        { "@type": "ListItem", "position": 1, "name": "Accueil", "item": "https://greenmood.fr/" },
-        { "@type": "ListItem", "position": 2, "name": "Guide CBN Premium", "item": "https://greenmood.fr/#guide-cbn-premium" }
+        { "@type": "ListItem", "position": 1, "name": "Accueil", "item": "https://shop-ia.fr/" },
+        { "@type": "ListItem", "position": 2, "name": "Catalogue", "item": "https://shop-ia.fr/catalogue" }
       ]
     },
     {
       "@context": "https://schema.org",
       "@type": "Product",
-      "name": "Huile CBN Full Spectrum",
-      "brand": { "@type": "Brand", "name": "Green Mood CBD" },
-      "description": "Huile CBN premium full spectrum orientée relaxation et routine sommeil, issue de chanvre européen et analysée en laboratoire.",
+      "name": "Miel de Lavande de Provence",
+      "brand": { "@type": "Brand", "name": "Shop-ia" },
+      "description": "Miel de lavande pure récolté en Provence, goût floral délicat et texture crémeuse. Produit artisanal sans additifs.",
       "review": {
         "@type": "Review",
         "author": { "@type": "Person", "name": "Client vérifié" },
         "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" },
-        "reviewBody": "Produit conforme à la description, arôme agréable et utilisation simple en routine du soir."
+        "reviewBody": "Saveur exceptionnelle, parfum de lavande authentique. Un vrai produit artisanal comme on n’en trouve plus."
       }
     }
   ];
 
   const categories = [
-    { name: "Fleurs", slug: "fleurs", img: "/images/products-flower.png", count: "18 varietés" },
-    { name: "Huiles", slug: "huiles", img: "/images/cbd-oil.png", count: "8 concentrés" },
-    { name: "Résines", slug: "resines", img: "/images/products-resin.png", count: "12 textures" },
-    { name: "Cosmétiques", slug: "cosmetiques", img: "/images/lifestyle-relax.png", count: "6 produits" },
+    { name: "Épicerie Salée", slug: "epicerie-salee", img: "/images/hero-bg.png", count: "Pâtes, huiles, condiments" },
+    { name: "Épicerie Sucrée", slug: "epicerie-sucree", img: "/images/hero-bg.png", count: "Confitures, miels, chocolats" },
+    { name: "Boissons", slug: "boissons", img: "/images/hero-bg.png", count: "Thés, cafés, jus" },
+    { name: "Paniers Gourmands", slug: "bundles", img: "/images/hero-bg.png", count: "Coffrets cadeaux" },
   ];
 
   return (
     <div className="flex flex-col min-h-screen bg-zinc-950 text-white overflow-hidden">
       <SEO
-        title="CBN Premium Naturel | L'expérience ultime par N10"
-        description="Découvrez le CBN (cannabinol) de haute qualité. Une solution naturelle pour améliorer le sommeil, réduire le stress et favoriser la détente."
-        keywords="CBN, huile CBN, fleur CBN, cannabinoïde naturel, sommeil naturel, relaxation naturelle, bien-être chanvre, CBN premium"
+        title="Shop-ia | Épicerie Fine & Produits Alimentaires Artisanaux"
+        description="Découvrez Shop-ia, votre épicerie fine en ligne. Produits alimentaires artisanaux, circuits courts, épicerie salée et sucrée, boissons sélectionnées avec soin."
+        keywords="épicerie fine, produits artisanaux, alimentation naturelle, circuits courts, épicerie en ligne, shop-ia"
         schema={homeSchemas}
       />
 
@@ -182,9 +182,9 @@ export default function Home() {
 
         <div className="absolute inset-0 z-0">
           <img
-            src="/images/N10.png"
+            src="/images/hero-bg.png"
             className="w-full h-full object-cover opacity-100 scale-105"
-            alt="N10 Experience"
+            alt="Shop-ia Épicerie Fine"
           />
           <div className="absolute inset-0 bg-gradient-to-b from-zinc-950/40 via-zinc-950/70 to-zinc-950" />
         </div>
@@ -196,26 +196,26 @@ export default function Home() {
             transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
           >
             <span className="inline-block py-1.5 px-4 rounded-full border border-green-neon/30 bg-green-neon/10 text-green-neon text-[11px] font-bold tracking-[0.4em] mb-8 uppercase backdrop-blur-sm">
-              Révolution Bien-être
+              Épicerie Fine Artisanale
             </span>
             <h1 className="text-5xl md:text-7xl lg:text-8xl font-serif font-bold tracking-tighter leading-none mb-10">
-              L'EXPÉRIENCE ULTIME <br />
-              <span className="text-green-neon italic glow-green filter hue-rotate-[15deg] brightness-125">DU CBN PREMIUM NATUREL.</span>
+              SAVEURS PURES, <br />
+              <span className="text-green-neon italic glow-green filter hue-rotate-[15deg] brightness-125">QUALITÉ AUTHENTIQUE.</span>
             </h1>
             <p className="text-zinc-300 text-lg md:text-2xl max-w-3xl mx-auto font-light leading-relaxed mb-8">
-              Découvrez le CBN (cannabinol) de haute qualité, extrait de chanvre biologique et testé en laboratoire.
-              <span className="text-white font-semibold block mt-4 text-2xl">Une solution naturelle pour améliorer le sommeil, réduire le stress et favoriser la détente.</span>
+              Découvrez une sélection rigoureuse de produits alimentaires artisanaux, issus de producteurs locaux et de circuits courts.
+              <span className="text-white font-semibold block mt-4 text-2xl">Épicerie salée, sucrée, boissons — le meilleur de la gastronomie française livrée chez vous.</span>
             </p>
 
             <div className="flex flex-col items-center gap-10 justify-center mb-12">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-12 gap-y-4 text-left border border-white/10 bg-black/20 p-6 rounded-3xl backdrop-blur-md">
                 <div className="flex items-center gap-3 text-zinc-300 text-lg font-medium">
                   <CheckCircle2 className="w-5 h-5 text-green-neon flex-shrink-0" />
-                  <span>Extraction naturelle</span>
+                  <span>Producteurs artisanaux sélectionnés</span>
                 </div>
                 <div className="flex items-center gap-3 text-zinc-300 text-lg font-medium">
                   <CheckCircle2 className="w-5 h-5 text-green-neon flex-shrink-0" />
-                  <span>Tests en laboratoire certifiés</span>
+                  <span>Traçabilité origine garantie</span>
                 </div>
                 <div className="flex items-center gap-3 text-zinc-300 text-lg font-medium">
                   <CheckCircle2 className="w-5 h-5 text-green-neon flex-shrink-0" />
@@ -223,7 +223,7 @@ export default function Home() {
                 </div>
                 <div className="flex items-center gap-3 text-zinc-300 text-lg font-medium">
                   <CheckCircle2 className="w-5 h-5 text-green-neon flex-shrink-0" />
-                  <span>Qualité premium garantie</span>
+                  <span>Sans additifs ni conservateurs</span>
                 </div>
               </div>
 
@@ -233,7 +233,7 @@ export default function Home() {
               >
                 <div className="absolute inset-0 bg-white opacity-0 group-hover:opacity-10 transition-opacity" />
                 <span className="relative z-10 flex items-center gap-2 text-lg">
-                  Découvrir nos produits CBN <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                  Découvrir nos produits <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                 </span>
               </Link>
             </div>
@@ -281,7 +281,7 @@ export default function Home() {
       {/* ────────── Top Ventes ────────── */}
       {settings.home_best_sellers_enabled && <BestSellers />}
 
-      {/* ────────── N10 Deep Dive : Pourquoi choisir ────────── */}
+      {/* ────────── Pourquoi Shop-ia ────────── */}
       <section className="py-24 md:py-32 px-5">
         <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-20 items-center">
           <motion.div
@@ -293,22 +293,20 @@ export default function Home() {
             <div className="absolute -top-20 -left-20 w-64 h-64 bg-green-neon/10 blur-[100px] rounded-full" />
             <div className="relative rounded-[2.5rem] overflow-hidden border border-white/10 shadow-2xl">
               <img
-                src="/images/solution-hero-bg.png"
+                src="/images/hero-bg.png"
                 className="w-full grayscale group-hover:grayscale-0 transition-all duration-1000 group-hover:scale-105"
-                alt="Technologie N10"
+                alt="Sélection artisanale Shop-ia"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-zinc-950/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-              {/* Scanline effect */}
-              <div className="absolute inset-0 pointer-events-none bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.1)_50%),linear-gradient(90deg,rgba(255,0,0,0.02),rgba(0,255,0,0.01),rgba(0,0,255,0.02))] bg-[length:100%_2px,3px_100%] opacity-20" />
             </div>
             <div className="absolute -bottom-6 -right-6 bg-zinc-900 border border-white/10 p-6 rounded-3xl shadow-2xl backdrop-blur-xl group-hover:border-green-neon/30 transition-colors">
               <div className="flex items-center gap-4">
                 <div className="w-12 h-12 bg-green-neon/20 rounded-2xl flex items-center justify-center text-green-neon">
-                  <Microscope className="w-6 h-6" />
+                  <ShieldCheck className="w-6 h-6" />
                 </div>
                 <div>
-                  <p className="text-xs text-zinc-500 uppercase tracking-widest font-bold">Innovation</p>
-                  <p className="text-white font-bold text-lg">Lab-Certified</p>
+                  <p className="text-xs text-zinc-500 uppercase tracking-widest font-bold">Qualité</p>
+                  <p className="text-white font-bold text-lg">Certifiée Artisanal</p>
                 </div>
               </div>
             </div>
@@ -316,29 +314,29 @@ export default function Home() {
 
           <div className="space-y-10">
             <div className="space-y-4">
-              <span className="text-green-neon font-bold tracking-[0.3em] text-[11px] uppercase">L'excellence moléculaire</span>
+              <span className="text-green-neon font-bold tracking-[0.3em] text-[11px] uppercase">L'excellence alimentaire</span>
               <h2 className="text-4xl md:text-6xl font-serif font-bold leading-tight text-white">
                 Pourquoi choisir <br />
-                <span className="text-green-neon italic">le CBN ?</span>
+                <span className="text-green-neon italic">Shop-ia ?</span>
               </h2>
               <p className="text-zinc-400 text-lg font-light leading-relaxed mt-4 mb-2">
-                Le CBN (cannabinol) est un cannabinoïde naturel issu du chanvre reconnu pour ses effets relaxants. Contrairement au THC, il ne provoque aucun effet psychoactif. Nos produits sont fabriqués à partir de chanvre cultivé en Europe et analysés par des laboratoires indépendants.
+                Shop-ia sélectionne rigoureusement chaque produit auprès de producteurs artisanaux et de circuits courts. Nos critères : méthodes traditionnelles, ingrédients naturels et traçabilité complète de la source au consommateur.
               </p>
             </div>
 
             <div className="space-y-8 mt-6">
               {[
                 {
-                  t: "Favoriser un sommeil réparateur",
-                  d: "Le CBN est reconnu pour ses propriétés apaisantes, aidant à trouver le sommeil naturellement et à profiter de nuits plus reposantes."
+                  t: "Produits artisanaux sélectionnés",
+                  d: "Chaque produit est choisi directement auprès de producteurs locaux ou régionaux, garantissant authenticité et savoir-faire traditionnel."
                 },
                 {
-                  t: "Réduire le stress et l'anxiété",
-                  d: "Une solution douce et naturelle pour relâcher la pression quotidienne et retrouver une sensation de calme intérieur."
+                  t: "Circuits courts & traçabilité",
+                  d: "Nous travaillons en direct avec les producteurs pour une transparence totale sur les origines et les méthodes de fabrication."
                 },
                 {
-                  t: "Améliorer la détente musculaire",
-                  d: "Particulièrement apprécié après l'effort ou une longue journée pour soulager les tensions et soutenir le bien-être général."
+                  t: "Sans additifs ni conservateurs",
+                  d: "Nos produits sont naturels, sans additifs chimiques. La qualité des ingrédients est notre priorité absolue."
                 }
               ].map((item, i) => (
                 <motion.div
@@ -351,7 +349,7 @@ export default function Home() {
                 >
                   <div className="mt-1 flex-shrink-0">
                     <div className="w-12 h-12 rounded-2xl bg-zinc-900 border border-white/5 flex items-center justify-center text-green-neon group-hover:scale-110 transition-transform">
-                      <Zap className="w-6 h-6" />
+                      <Leaf className="w-6 h-6" />
                     </div>
                   </div>
                   <div>
@@ -371,16 +369,16 @@ export default function Home() {
           <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-8">
             <div className="max-w-2xl space-y-4">
               <h2 className="text-4xl md:text-6xl font-serif font-bold text-white leading-tight">
-                Les essentiels <span className="text-green-neon italic">du CBN</span>
+                Nos catégories <span className="text-green-neon italic">gourmandes</span>
               </h2>
               <p className="text-zinc-400 text-lg md:text-xl font-light leading-relaxed">
-                Explorez notre sélection complète de produits à base de CBN : chaque produit est conçu pour offrir qualité, pureté et efficacité optimale.
+                Explorez notre sélection complète de produits alimentaires : épicerie fine salée et sucrée, boissons artisanales et paniers cadeaux.
               </p>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-3 gap-x-4 mt-6 text-zinc-300">
-                <div className="flex items-center gap-2"><Leaf className="w-5 h-5 text-green-neon" /> Fleurs CBN – relaxation naturelle</div>
-                <div className="flex items-center gap-2"><Zap className="w-5 h-5 text-green-neon" /> Huiles CBN full spectrum</div>
-                <div className="flex items-center gap-2"><ShieldCheck className="w-5 h-5 text-green-neon" /> Résines CBN – concentration élevée</div>
-                <div className="flex items-center gap-2"><HeartHandshake className="w-5 h-5 text-green-neon" /> Compléments – soutien quotidien</div>
+                <div className="flex items-center gap-2"><Leaf className="w-5 h-5 text-green-neon" /> Épicerie salée – pâtes, huiles, condiments</div>
+                <div className="flex items-center gap-2"><Sparkles className="w-5 h-5 text-green-neon" /> Épicerie sucrée – confitures, miels, chocolats</div>
+                <div className="flex items-center gap-2"><ShieldCheck className="w-5 h-5 text-green-neon" /> Boissons – thés, cafés, jus artisanaux</div>
+                <div className="flex items-center gap-2"><HeartHandshake className="w-5 h-5 text-green-neon" /> Paniers gourmands – coffrets cadeaux</div>
               </div>
             </div>
             <Link to="/catalogue" className="group inline-flex items-center gap-3 bg-white/[0.03] border border-white/10 px-8 py-4 rounded-2xl text-white font-semibold hover:bg-green-neon hover:text-black transition-all">
@@ -426,29 +424,29 @@ export default function Home() {
         <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-20 items-center">
           <div className="order-2 lg:order-1 space-y-12">
             <div className="space-y-6">
-              <span className="text-green-neon font-bold tracking-[0.3em] text-[11px] uppercase">L'art de vivre N10</span>
+              <span className="text-green-neon font-bold tracking-[0.3em] text-[11px] uppercase">L'art de bien manger</span>
               <h2 className="text-4xl md:text-6xl font-serif font-bold text-white leading-tight">
-                Le bien-être <br />
-                <span className="text-green-neon italic font-light">naturel au quotidien.</span>
+                Saveurs authentiques <br />
+                <span className="text-green-neon italic font-light">au quotidien.</span>
               </h2>
               <p className="text-lg md:text-xl text-zinc-400 leading-relaxed font-light">
-                Prendre soin de soi est essentiel. Les cannabinoïdes naturels comme le CBN offrent une alternative douce pour retrouver équilibre et sérénité. Intégrez facilement le CBN dans votre routine.
+                Bien manger est essentiel. Les produits artisanaux et naturels offrent une alternative savoureuse aux produits industriels. Redécouvrez le goût des vraies saveurs avec Shop-ia.
               </p>
             </div>
 
             <div className="grid gap-6">
               {[
                 {
-                  title: "Améliorer votre sommeil",
-                  desc: "Retrouvez des nuits paisibles et réparatrices grâce aux propriétés relaxantes du CBN."
+                  title: "Saveurs authentiques",
+                  desc: "Des produits fabriqués selon des recettes traditionnelles, sans compromis sur la qualité des ingrédients."
                 },
                 {
-                  title: "Réduire les tensions",
-                  desc: "Soulagez le stress accumulé et favorisez un relâchement musculaire optimal."
+                  title: "Producteurs engagés",
+                  desc: "Nous soutenons des artisans et producteurs locaux qui perpétuent des savoir-faire ancestraux."
                 },
                 {
-                  title: "Favoriser la relaxation",
-                  desc: "Soutenez votre équilibre naturel et profitez de moments de calme tout au long de la journée."
+                  title: "Qualité à prix juste",
+                  desc: "Accédez à des produits d'exception sans intermédiaires, directement des producteurs à votre table."
                 }
               ].map((item, i) => (
                 <motion.div
@@ -478,8 +476,8 @@ export default function Home() {
             className="order-1 lg:order-2 relative aspect-[4/5] rounded-[3rem] overflow-hidden shadow-2xl"
           >
             <img
-              src="/images/lifestyle-relax.png"
-              alt="Lifestyle CBD"
+              src="/images/hero-bg.png"
+              alt="Épicerie fine Shop-ia"
               className="w-full h-full object-cover"
             />
             <div className="absolute inset-0 bg-gradient-to-tr from-green-neon/20 to-transparent mix-blend-overlay" />
@@ -487,7 +485,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ────────── BudTender CTA : Conseil sur-mesure ────────── */}
+      {/* ────────── Assistant Culinaire CTA : Conseil sur-mesure ────────── */}
       {user && (
         <section className="py-24 md:py-32 px-5">
           <motion.div
@@ -506,10 +504,10 @@ export default function Home() {
                 </div>
                 <h2 className="text-4xl md:text-6xl font-serif font-bold text-white leading-tight">
                   Besoin de conseils <br />
-                  <span className="text-green-neon italic">personnalisés ?</span>
+                  <span className="text-green-neon italic">culinaires ?</span>
                 </h2>
                 <p className="text-lg md:text-xl text-zinc-400 font-light max-w-2xl mx-auto lg:mx-0">
-                  Vous ne savez pas quel produit choisir ? Notre équipe vous accompagne pour trouver le produit CBN le plus adapté à vos besoins : sommeil, détente ou bien-être quotidien. Obtenez des recommandations personnalisées.
+                  Vous ne savez pas quoi choisir ? Notre assistant culinaire vous accompagne pour trouver les produits les plus adaptés à vos envies : recettes, accords mets, découvertes gastronomiques. Obtenez des recommandations personnalisées.
                 </p>
                 <div className="pt-4 flex flex-wrap gap-5 justify-center lg:justify-start">
                   <button
@@ -550,14 +548,14 @@ export default function Home() {
           <Link to="/catalogue" className="group block p-8 md:p-12 rounded-[2.5rem] border border-white/5 bg-zinc-900/50 hover:border-green-neon/30 transition-all relative overflow-hidden">
             <div className="flex flex-col md:flex-row items-center gap-10">
               <div className="w-full md:w-1/3 aspect-square rounded-[2rem] overflow-hidden">
-                <img src="/images/cbd-oil.png" alt="Nouveau produit" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+                <img src="/images/hero-bg.png" alt="Nouveau produit" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
               </div>
               <div className="flex-1 space-y-6">
                 <span className="inline-block px-4 py-1.5 bg-green-neon text-black text-[10px] font-bold uppercase tracking-widest rounded-full">Nouveau</span>
-                <h3 className="text-3xl md:text-5xl font-serif font-bold text-white">L'huile N10 Full Spectrum</h3>
-                <p className="text-xl text-zinc-400 font-light">Découvrez notre dernière innovation pour un bien-être optimal au quotidien.</p>
+                <h3 className="text-3xl md:text-5xl font-serif font-bold text-white">Le Café d'Éthiopie Single Origin</h3>
+                <p className="text-xl text-zinc-400 font-light">Découvrez notre dernière sélection pour un éveil des sens optimal au quotidien.</p>
                 <div className="pt-4 flex items-center gap-3 text-green-neon font-bold uppercase tracking-[0.2em] text-xs">
-                  Explorer l'innovation <ArrowRight className="w-5 h-5 group-hover:translate-x-2 transition-transform" />
+                  Explorer la sélection <ArrowRight className="w-5 h-5 group-hover:translate-x-2 transition-transform" />
                 </div>
               </div>
             </div>
@@ -566,186 +564,166 @@ export default function Home() {
       </section>
 
       {/* ────────── Ultra SEO Content ────────── */}
-      <section id="guide-cbn-premium" className="hidden md:block py-24 md:py-32 px-5">
+      <section id="guide-epicerie-fine" className="hidden md:block py-24 md:py-32 px-5">
         <article className="max-w-5xl mx-auto">
           <header className="rounded-[2rem] border border-white/10 bg-zinc-900/40 p-8 md:p-12 mb-10">
-            <p className="text-green-neon uppercase tracking-[0.2em] text-xs font-bold mb-4">Guide CBN premium</p>
-            <h2 className="text-3xl md:text-5xl font-serif font-bold text-white mb-6">L’expérience ultime du CBN premium naturel</h2>
+            <p className="text-green-neon uppercase tracking-[0.2em] text-xs font-bold mb-4">Guide épicerie fine</p>
+            <h2 className="text-3xl md:text-5xl font-serif font-bold text-white mb-6">L’excellence de l’épicerie fine artisanale</h2>
             <p className="text-zinc-200 leading-relaxed text-lg">
-              <strong className="text-white">Définition :</strong> Le CBN est un cannabinoïde naturel issu du chanvre, souvent utilisé dans les routines bien-être orientées relaxation et sommeil.
-              Il ne provoque pas d’effet psychoactif comparable au THC et s’intègre à des formats variés comme les huiles, fleurs ou résines selon le besoin de l’utilisateur.
+              <strong className="text-white">Notre mission :</strong> Shop-ia sélectionne rigoureusement des produits alimentaires artisanaux issus de producteurs locaux et de circuits courts.
+              Chaque produit est choisi pour ses qualités gustatives, sa traçabilité et ses méthodes de fabrication respectueuses.
             </p>
           </header>
 
           <aside className="rounded-3xl border border-white/10 bg-black/20 p-6 md:p-8 mb-10">
-            <h3 className="text-xl md:text-2xl font-serif font-bold text-white mb-4">Key Takeaways</h3>
+            <h3 className="text-xl md:text-2xl font-serif font-bold text-white mb-4">En un coup d’œil</h3>
             <ul className="space-y-2 text-zinc-300 list-disc pl-5">
-              <li>Le CBN est principalement recherché pour la relaxation du soir et le soutien d’une routine sommeil.</li>
-              <li>La qualité dépend de la culture du chanvre, des analyses laboratoire et de la traçabilité.</li>
-              <li>Les formats les plus utilisés sont les huiles CBN, les fleurs CBN et les résines CBN.</li>
-              <li>La lisibilité des informations produit améliore la compréhension par Google et les moteurs IA.</li>
+              <li>Produits artisanaux sélectionnés directement auprès de producteurs locaux.</li>
+              <li>Traçabilité complète de la source au consommateur, pour chaque produit.</li>
+              <li>Trois catégories : épicerie salée, épicerie sucrée et boissons artisanales.</li>
+              <li>Livraison rapide 24/48h en France métropolitaine.</li>
             </ul>
           </aside>
 
           <div className="space-y-10 text-zinc-300 leading-relaxed">
             <section className="space-y-4">
-              <h3 className="text-2xl md:text-3xl font-serif font-bold text-white">Le CBN : un cannabinoïde naturel aux nombreux bienfaits</h3>
+              <h3 className="text-2xl md:text-3xl font-serif font-bold text-white">Shop-ia : une épicerie fine différente</h3>
               <p>
-                Le CBN (cannabinol) est un cannabinoïde naturellement présent dans la plante de chanvre. Il se forme lorsque le THC se dégrade avec le temps et l’exposition à l’oxygène. Aujourd’hui, le CBN
-                suscite un intérêt croissant dans le domaine du bien-être naturel.
+                Shop-ia est née d’une conviction simple : les meilleurs produits alimentaires viennent de producteurs passionnés qui perpétuent des savoir-faire ancestraux. Notre sélection couvre l’épicerie salée, sucrée et les boissons artisanales.
               </p>
-              <p>Les utilisateurs apprécient particulièrement ses propriétés associées à la relaxation, à l’amélioration du sommeil, à la réduction du stress et au soutien du bien-être général.</p>
+              <p>Nos clients apprécient la qualité des saveurs, l’authenticité des recettes et la transparence sur les origines de chaque produit.</p>
             </section>
 
             <section className="space-y-4">
-              <h3 className="text-2xl md:text-3xl font-serif font-bold text-white">Pourquoi choisir des produits CBN premium</h3>
+              <h3 className="text-2xl md:text-3xl font-serif font-bold text-white">Notre processus de sélection</h3>
               <p>
-                Tous les produits CBN ne se valent pas. La qualité dépend de nombreux facteurs : culture du chanvre, méthode d’extraction, pureté des cannabinoïdes, stabilité des terpènes et rigueur des tests en
-                laboratoire.
+                Tous les produits ne se valent pas. Notre sélection repose sur des critères stricts : méthodes de production artisanales, ingrédients naturels sans additifs, goût et saveurs, et traçabilité complète.
               </p>
               <ul className="grid md:grid-cols-2 gap-3 text-zinc-200">
-                <li className="flex items-start gap-2"><CheckCircle2 className="w-5 h-5 mt-0.5 text-green-neon" /> Issus de chanvre cultivé en Europe</li>
-                <li className="flex items-start gap-2"><CheckCircle2 className="w-5 h-5 mt-0.5 text-green-neon" /> Testés en laboratoire indépendant</li>
-                <li className="flex items-start gap-2"><CheckCircle2 className="w-5 h-5 mt-0.5 text-green-neon" /> Extraction moderne et préservation des profils actifs</li>
-                <li className="flex items-start gap-2"><CheckCircle2 className="w-5 h-5 mt-0.5 text-green-neon" /> Sans pesticides ni solvants nocifs</li>
+                <li className="flex items-start gap-2"><CheckCircle2 className="w-5 h-5 mt-0.5 text-green-neon" /> Produits issus de producteurs artisanaux vérifiés</li>
+                <li className="flex items-start gap-2"><CheckCircle2 className="w-5 h-5 mt-0.5 text-green-neon" /> Méthodes traditionnelles de fabrication</li>
+                <li className="flex items-start gap-2"><CheckCircle2 className="w-5 h-5 mt-0.5 text-green-neon" /> Ingrédients naturels, sans additifs chimiques</li>
+                <li className="flex items-start gap-2"><CheckCircle2 className="w-5 h-5 mt-0.5 text-green-neon" /> Traçabilité complète de la source à la livraison</li>
               </ul>
             </section>
 
             <section className="space-y-4">
-              <h3 className="text-2xl md:text-3xl font-serif font-bold text-white">Les bienfaits potentiels du CBN pour le bien-être</h3>
+              <h3 className="text-2xl md:text-3xl font-serif font-bold text-white">Nos catégories alimentaires</h3>
               <p>
-                Le CBN est souvent associé à une sensation de détente profonde. De nombreux utilisateurs l’intègrent dans leur routine quotidienne pour améliorer leur qualité de vie, en particulier le soir ou lors
-                de périodes de stress.
-              </p>
-              <div className="space-y-3">
-                <p><strong className="text-white">Favoriser un sommeil réparateur :</strong> le CBN est populaire pour son lien avec la relaxation et l’endormissement progressif.</p>
-                <p><strong className="text-white">Réduire le stress :</strong> les cannabinoïdes comme le CBN sont parfois utilisés pour créer un moment de calme et de décompression.</p>
-                <p><strong className="text-white">Soutenir la récupération :</strong> après une journée intense ou une séance de sport, certains profils utilisateurs recherchent ses effets de détente musculaire.</p>
-              </div>
-            </section>
-
-            <section className="space-y-4">
-              <h3 className="text-2xl md:text-3xl font-serif font-bold text-white">Nos catégories de produits CBN</h3>
-              <p>
-                Notre collection a été conçue pour s’adapter à tous les profils : utilisateurs débutants, consommateurs expérimentés et personnes à la recherche d’une routine bien-être naturelle basée sur des
-                produits premium.
+                Notre catalogue est organisé en trois gammes complémentaires, pour couvrir tous vos besoins alimentaires de qualité.
               </p>
               <div className="grid md:grid-cols-3 gap-4">
                 <div className="border border-white/10 rounded-2xl p-5 bg-zinc-900/50">
-                  <h4 className="text-xl font-bold text-white mb-2">Fleurs CBN</h4>
-                  <p>Une expérience naturelle, un profil de terpènes riche et une concentration intéressante en cannabinoïdes.</p>
+                  <h4 className="text-xl font-bold text-white mb-2">Épicerie Salée</h4>
+                  <p>Pâtes artisanales, huiles d’olive, condiments, sel de mer et spécialités salées de France et d’Europe.</p>
                 </div>
                 <div className="border border-white/10 rounded-2xl p-5 bg-zinc-900/50">
-                  <h4 className="text-xl font-bold text-white mb-2">Huiles CBN</h4>
-                  <p>Un usage simple, un dosage précis et une formule full spectrum pour profiter de l’effet d’entourage.</p>
+                  <h4 className="text-xl font-bold text-white mb-2">Épicerie Sucrée</h4>
+                  <p>Confitures artisanales, miels de terroir, chocolats fins, biscuits et douceurs régionales.</p>
                 </div>
                 <div className="border border-white/10 rounded-2xl p-5 bg-zinc-900/50">
-                  <h4 className="text-xl font-bold text-white mb-2">Résines CBN</h4>
-                  <p>Une concentration plus élevée, une texture travaillée et un profil aromatique intense.</p>
+                  <h4 className="text-xl font-bold text-white mb-2">Boissons</h4>
+                  <p>Thés premium, cafés single origin, jus de fruits artisanaux et sirops naturels.</p>
                 </div>
               </div>
             </section>
 
             <section className="space-y-4">
-              <h3 className="text-2xl md:text-3xl font-serif font-bold text-white">Comment choisir le bon produit CBN</h3>
+              <h3 className="text-2xl md:text-3xl font-serif font-bold text-white">Comment choisir vos produits</h3>
               <ul className="space-y-2 list-disc pl-5">
-                <li><strong className="text-white">Pour le sommeil :</strong> privilégiez l’huile CBN en routine du soir pour un dosage maîtrisé.</li>
-                <li><strong className="text-white">Pour l’authenticité :</strong> les fleurs CBN offrent une expérience naturelle et aromatique.</li>
-                <li><strong className="text-white">Pour une intensité plus élevée :</strong> les résines CBN sont souvent choisies par les profils expérimentés.</li>
+                <li><strong className="text-white">Pour un repas :</strong> explorez notre épicerie salée avec pâtes artisanales et huiles sélectionnées.</li>
+                <li><strong className="text-white">Pour un cadeau gourmand :</strong> nos paniers gourmands combinent les meilleures spécialités.</li>
+                <li><strong className="text-white">Pour le petit-déjeuner :</strong> miels, confitures et boissons artisanales pour bien commencer la journée.</li>
               </ul>
             </section>
 
             <section className="space-y-4">
-              <h3 className="text-2xl md:text-3xl font-serif font-bold text-white">Comparatif rapide des formats CBN</h3>
+              <h3 className="text-2xl md:text-3xl font-serif font-bold text-white">Comparatif de nos gammes</h3>
               <div className="overflow-x-auto border border-white/10 rounded-2xl">
                 <table className="w-full text-sm md:text-base">
                   <thead className="bg-zinc-900 text-white">
                     <tr>
-                      <th className="text-left p-4">Format</th>
+                      <th className="text-left p-4">Catégorie</th>
                       <th className="text-left p-4">Usage principal</th>
-                      <th className="text-left p-4">Niveau de contrôle du dosage</th>
+                      <th className="text-left p-4">Idéal pour</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-white/10 text-zinc-300">
-                    <tr><td className="p-4">Huile CBN</td><td className="p-4">Routine soir / sommeil</td><td className="p-4">Élevé</td></tr>
-                    <tr><td className="p-4">Fleurs CBN</td><td className="p-4">Expérience aromatique</td><td className="p-4">Moyen</td></tr>
-                    <tr><td className="p-4">Résines CBN</td><td className="p-4">Recherche de concentration</td><td className="p-4">Moyen à élevé</td></tr>
+                    <tr><td className="p-4">Épicerie Salée</td><td className="p-4">Cuisine du quotidien</td><td className="p-4">Repas en famille</td></tr>
+                    <tr><td className="p-4">Épicerie Sucrée</td><td className="p-4">Petit-déjeuner & desserts</td><td className="p-4">Cadeaux gourmands</td></tr>
+                    <tr><td className="p-4">Boissons</td><td className="p-4">Moments de détente</td><td className="p-4">Tous les moments</td></tr>
                   </tbody>
                 </table>
               </div>
             </section>
 
             <section className="space-y-4">
-              <h3 className="text-2xl md:text-3xl font-serif font-bold text-white">Guide étape par étape : intégrer le CBN</h3>
+              <h3 className="text-2xl md:text-3xl font-serif font-bold text-white">Guide : bien choisir ses produits artisanaux</h3>
               <ol className="space-y-2 list-decimal pl-5">
-                <li>Définir l’objectif prioritaire : relaxation, sommeil ou récupération après effort.</li>
-                <li>Choisir le format adapté : huile, fleur ou résine selon vos préférences d’usage.</li>
-                <li>Commencer par un dosage modéré, puis ajuster progressivement sur plusieurs jours.</li>
-                <li>Conserver une routine régulière et suivre vos ressentis pour optimiser la constance.</li>
+                <li>Identifier votre besoin : quotidien, cadeau, découverte ou repas spécial.</li>
+                <li>Consulter les fiches produits pour les détails d’origine et de fabrication.</li>
+                <li>Découvrir les accords de saveurs suggérés par notre assistant culinaire.</li>
+                <li>Profiter de nos paniers gourmands pour combiner plusieurs spécialités.</li>
               </ol>
             </section>
 
             <section className="space-y-4">
-              <h3 className="text-2xl md:text-3xl font-serif font-bold text-white">Entités clés et ressources internes</h3>
+              <h3 className="text-2xl md:text-3xl font-serif font-bold text-white">Ressources et guides culinaires</h3>
               <p>
-                Entités couvertes : <strong className="text-white">CBN</strong>, <strong className="text-white">cannabinoïde</strong>, <strong className="text-white">chanvre</strong>,
-                <strong className="text-white"> soutien du sommeil</strong> et <strong className="text-white">relaxation</strong>.
+                Découvrez nos guides culinaires pour maîtriser l’art de l’épicerie fine : accords mets, conseils de conservation, recettes et idées de présentation.
               </p>
               <div className="flex flex-wrap gap-3">
-                <Link to="/guides/guide-cbd-sommeil" className="px-4 py-2 rounded-full bg-white/5 border border-white/10 hover:border-green-neon/40">Guide sommeil</Link>
-                <Link to="/guides/guide-dosage-cbd" className="px-4 py-2 rounded-full bg-white/5 border border-white/10 hover:border-green-neon/40">Guide dosage</Link>
-                <Link to="/guides/guide-cbd-anxiete" className="px-4 py-2 rounded-full bg-white/5 border border-white/10 hover:border-green-neon/40">Guide relaxation</Link>
-                <Link to="/catalogue?category=huiles" className="px-4 py-2 rounded-full bg-white/5 border border-white/10 hover:border-green-neon/40">Huiles CBN</Link>
+                <Link to="/guides" className="px-4 py-2 rounded-full bg-white/5 border border-white/10 hover:border-green-neon/40">Guides culinaires</Link>
+                <Link to="/catalogue?category=epicerie-salee" className="px-4 py-2 rounded-full bg-white/5 border border-white/10 hover:border-green-neon/40">Épicerie salée</Link>
+                <Link to="/catalogue?category=epicerie-sucree" className="px-4 py-2 rounded-full bg-white/5 border border-white/10 hover:border-green-neon/40">Épicerie sucrée</Link>
+                <Link to="/catalogue?category=boissons" className="px-4 py-2 rounded-full bg-white/5 border border-white/10 hover:border-green-neon/40">Boissons</Link>
               </div>
             </section>
 
             <section className="space-y-4">
-              <h3 className="text-2xl md:text-3xl font-serif font-bold text-white">Qualité contrôlée, production responsable, expérience client premium</h3>
+              <h3 className="text-2xl md:text-3xl font-serif font-bold text-white">Qualité, traçabilité, satisfaction garantie</h3>
               <p>
-                La transparence est au cœur de notre approche. Nos analyses en laboratoire vérifient la concentration en cannabinoïdes, l’absence de pesticides et de métaux lourds, ainsi que la conformité légale.
-                Notre chanvre est cultivé selon des pratiques responsables afin de préserver la biodiversité et les ressources naturelles.
+                La transparence est au cœur de notre démarche. Chaque fiche produit détaille l’origine, le producteur, les ingrédients et les méthodes de fabrication. Nous travaillons en direct avec les producteurs pour garantir la fraîcheur et l’authenticité.
               </p>
               <p>
-                Dans un marché CBN en pleine expansion, notre boutique se distingue par trois piliers : qualité, transparence et satisfaction client. Vous bénéficiez d’un service réactif, d’une livraison rapide et
-                discrète, et d’une sélection rigoureuse de produits premium.
+                Shop-ia se distingue par trois piliers : sélection rigoureuse, traçabilité totale et satisfaction client. Vous bénéficiez d’un service réactif, d’une livraison rapide et d’une sélection soigneusement actualisée selon les saisons.
               </p>
             </section>
 
             <section className="space-y-4">
-              <h3 className="text-2xl md:text-3xl font-serif font-bold text-white">FAQ rapide sur le CBN</h3>
+              <h3 className="text-2xl md:text-3xl font-serif font-bold text-white">FAQ épicerie fine</h3>
               <div className="space-y-3">
-                <p><strong className="text-white">Qu’est-ce que le CBN ?</strong> Le CBN (cannabinol) est un cannabinoïde naturellement présent dans le chanvre. Il résulte notamment de l’oxydation d’autres cannabinoïdes au fil du temps. Il est surtout associé à la détente du soir et à la création d’un contexte favorable au repos. Son usage reste bien-être et non médical.</p>
-                <p><strong className="text-white">Le CBN est-il légal en Europe ?</strong> La conformité dépend de la réglementation de chaque pays et du respect des seuils de THC imposés par la loi. Un produit CBN fiable doit présenter des analyses de laboratoire, une origine chanvre claire et des informations transparentes sur sa composition pour sécuriser l’achat.</p>
-                <p><strong className="text-white">Quels effets du CBN sont le plus souvent recherchés ?</strong> Les utilisateurs mentionnent principalement la relaxation, la réduction de la charge mentale en fin de journée et le soutien d’une routine sommeil. Les effets varient selon la concentration, la forme choisie et la sensibilité individuelle. Commencer progressivement reste la pratique recommandée.</p>
-                <p><strong className="text-white">Comment utiliser l’huile CBN ?</strong> L’usage le plus courant est sublingual : déposer quelques gouttes sous la langue, attendre environ une minute, puis avaler. Cette méthode facilite un dosage précis. Pour une évaluation plus fiable, il est conseillé de garder une routine régulière et d’ajuster progressivement.</p>
+                <p><strong className="text-white">Qu’est-ce que Shop-ia ?</strong> Shop-ia est une épicerie fine en ligne proposant des produits alimentaires artisanaux sélectionnés auprès de producteurs locaux. Épicerie salée, sucrée, boissons et paniers gourmands — tout est choisi pour sa qualité et son authenticité.</p>
+                <p><strong className="text-white">D’où viennent vos produits ?</strong> Nos produits viennent principalement de France et d’Europe. Nous travaillons directement avec des artisans et producteurs qui perpétuent des savoir-faire traditionnels. La traçabilité est assurée de la source à la livraison.</p>
+                <p><strong className="text-white">Comment sont sélectionnés les produits ?</strong> Chaque produit est évalué selon des critères stricts : méthodes artisanales, ingrédients naturels, goût, présentation et traçabilité. Seuls les meilleurs rejoignent notre catalogue.</p>
+                <p><strong className="text-white">Livrez-vous en France entière ?</strong> Oui, Shop-ia livre en France métropolitaine. La livraison est offerte dès 50€ d’achat. Nous utilisons des emballages adaptés pour préserver la qualité des produits pendant le transport.</p>
               </div>
             </section>
 
             <section className="space-y-4 border border-white/10 rounded-3xl p-6 md:p-8 bg-zinc-900/40">
               <h3 className="text-2xl md:text-3xl font-serif font-bold text-white">Crédibilité éditoriale</h3>
-              <p><strong className="text-white">Rédigé par :</strong> Équipe éditoriale Green Mood CBD</p>
-              <p><strong className="text-white">Relu par :</strong> Conseiller produit spécialisé cannabinoïdes</p>
+              <p><strong className="text-white">Rédigé par :</strong> Équipe éditoriale Shop-ia</p>
+              <p><strong className="text-white">Relu par :</strong> Conseiller culinaire et expert épicerie fine</p>
               <p><strong className="text-white">Dernière mise à jour :</strong> 08 mars 2026</p>
               <h4 className="text-lg font-semibold text-white pt-2">Références</h4>
               <ul className="list-disc pl-5 space-y-1">
-                <li>Analyses laboratoires indépendantes par lot produit.</li>
-                <li>Réglementation chanvre et THC applicable au marché européen.</li>
-                <li>Documentation interne qualité, traçabilité et conformité.</li>
+                <li>Cahier des charges producteurs et artisans partenaires.</li>
+                <li>Certifications bio et labels qualité applicables aux produits alimentaires.</li>
+                <li>Documentation interne qualité, traçabilité et sélection produits.</li>
               </ul>
             </section>
 
             <section className="space-y-4 border border-green-neon/20 rounded-3xl p-6 md:p-8 bg-green-neon/[0.03]">
-              <h3 className="text-2xl md:text-3xl font-serif font-bold text-white">Ressentez la différence du CBN premium</h3>
+              <h3 className="text-2xl md:text-3xl font-serif font-bold text-white">Goûtez la différence de l’artisanal</h3>
               <p>
-                Le bien-être commence par des produits de qualité. Que vous recherchiez une meilleure qualité de sommeil, un moment de détente ou un soutien au bien-être quotidien, notre collection CBN premium
-                vous accompagne avec des produits fiables, testés et sélectionnés avec soin.
+                Le plaisir commence par des produits de qualité. Que vous recherchiez de nouvelles saveurs, des ingrédients d’exception ou des cadeaux gourmands, notre sélection alimentaire vous accompagne avec des produits fiables, authentiques et choisis avec soin.
               </p>
-              <p className="text-zinc-200">✔ Qualité premium • ✔ Chanvre européen • ✔ Tests en laboratoire • ✔ Livraison rapide et discrète</p>
+              <p className="text-zinc-200">✔ Qualité artisanale • ✔ Circuits courts • ✔ Traçabilité garantie • ✔ Livraison rapide</p>
               <Link
                 to="/catalogue"
                 className="inline-flex items-center gap-2 mt-2 px-6 py-3 bg-green-neon text-black font-bold rounded-full hover:scale-105 transition-transform"
               >
-                Découvrir nos produits CBN
+                Découvrir nos produits
                 <ArrowRight className="w-5 h-5" />
               </Link>
             </section>
@@ -768,11 +746,11 @@ export default function Home() {
           className="relative z-10 space-y-12"
         >
           <h2 className="text-5xl md:text-7xl lg:text-8xl font-serif font-bold text-white tracking-tighter leading-none uppercase mb-6">
-            RESSENTEZ LA DIFFÉRENCE <br />
-            <span className="text-green-neon italic glow-green">DU CBN PREMIUM.</span>
+            GOÛTEZ LA DIFFÉRENCE <br />
+            <span className="text-green-neon italic glow-green">DE L'ARTISANAL.</span>
           </h2>
           <p className="text-zinc-300 text-xl md:text-2xl max-w-2xl mx-auto font-light mb-12">
-            Des produits naturels, testés en laboratoire et conçus pour votre bien-être.
+            Des produits alimentaires authentiques, sélectionnés avec soin pour votre plaisir.
           </p>
           <Link
             to="/catalogue"

@@ -5,9 +5,9 @@ export default function Legal() {
   return (
     <div className="min-h-screen bg-zinc-950 pt-20">
       <SEO
-        title="Mentions Légales - Green Mood CBD Shop"
-        description="Consultez les mentions légales, conditions générales d'utilisation et avertissements légaux de Green Mood CBD Shop."
-        keywords="mentions légales CBD, CGU Green Mood"
+        title="Mentions Légales - Shop-ia Épicerie Fine"
+        description="Consultez les mentions légales, conditions générales d'utilisation de Shop-ia, votre épicerie fine en ligne."
+        keywords="mentions légales, CGU Shop-ia, épicerie fine"
       />
       {/* Header */}
       <section className="py-24 text-center px-4 sm:px-6 lg:px-8 border-b border-white/10">
@@ -34,10 +34,10 @@ export default function Legal() {
                 1. Éditeur du site
               </h2>
               <p className="text-zinc-400 leading-relaxed">
-                Le site Green Mood CBD Shop est édité par :<br />
-                <strong>Raison sociale :</strong> Green Mood SAS
+                Le site Shop-ia est édité par :<br />
+                <strong>Raison sociale :</strong> Shop-ia SAS
                 <br />
-                <strong>Siège social :</strong> 123 Rue de la Nature, 75000
+                <strong>Siège social :</strong> 123 Rue du Marché, 75000
                 Paris
                 <br />
                 <strong>Numéro SIRET :</strong> 123 456 789 00012
@@ -45,7 +45,7 @@ export default function Legal() {
                 <strong>Directeur de la publication :</strong> [Nom du
                 Directeur]
                 <br />
-                <strong>Contact :</strong> contact@greenMood-cbd.fr
+                <strong>Contact :</strong> contact@shop-ia.fr
               </p>
             </div>
 
@@ -67,23 +67,23 @@ export default function Legal() {
 
             <div>
               <h2 className="text-2xl font-serif font-bold text-white mb-4">
-                3. Avertissement Légal N10 & CBD
+                3. Informations sur les produits alimentaires
               </h2>
               <p className="text-zinc-400 leading-relaxed">
-                Les produits proposés sur ce site et en boutique, incluant nos
-                gammes exclusives N10 et CBD, sont strictement conformes à la
-                législation européenne et française en vigueur. Leur taux de
-                Delta-9-THC est rigoureusement inférieur à 0.3%.
+                Les produits proposés sur ce site et en boutique sont des produits
+                alimentaires conformes à la réglementation européenne et française en
+                vigueur. Tous les produits respectent les normes d'hygiène et de sécurité
+                alimentaire applicables.
               </p>
               <p className="text-zinc-400 leading-relaxed mt-4">
-                <strong>Ces produits ne sont pas des médicaments.</strong> Ils
-                ne peuvent en aucun cas se substituer à un traitement médical.
-                En cas de doute, consultez un professionnel de santé.
+                <strong>Allergènes :</strong> Certains produits peuvent contenir des
+                allergènes. Les informations relatives aux allergènes sont disponibles sur
+                chaque fiche produit. En cas de doute, contactez-nous avant votre commande.
               </p>
               <p className="text-zinc-400 leading-relaxed mt-4">
-                <strong>Interdit aux mineurs.</strong> La vente de produits à
-                base de CBD est interdite aux personnes de moins de 18 ans.
-                Déconseillé aux femmes enceintes ou allaitantes.
+                Les informations nutritionnelles et les descriptions de produits sont
+                fournies à titre indicatif. Pour toute information spécifique sur un
+                produit, consultez l'étiquetage officiel du produit reçu.
               </p>
             </div>
 
@@ -93,11 +93,11 @@ export default function Legal() {
               </h2>
               <p className="text-zinc-400 leading-relaxed">
                 L'ensemble du contenu de ce site (textes, images, logos, etc.)
-                est la propriété exclusive de Green Mood SAS, sauf mention
+                est la propriété exclusive de Shop-ia SAS, sauf mention
                 contraire. Toute reproduction, distribution, modification,
                 adaptation, retransmission ou publication de ces différents
                 éléments est strictement interdite sans l'accord exprès par
-                écrit de Green Mood SAS.
+                écrit de Shop-ia SAS.
               </p>
             </div>
 
@@ -106,9 +106,11 @@ export default function Legal() {
                 5. Données Personnelles
               </h2>
               <p className="text-zinc-400 leading-relaxed">
-                Ce site vitrine ne collecte pas de données personnelles à des
-                fins commerciales. Aucun cookie de traçage publicitaire n'est
-                utilisé.
+                Ce site collecte uniquement les données personnelles nécessaires
+                au traitement de vos commandes et à la gestion de votre compte.
+                Conformément au RGPD, vous disposez d'un droit d'accès, de
+                rectification et de suppression de vos données personnelles.
+                Pour exercer ces droits, contactez-nous à : contact@shop-ia.fr
               </p>
             </div>
           </motion.div>

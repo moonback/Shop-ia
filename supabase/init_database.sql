@@ -1,5 +1,5 @@
 -- ═══════════════════════════════════════════════════════════════════════════
--- Green Mood CBD — Script d'initialisation consolidé
+-- Shop-ia — Script d'initialisation consolidé
 -- Généré le 2026-03-08
 -- ═══════════════════════════════════════════════════════════════════════════
 --
@@ -571,7 +571,7 @@ BEGIN
     RAISE EXCEPTION 'Unauthorized: admin access required';
   END IF;
 
-  v_email := COALESCE(p_email, 'pos_' || replace(v_user_id::text, '-', '') || '@greenmoon.internal');
+  v_email := COALESCE(p_email, 'pos_' || replace(v_user_id::text, '-', '') || '@shop-ia.internal');
 
   -- 1. Create auth user
   INSERT INTO auth.users (
@@ -981,133 +981,163 @@ GRANT ALL ON public.referrals TO service_role;
 -- ─── Categories ────────────────────────────────────────────────────────────
 
 INSERT INTO categories (slug, name, description, icon_name, image_url, sort_order) VALUES
-  ('fleurs', 'Fleurs CBD', 'Fleurs de CBD de haute qualité, récoltées avec soin pour une expérience aromatique exceptionnelle.', 'Flower', 'https://images.unsplash.com/photo-1584467541268-b040f83be3fd?w=800', 1),
-  ('resines', 'Résines & Pollens', 'Concentrés de CBD artisanaux, extraits selon des méthodes traditionnelles respectueuses des terpènes.', 'Droplets', 'https://images.unsplash.com/photo-1611241893603-3c359704e0ee?w=800', 2),
-  ('huiles', 'Huiles & Infusions', 'Huiles CBD full spectrum et infusions relaxantes, formulées pour votre bien-être quotidien.', 'Leaf', 'https://images.unsplash.com/photo-1617791160505-6f00504e3519?w=800', 3)
+  ('epicerie-salee', 'Épicerie Salée', 'Pâtes, riz, conserves, condiments et spécialités salées sélectionnées avec soin.', 'UtensilsCrossed', 'https://images.unsplash.com/photo-1542838132-92c53300491e?w=800', 1),
+  ('epicerie-sucree', 'Épicerie Sucrée', 'Confitures, miel, chocolats fins, biscuits et douceurs artisanales.', 'Cookie', 'https://images.unsplash.com/photo-1481391319762-47dff72954d9?w=800', 2),
+  ('boissons', 'Boissons', 'Jus de fruits, infusions, thés, cafés et boissons artisanales.', 'Coffee', 'https://images.unsplash.com/photo-1544145945-f90425340c7e?w=800', 3)
 ON CONFLICT (slug) DO NOTHING;
 
 -- ─── Products ──────────────────────────────────────────────────────────────
 
 DO $$
 DECLARE
-  cat_fleurs  uuid;
-  cat_resines uuid;
-  cat_huiles  uuid;
+  cat_salee   uuid;
+  cat_sucree  uuid;
+  cat_boissons uuid;
 BEGIN
-  SELECT id INTO cat_fleurs  FROM categories WHERE slug = 'fleurs';
-  SELECT id INTO cat_resines FROM categories WHERE slug = 'resines';
-  SELECT id INTO cat_huiles  FROM categories WHERE slug = 'huiles';
+  SELECT id INTO cat_salee    FROM categories WHERE slug = 'epicerie-salee';
+  SELECT id INTO cat_sucree   FROM categories WHERE slug = 'epicerie-sucree';
+  SELECT id INTO cat_boissons FROM categories WHERE slug = 'boissons';
 
-  INSERT INTO products (category_id, slug, name, description, cbd_percentage, thc_max, weight_grams, price, image_url, stock_quantity, is_featured) VALUES
-    (cat_fleurs, 'amnesia-haze', 'Amnesia Haze', 'Variété sativa légendaire aux arômes citronnés et terreux. Idéale pour la journée.', 18.5, 0.2, 3, 12.90, 'https://images.unsplash.com/photo-1526770542827-70b22c6e7e8d?w=800', 50, true),
-    (cat_fleurs, 'gelato', 'Gelato', 'Hybride équilibré aux notes sucrées de dessert. Parfum floral et fruité intense.', 22.0, 0.2, 3, 14.90, 'https://images.unsplash.com/photo-1559757175-5700dde675bc?w=800', 35, true),
-    (cat_fleurs, 'white-widow', 'White Widow', 'Classique intemporel aux cristaux de résine abondants. Goût boisé et épicé.', 20.0, 0.2, 3, 13.90, 'https://images.unsplash.com/photo-1585435421671-0c16764628a9?w=800', 40, false),
-    (cat_fleurs, 'strawberry', 'Strawberry', 'Notes fruitées de fraise mûre. L''une de nos variétés les plus appréciées.', 16.0, 0.2, 3, 11.90, 'https://images.unsplash.com/photo-1587049352846-4a222e784d38?w=800', 60, false),
-    (cat_resines, 'afghan', 'Afghan', 'Résine afghane traditionnelle aux arômes terreux et épicés. Texture souple et malléable.', 30.0, 0.2, 3, 18.90, 'https://images.unsplash.com/photo-1611241893603-3c359704e0ee?w=800', 25, true),
-    (cat_resines, 'jaune-mousseux', 'Jaune Mousseux', 'Pollen pressé à froid aux reflets dorés. Goût doux et légèrement floral.', 25.0, 0.2, 3, 16.90, 'https://images.unsplash.com/photo-1584467541268-b040f83be3fd?w=800', 20, false),
-    (cat_resines, 'filtre-x3', 'Filtré x3', 'Triple filtration pour une pureté maximale. Texture fine et homogène.', 35.0, 0.2, 3, 22.90, 'https://images.unsplash.com/photo-1617791160505-6f00504e3519?w=800', 15, false),
-    (cat_resines, 'ice-o-lator', 'Ice O Lator', 'Extraction à l''eau glacée pour préserver les terpènes. Qualité premium.', 40.0, 0.2, 3, 28.90, 'https://images.unsplash.com/photo-1526770542827-70b22c6e7e8d?w=800', 10, true),
-    (cat_huiles, 'huile-10-full-spectrum', 'Huile 10% Full Spectrum', 'Huile CBD full spectrum 10% avec tous les cannabinoïdes bénéfiques. Flacon 30ml.', 10.0, 0.2, null, 34.90, 'https://images.unsplash.com/photo-1606813907291-d86efa9b94db?w=800', 30, true),
-    (cat_huiles, 'huile-20-sommeil', 'Huile 20% Sommeil', 'Formule enrichie en mélatonine et CBD 20% pour un sommeil réparateur. Flacon 30ml.', 20.0, 0.2, null, 54.90, 'https://images.unsplash.com/photo-1559757175-5700dde675bc?w=800', 20, true),
-    (cat_huiles, 'infusion-detente', 'Infusion Détente', 'Mélange de plantes bio avec fleurs de CBD. Camomille, tilleul et lavande. Boîte 30 sachets.', 5.0, 0.1, null, 16.90, 'https://images.unsplash.com/photo-1587049352846-4a222e784d38?w=800', 45, false),
-    (cat_huiles, 'infusion-digestion', 'Infusion Digestion', 'Association fenouil, menthe et CBD pour soutenir le confort digestif. Boîte 30 sachets.', 5.0, 0.1, null, 16.90, 'https://images.unsplash.com/photo-1585435421671-0c16764628a9?w=800', 45, false)
+  INSERT INTO products (category_id, slug, name, description, weight_grams, price, image_url, stock_quantity, is_featured) VALUES
+    (cat_salee, 'pates-artisanales', 'Pâtes Artisanales au Blé Dur', 'Pâtes traditionnelles façonnées à la main, issues de blé dur sélectionné. Cuisson parfaite garantie.', 500, 4.90, 'https://images.unsplash.com/photo-1555949258-eb67b1ef0ceb?w=800', 50, true),
+    (cat_salee, 'huile-olive-extra-vierge', 'Huile d''Olive Extra Vierge', 'Huile d''olive première pression à froid, récoltée en Provence. Goût fruité et délicat.', null, 12.90, 'https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?w=800', 35, true),
+    (cat_salee, 'sel-de-guerande', 'Sel de Guérande Fleur de Sel', 'Fleur de sel récoltée à la main dans les marais salants de Guérande. Saveur naturelle iodée.', 250, 5.90, 'https://images.unsplash.com/photo-1611911813383-67769b37a149?w=800', 40, false),
+    (cat_salee, 'moutarde-ancienne', 'Moutarde à l''Ancienne', 'Moutarde de Dijon à l''ancienne, préparée selon une recette traditionnelle. Grains entiers.', 200, 3.90, 'https://images.unsplash.com/photo-1589985270826-4b7bb135bc9d?w=800', 60, false),
+    (cat_sucree, 'confiture-abricot', 'Confiture d''Abricot Artisanale', 'Confiture d''abricots du Roussillon, cuite en petite bassine de cuivre. 70% de fruits.', 370, 6.90, 'https://images.unsplash.com/photo-1587049352846-4a222e784d38?w=800', 30, true),
+    (cat_sucree, 'miel-lavande', 'Miel de Lavande de Provence', 'Miel de lavande pure récolté en Provence. Goût floral délicat et texture crémeuse.', 500, 9.90, 'https://images.unsplash.com/photo-1558642452-9d2a7deb7f62?w=800', 25, true),
+    (cat_sucree, 'chocolat-noir-85', 'Chocolat Noir 85% Cacao', 'Tablette de chocolat noir intense, issu de fèves de cacao sélectionnées. Origine République Dominicaine.', 100, 4.50, 'https://images.unsplash.com/photo-1481391319762-47dff72954d9?w=800', 45, false),
+    (cat_sucree, 'biscuits-bretons', 'Galettes Bretonnes au Beurre', 'Galettes pur beurre artisanales de Bretagne. Recette familiale transmise depuis 1920.', 200, 5.50, 'https://images.unsplash.com/photo-1499636136210-6f4ee915583e?w=800', 20, false),
+    (cat_boissons, 'the-vert-sencha', 'Thé Vert Sencha Japonais', 'Thé vert Sencha de première récolte du Japon. Notes végétales fraîches et umami délicat.', null, 8.90, 'https://images.unsplash.com/photo-1544145945-f90425340c7e?w=800', 30, true),
+    (cat_boissons, 'cafe-ethiopie', 'Café d''Éthiopie Single Origin', 'Café arabica d''Éthiopie (région Yirgacheffe), torréfié artisanalement. Notes florales et fruités.', 250, 14.90, 'https://images.unsplash.com/photo-1497515114629-f71d768fd07c?w=800', 20, true),
+    (cat_boissons, 'jus-pomme-artisanal', 'Jus de Pomme Artisanal', 'Jus de pomme pressé à froid, issu de vergers normands. Sans sucre ajouté, 100% pur jus.', null, 3.90, 'https://images.unsplash.com/photo-1576037728058-fe4679e62b65?w=800', 45, false),
+    (cat_boissons, 'sirop-fleur-sureau', 'Sirop de Fleur de Sureau', 'Sirop artisanal de fleurs de sureau, récolté au printemps. Parfum délicat et floral.', null, 7.50, 'https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=800', 35, false)
   ON CONFLICT (slug) DO NOTHING;
 
   -- ─── Store Settings ──────────────────────────────────────────────────────
   INSERT INTO store_settings (key, value) VALUES
     ('delivery_fee', '5.90'),
     ('delivery_free_threshold', '50.00'),
-    ('store_name', '"Green Mood CBD"'),
-    ('store_address', '"123 Rue de la Nature, 75000 Paris"'),
+    ('store_name', '"Shop-ia"'),
+    ('store_address', '"123 Rue du Marché, 75000 Paris"'),
     ('store_phone', '"01 23 45 67 89"'),
     ('store_hours', '"Lun–Sam 10h00–19h30"'),
-    ('banner_text', '"🌿 Offre de bienvenue : -10% avec le code GREENMood !"'),
+    ('banner_text', '"Offre de bienvenue : -10% avec le code SHOPWELCOME !"'),
     ('banner_enabled', 'true')
   ON CONFLICT (key) DO NOTHING;
 END $$;
 
 -- ─── SKU exemples (v6) ────────────────────────────────────────────────────
 
-UPDATE products SET sku = '10001' WHERE slug = 'amnesia-haze' AND sku IS NULL;
-UPDATE products SET sku = '10002' WHERE slug = 'gelato' AND sku IS NULL;
-UPDATE products SET sku = '10003' WHERE slug = 'afghan' AND sku IS NULL;
+UPDATE products SET sku = '10001' WHERE slug = 'pates-artisanales' AND sku IS NULL;
+UPDATE products SET sku = '10002' WHERE slug = 'huile-olive-extra-vierge' AND sku IS NULL;
+UPDATE products SET sku = '10003' WHERE slug = 'the-vert-sencha' AND sku IS NULL;
 
 -- ─── Attributs produits ────────────────────────────────────────────────────
 
 DO $$
 BEGIN
   UPDATE products SET attributes = jsonb_build_object(
-    'benefits', jsonb_build_array('Détente Profonde'),
-    'aromas', jsonb_build_array('Terreux', 'Épicé')
-  ) WHERE slug IN ('amnesia-haze', 'afghan');
+    'benefits', jsonb_build_array('Cuisine Italienne', 'Artisanal'),
+    'aromas', jsonb_build_array('Blé', 'Naturel')
+  ) WHERE slug = 'pates-artisanales';
 
   UPDATE products SET attributes = jsonb_build_object(
-    'benefits', jsonb_build_array('Focus & Énergie'),
-    'aromas', jsonb_build_array('Fruité')
-  ) WHERE slug = 'gelato';
+    'benefits', jsonb_build_array('Saveurs Méditerranéennes', 'Premium'),
+    'aromas', jsonb_build_array('Fruité', 'Délicat')
+  ) WHERE slug = 'huile-olive-extra-vierge';
 
   UPDATE products SET attributes = jsonb_build_object(
-    'benefits', jsonb_build_array('Détente Profonde'),
-    'aromas', jsonb_build_array('Naturel')
-  ) WHERE slug LIKE 'huile%';
+    'benefits', jsonb_build_array('Assaisonnement Naturel'),
+    'aromas', jsonb_build_array('Iodé', 'Marin')
+  ) WHERE slug = 'sel-de-guerande';
 
   UPDATE products SET attributes = jsonb_build_object(
-    'benefits', jsonb_build_array('Sommeil Réparateur'),
-    'aromas', jsonb_build_array('Naturel')
-  ) WHERE slug = 'huile-20-sommeil';
+    'benefits', jsonb_build_array('Recette Traditionnelle'),
+    'aromas', jsonb_build_array('Piquant', 'Acidulé')
+  ) WHERE slug = 'moutarde-ancienne';
 
   UPDATE products SET attributes = jsonb_build_object(
-    'benefits', jsonb_build_array('Détente Profonde'),
-    'aromas', jsonb_build_array('Fruité', 'Floral')
-  ) WHERE slug = 'infusion-detente';
+    'benefits', jsonb_build_array('Riche en Fruits', 'Artisanal'),
+    'aromas', jsonb_build_array('Fruité', 'Ensoleillé')
+  ) WHERE slug = 'confiture-abricot';
 
   UPDATE products SET attributes = jsonb_build_object(
-    'benefits', jsonb_build_array('Confort Digestif'),
-    'aromas', jsonb_build_array('Herbacé')
-  ) WHERE slug = 'infusion-digestion';
+    'benefits', jsonb_build_array('Naturel', 'Antioxydant'),
+    'aromas', jsonb_build_array('Floral', 'Doux')
+  ) WHERE slug = 'miel-lavande';
+
+  UPDATE products SET attributes = jsonb_build_object(
+    'benefits', jsonb_build_array('Intense', 'Antioxydant'),
+    'aromas', jsonb_build_array('Cacao', 'Boisé')
+  ) WHERE slug = 'chocolat-noir-85';
+
+  UPDATE products SET attributes = jsonb_build_object(
+    'benefits', jsonb_build_array('Pur Beurre', 'Artisanal'),
+    'aromas', jsonb_build_array('Beurre', 'Noisette')
+  ) WHERE slug = 'biscuits-bretons';
+
+  UPDATE products SET attributes = jsonb_build_object(
+    'benefits', jsonb_build_array('Antioxydant', 'Rafraîchissant'),
+    'aromas', jsonb_build_array('Végétal', 'Floral')
+  ) WHERE slug = 'the-vert-sencha';
+
+  UPDATE products SET attributes = jsonb_build_object(
+    'benefits', jsonb_build_array('Énergisant', 'Artisanal'),
+    'aromas', jsonb_build_array('Floral', 'Fruité')
+  ) WHERE slug = 'cafe-ethiopie';
+
+  UPDATE products SET attributes = jsonb_build_object(
+    'benefits', jsonb_build_array('Vitaminé', 'Naturel'),
+    'aromas', jsonb_build_array('Pomme', 'Fruité')
+  ) WHERE slug = 'jus-pomme-artisanal';
+
+  UPDATE products SET attributes = jsonb_build_object(
+    'benefits', jsonb_build_array('Artisanal', 'Rafraîchissant'),
+    'aromas', jsonb_build_array('Floral', 'Délicat')
+  ) WHERE slug = 'sirop-fleur-sureau';
 END $$;
 
 -- ─── Promo Codes ───────────────────────────────────────────────────────────
 
 INSERT INTO promo_codes (code, description, discount_type, discount_value, min_order_value, max_uses, expires_at)
 VALUES
-  ('WEEDKEND-20', 'Weekend spécial -20%', 'percent', 20, 30, 100, now() + interval '30 days'),
-  ('BIENVENUE10', 'Réduction de bienvenue 10%', 'percent', 10, 0, NULL, NULL),
-  ('CBD5EUR', 'Bon de réduction 5€', 'fixed', 5, 20, 50, now() + interval '60 days')
+  ('WEEKEND-20', 'Weekend gourmand -20%', 'percent', 20, 30, 100, now() + interval '30 days'),
+  ('SHOPWELCOME', 'Réduction de bienvenue 10%', 'percent', 10, 0, NULL, NULL),
+  ('SAVE5EUR', 'Bon de réduction 5€', 'fixed', 5, 20, 50, now() + interval '60 days')
 ON CONFLICT (code) DO NOTHING;
 
--- ─── Bundle : Pack Nuit Paisible ───────────────────────────────────────────
+-- ─── Bundle : Panier Gourmand ───────────────────────────────────────────────
 
 DO $$
 DECLARE
   bundle_id   uuid;
-  oil_id      uuid;
-  infusion_id uuid;
+  miel_id     uuid;
+  confiture_id uuid;
 BEGIN
-  SELECT id INTO oil_id      FROM products WHERE slug = 'huile-20-sommeil'  LIMIT 1;
-  SELECT id INTO infusion_id FROM products WHERE slug = 'infusion-detente'  LIMIT 1;
+  SELECT id INTO miel_id      FROM products WHERE slug = 'miel-lavande'       LIMIT 1;
+  SELECT id INTO confiture_id FROM products WHERE slug = 'confiture-abricot'  LIMIT 1;
 
-  IF oil_id IS NOT NULL AND infusion_id IS NOT NULL THEN
+  IF miel_id IS NOT NULL AND confiture_id IS NOT NULL THEN
     INSERT INTO products (
       category_id, slug, name, description,
       price, original_value, image_url, stock_quantity,
       is_available, is_featured, is_active, is_bundle
     )
     SELECT
-      (SELECT id FROM categories WHERE slug = 'huiles'),
-      'pack-nuit-paisible',
-      'Pack Nuit Paisible',
-      'Le duo parfait pour des nuits sereines : Huile CBD 20% Sommeil + Infusion Détente. Économisez 10€ vs l''achat séparé.',
-      64.90, 71.80,
-      'https://images.unsplash.com/photo-1540574163026-643ea20ade25?w=800',
+      (SELECT id FROM categories WHERE slug = 'epicerie-sucree'),
+      'panier-gourmand',
+      'Panier Gourmand Provence',
+      'Le duo sucré de Provence : Miel de Lavande + Confiture d''Abricot Artisanale. Économisez 3€ vs l''achat séparé.',
+      13.90, 16.80,
+      'https://images.unsplash.com/photo-1587049352846-4a222e784d38?w=800',
       0, true, true, true, true
-    WHERE NOT EXISTS (SELECT 1 FROM products WHERE slug = 'pack-nuit-paisible')
+    WHERE NOT EXISTS (SELECT 1 FROM products WHERE slug = 'panier-gourmand')
     RETURNING id INTO bundle_id;
 
     IF bundle_id IS NOT NULL THEN
       INSERT INTO bundle_items (bundle_id, product_id, quantity) VALUES
-        (bundle_id, oil_id, 1),
-        (bundle_id, infusion_id, 1)
+        (bundle_id, miel_id, 1),
+        (bundle_id, confiture_id, 1)
       ON CONFLICT DO NOTHING;
 
       PERFORM public.sync_bundle_stock(bundle_id);
@@ -1122,36 +1152,27 @@ END $$;
 
 DO $$
 DECLARE
-  oil10   uuid; oil20 uuid; inf_det uuid; inf_dig uuid;
-  amnesia uuid; gelato uuid; afghan  uuid;
+  pates_id   uuid; huile_olive_id uuid; miel_id uuid; confiture_id uuid;
+  the_id     uuid; cafe_id        uuid;
 BEGIN
-  SELECT id INTO oil10   FROM products WHERE slug = 'huile-10-full-spectrum' LIMIT 1;
-  SELECT id INTO oil20   FROM products WHERE slug = 'huile-20-sommeil'       LIMIT 1;
-  SELECT id INTO inf_det FROM products WHERE slug = 'infusion-detente'       LIMIT 1;
-  SELECT id INTO inf_dig FROM products WHERE slug = 'infusion-digestion'     LIMIT 1;
-  SELECT id INTO amnesia FROM products WHERE slug = 'amnesia-haze'           LIMIT 1;
-  SELECT id INTO gelato  FROM products WHERE slug = 'gelato'                 LIMIT 1;
-  SELECT id INTO afghan  FROM products WHERE slug = 'afghan'                 LIMIT 1;
+  SELECT id INTO pates_id        FROM products WHERE slug = 'pates-artisanales'       LIMIT 1;
+  SELECT id INTO huile_olive_id  FROM products WHERE slug = 'huile-olive-extra-vierge' LIMIT 1;
+  SELECT id INTO miel_id         FROM products WHERE slug = 'miel-lavande'             LIMIT 1;
+  SELECT id INTO confiture_id    FROM products WHERE slug = 'confiture-abricot'        LIMIT 1;
+  SELECT id INTO the_id          FROM products WHERE slug = 'the-vert-sencha'          LIMIT 1;
+  SELECT id INTO cafe_id         FROM products WHERE slug = 'cafe-ethiopie'            LIMIT 1;
 
-  IF oil10 IS NOT NULL AND inf_det IS NOT NULL THEN
+  IF pates_id IS NOT NULL AND huile_olive_id IS NOT NULL THEN
     INSERT INTO product_recommendations (product_id, recommended_id, sort_order)
-    VALUES (oil10, inf_det, 0) ON CONFLICT DO NOTHING;
+    VALUES (pates_id, huile_olive_id, 0) ON CONFLICT DO NOTHING;
   END IF;
-  IF oil10 IS NOT NULL AND inf_dig IS NOT NULL THEN
+  IF miel_id IS NOT NULL AND confiture_id IS NOT NULL THEN
     INSERT INTO product_recommendations (product_id, recommended_id, sort_order)
-    VALUES (oil10, inf_dig, 1) ON CONFLICT DO NOTHING;
+    VALUES (miel_id, confiture_id, 0) ON CONFLICT DO NOTHING;
   END IF;
-  IF oil20 IS NOT NULL AND inf_det IS NOT NULL THEN
+  IF the_id IS NOT NULL AND cafe_id IS NOT NULL THEN
     INSERT INTO product_recommendations (product_id, recommended_id, sort_order)
-    VALUES (oil20, inf_det, 0) ON CONFLICT DO NOTHING;
-  END IF;
-  IF amnesia IS NOT NULL AND gelato IS NOT NULL THEN
-    INSERT INTO product_recommendations (product_id, recommended_id, sort_order)
-    VALUES (amnesia, gelato, 0) ON CONFLICT DO NOTHING;
-  END IF;
-  IF amnesia IS NOT NULL AND afghan IS NOT NULL THEN
-    INSERT INTO product_recommendations (product_id, recommended_id, sort_order)
-    VALUES (amnesia, afghan, 1) ON CONFLICT DO NOTHING;
+    VALUES (the_id, cafe_id, 0) ON CONFLICT DO NOTHING;
   END IF;
 END $$;
 

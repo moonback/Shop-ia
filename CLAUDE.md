@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-**Green Moon** (Green Mood CBD Shop) is a full-featured e-commerce SPA for a physical CBD store in France. It includes an online catalog, AI-powered product assistant (BudTender), loyalty/referral programs, subscriptions, and an in-store Point-of-Sale (POS) terminal.
+**Shop-ia** is a full-featured e-commerce SPA for a fine food/grocery store in France. It includes an online catalog, AI-powered food assistant (Assistant Culinaire), loyalty/referral programs, subscriptions, and an in-store Point-of-Sale (POS) terminal.
 
 ## Commands
 

@@ -166,7 +166,7 @@ export default function BudTender() {
             const last = pastProducts[0];
             greeting = `Content de te revoir${userName ? `, ${userName}` : ''} ! 👋 La dernière fois tu avais commandé **${last.product_name}** — tu l'as apprécié ? Je suis là pour te trouver quelque chose d'encore mieux.`;
         } else {
-            greeting = `Bienvenue${userName ? `, ${userName}` : ''} ! 🌿 Je suis BudTender, votre conseiller CBD de confiance chez Green Mood. Prêt à découvrir votre sélection idéale ?`;
+            greeting = `Bienvenue${userName ? `, ${userName}` : ''} ! Je suis l'Assistant Culinaire Shop-ia, votre conseiller en épicerie fine. Que recherchez-vous comme saveurs aujourd'hui ?`;
         }
 
         // Push greeting first
@@ -183,7 +183,7 @@ export default function BudTender() {
                 }, 400);
             } else if (currentPath.includes('/catalogue/') && cartItems.length > 0) {
                 addBotMessage({
-                    text: "Excellent choix ! 🌿 Saviez-vous que ce produit se marie parfaitement avec l'une de nos huiles sublinguales pour un effet renforcé ?",
+                    text: "Excellent choix ! Saviez-vous que ce produit se marie parfaitement avec d'autres spécialités de notre sélection ?",
                     isOptions: true,
                     stepId: 'proactive',
                     options: [{ label: "En savoir plus", value: "upsell_info", emoji: "💡" }, { label: "Non merci", value: "later", emoji: "✖️" }]
@@ -265,8 +265,8 @@ export default function BudTender() {
 
     const handleShare = async () => {
         const shareData = {
-            title: 'Green Mood CBD — Mon diagnostic BudTender',
-            text: 'Je viens de faire mon diagnostic CBD avec BudTender IA Chez Green Mood ! Découvrez vos produits idéaux ici :',
+            title: 'Shop-ia — Ma sélection personnalisée',
+            text: 'Je viens de faire ma sélection personnalisée avec l\'Assistant Culinaire Shop-ia ! Découvrez vos produits idéaux ici :',
             url: window.location.origin,
         };
 
@@ -413,7 +413,7 @@ export default function BudTender() {
                                         <div className="flex flex-col">
                                             <div className="flex items-center gap-3">
                                                 <h3 className="text-xl sm:text-2xl font-black text-white tracking-tighter uppercase italic">
-                                                    BudTender <span className="text-green-neon not-italic">AI</span>
+                                                    Assistant <span className="text-green-neon not-italic">Culinaire</span>
                                                 </h3>
                                                 <div className="hidden sm:flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-green-neon/5 border border-green-neon/10">
                                                     <span className="w-1.5 h-1.5 bg-green-neon rounded-full animate-pulse shadow-[0_0_5px_rgba(57,255,20,0.8)]" />
@@ -940,12 +940,12 @@ export default function BudTender() {
                                         </form>
                                         <div className="flex flex-col items-center gap-1.5 px-1">
                                             <p className="text-[10px] text-zinc-500 text-center leading-relaxed max-w-2xl">
-                                                <span className="text-amber-500/80 font-bold uppercase tracking-widest mr-1">Avis important :</span>
-                                                BudTender est une IA de conseil. Les informations fournies ne constituent pas un avis médical.
-                                                Consultez un médecin avant toute consommation, surtout en cas de traitement ou de grossesse.
+                                                <span className="text-amber-500/80 font-bold uppercase tracking-widest mr-1">Note :</span>
+                                                L'Assistant Culinaire est une IA de conseil alimentaire. Les recommandations sont fournies à titre indicatif.
+                                                En cas d'allergies ou d'intolérances, vérifiez toujours la composition des produits avant consommation.
                                             </p>
                                             <p className="text-[9px] text-green-neon font-black uppercase tracking-[0.4em] opacity-50 mt-1">
-                                                BudTender IA Expérience
+                                                Assistant Culinaire Shop-ia IA
                                             </p>
                                         </div>
                                     </div>
