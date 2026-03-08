@@ -1077,37 +1077,6 @@ export default function AdminProductsTab({ products, categories, onRefresh }: Ad
                                         />
                                     </div>
 
-                                    <div className="col-span-2">
-                                        <label className={LABEL}>Bénéfices / Effets (séparés par des virgules)</label>
-                                        <input
-                                            value={productForm.attributes?.benefits?.join(', ') ?? ''}
-                                            onChange={(e) => setProductForm({
-                                                ...productForm,
-                                                attributes: {
-                                                    ...productForm.attributes,
-                                                    benefits: e.target.value.split(',').map(s => s.trim()).filter(Boolean)
-                                                }
-                                            })}
-                                            className={INPUT}
-                                            placeholder="Relaxation, Énergie, Sommeil..."
-                                        />
-                                    </div>
-
-                                    <div className="col-span-2">
-                                        <label className={LABEL}>Arômes / Saveurs (séparés par des virgules)</label>
-                                        <input
-                                            value={productForm.attributes?.aromas?.join(', ') ?? ''}
-                                            onChange={(e) => setProductForm({
-                                                ...productForm,
-                                                attributes: {
-                                                    ...productForm.attributes,
-                                                    aromas: e.target.value.split(',').map(s => s.trim()).filter(Boolean)
-                                                }
-                                            })}
-                                            className={INPUT}
-                                            placeholder="Citron, Terreux, Pin..."
-                                        />
-                                    </div>
                                 </div>
 
                                 <div className="space-y-4 pt-4 border-t border-zinc-800">
