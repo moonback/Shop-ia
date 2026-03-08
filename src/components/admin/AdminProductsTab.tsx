@@ -11,7 +11,6 @@ import {
     ArrowUpDown,
     Trash2,
     X,
-    Hash,
     Star,
     Eye,
     ChevronLeft,
@@ -40,11 +39,16 @@ const EMPTY_PRODUCT = {
     category_id: '',
     slug: '',
     name: '',
+    product_type: 'standard',
+    brand: null as string | null,
     sku: null as string | null,
     description: null as string | null,
     nutriscore: null as string | null,
     weight_info: null as string | null,
     weight_grams: null as number | null,
+    unit_label: 'unit',
+    min_order_quantity: 1,
+    max_order_quantity: null as number | null,
     price: 0,
     original_value: null as number | null,
     image_url: null as string | null,
@@ -64,6 +68,17 @@ const INPUT =
     'w-full bg-zinc-800 border border-zinc-700 rounded-xl px-4 py-2.5 text-sm text-white placeholder-zinc-500 focus:outline-none focus:border-green-primary transition-colors';
 const LABEL = 'block text-xs text-zinc-400 mb-1 font-medium uppercase tracking-wider';
 
+
+const PRODUCT_TYPE_OPTIONS = [
+    { value: 'standard', label: 'Standard' },
+    { value: 'food', label: 'Alimentaire' },
+    { value: 'beverage', label: 'Boisson' },
+    { value: 'service', label: 'Service' },
+    { value: 'digital', label: 'Digital' },
+    { value: 'subscription', label: 'Abonnement' },
+    { value: 'bundle', label: 'Pack / Bundle' },
+] as const;
+
 export default function AdminProductsTab({ products, categories, onRefresh }: AdminProductsTabProps) {
     const [searchQuery, setSearchQuery] = useState('');
     const [viewMode, setViewMode] = useState<'list' | 'grid'>('grid');
@@ -79,6 +94,7 @@ export default function AdminProductsTab({ products, categories, onRefresh }: Ad
     // ── Product modal ──
     const [showProductModal, setShowProductModal] = useState(false);
     const [productForm, setProductForm] = useState(EMPTY_PRODUCT);
+    const [customSpecsText, setCustomSpecsText] = useState('{}');
     const [editingProductId, setEditingProductId] = useState<string | null>(null);
     const [bundleItemsEditor, setBundleItemsEditor] = useState<{ product_id: string; quantity: number }[]>([]);
 
@@ -100,11 +116,16 @@ export default function AdminProductsTab({ products, categories, onRefresh }: Ad
                 category_id: product.category_id,
                 slug: product.slug,
                 name: product.name,
+                product_type: product.product_type ?? 'standard',
+                brand: product.brand ?? null,
                 sku: product.sku ?? null,
                 description: product.description,
                 nutriscore: product.nutriscore,
                 weight_info: product.weight_info,
                 weight_grams: product.weight_grams,
+                unit_label: product.unit_label ?? 'unit',
+                min_order_quantity: product.min_order_quantity ?? 1,
+                max_order_quantity: product.max_order_quantity ?? null,
                 price: product.price,
                 original_value: product.original_value ?? null,
                 image_url: product.image_url,
@@ -120,6 +141,7 @@ export default function AdminProductsTab({ products, categories, onRefresh }: Ad
                     ...product.attributes,
                 },
             });
+            setCustomSpecsText(JSON.stringify(product.attributes?.custom_specs ?? {}, null, 2));
             if (product.is_bundle) {
                 supabase
                     .from('bundle_items')
@@ -134,6 +156,7 @@ export default function AdminProductsTab({ products, categories, onRefresh }: Ad
         } else {
             setEditingProductId(null);
             setProductForm({ ...EMPTY_PRODUCT, category_id: categories[0]?.id ?? '' });
+            setCustomSpecsText('{}');
             setBundleItemsEditor([]);
         }
         setShowProductModal(true);
@@ -142,9 +165,27 @@ export default function AdminProductsTab({ products, categories, onRefresh }: Ad
     const handleSaveProduct = async (e: FormEvent) => {
         e.preventDefault();
         setIsSaving(true);
+        let parsedCustomSpecs: Record<string, unknown> = {};
+        try {
+            parsedCustomSpecs = customSpecsText.trim() ? JSON.parse(customSpecsText) : {};
+            if (parsedCustomSpecs === null || Array.isArray(parsedCustomSpecs) || typeof parsedCustomSpecs !== 'object') {
+                alert('Les caractéristiques JSON doivent être un objet (ex: {"origin":"Sud-Ouest"}).');
+                setIsSaving(false);
+                return;
+            }
+        } catch {
+            alert('JSON invalide dans Caractéristiques produit.');
+            setIsSaving(false);
+            return;
+        }
+
         const payload = {
             ...productForm,
             slug: productForm.slug || slugify(productForm.name),
+            attributes: {
+                ...productForm.attributes,
+                custom_specs: parsedCustomSpecs,
+            },
         };
         let savedId = editingProductId;
         if (editingProductId) {
@@ -433,7 +474,7 @@ export default function AdminProductsTab({ products, categories, onRefresh }: Ad
         (p) =>
             !searchQuery ||
             p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            (p.sku && p.sku.toLowerCase().includes(searchQuery.toLowerCase()))
+            (p.product_type && p.product_type.toLowerCase().includes(searchQuery.toLowerCase()))
     );
 
     const totalPages = Math.ceil(filteredProducts.length / ITEMS_PER_PAGE);
@@ -558,7 +599,7 @@ export default function AdminProductsTab({ products, categories, onRefresh }: Ad
                             setSearchQuery(e.target.value);
                             setCurrentPage(1);
                         }}
-                        placeholder="Rechercher par nom, SKU ou description..."
+                        placeholder="Rechercher par nom, type ou description..."
                         className="w-full bg-zinc-950/50 border border-zinc-800 rounded-xl pl-10 pr-4 py-2 text-sm text-white placeholder-zinc-500 focus:outline-none focus:border-green-neon transition-all"
                     />
                 </div>
@@ -611,7 +652,7 @@ export default function AdminProductsTab({ products, categories, onRefresh }: Ad
                                                 </div>
                                                 <div>
                                                     <p className="font-semibold text-white text-sm group-hover:text-green-neon transition-colors line-clamp-1">{product.name}</p>
-                                                    <p className="text-[10px] text-zinc-500 font-mono mt-0.5">{product.sku || 'SANS-SKU'}</p>
+                                                    <p className="text-[10px] text-zinc-500 font-mono mt-0.5">{product.product_type || 'standard'}</p>
                                                 </div>
                                             </div>
                                         </td>
@@ -1009,16 +1050,45 @@ export default function AdminProductsTab({ products, categories, onRefresh }: Ad
                                         </select>
                                     </div>
 
+                                    <div>
+                                        <label className={LABEL}>Type de produit *</label>
+                                        <select
+                                            required
+                                            value={productForm.product_type}
+                                            onChange={(e) => setProductForm({ ...productForm, product_type: e.target.value || 'standard' })}
+                                            className={INPUT}
+                                        >
+                                            {PRODUCT_TYPE_OPTIONS.map((option) => (
+                                                <option key={option.value} value={option.value}>{option.label}</option>
+                                            ))}
+                                            {!PRODUCT_TYPE_OPTIONS.some((option) => option.value === productForm.product_type) && (
+                                                <option value={productForm.product_type}>{productForm.product_type}</option>
+                                            )}
+                                        </select>
+                                    </div>
+
+                                    <div>
+                                        <label className={LABEL}>Marque</label>
+                                        <input
+                                            value={productForm.brand ?? ''}
+                                            onChange={(e) => setProductForm({ ...productForm, brand: e.target.value || null })}
+                                            className={INPUT}
+                                            placeholder="Nom de marque"
+                                        />
+                                    </div>
+
                                     <div className="col-span-2">
-                                        <label className={LABEL}>Code-barres / SKU</label>
-                                        <div className="relative">
-                                            <Hash className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500" />
-                                            <input
-                                                value={productForm.sku ?? ''}
-                                                onChange={(e) => setProductForm({ ...productForm, sku: e.target.value || null })}
-                                                className={`${INPUT} pl-10`}
-                                            />
-                                        </div>
+                                        <label className={LABEL}>Caractéristiques produit (JSON)</label>
+                                        <textarea
+                                            rows={4}
+                                            value={customSpecsText}
+                                            onChange={(e) => setCustomSpecsText(e.target.value)}
+                                            className={`${INPUT} font-mono text-xs`}
+                                            placeholder='{"origin":"Sud-Ouest","meat":"saucisse, confit"}'
+                                        />
+                                        <p className="text-[10px] text-zinc-500 mt-1">
+                                            Exemple : {`{"origin":"Sud-Ouest","meat":"saucisse, confit"}`}
+                                        </p>
                                     </div>
 
                                     <div className="col-span-2">
@@ -1101,6 +1171,38 @@ export default function AdminProductsTab({ products, categories, onRefresh }: Ad
                                             value={productForm.weight_grams ?? ''}
                                             onChange={(e) => setProductForm({ ...productForm, weight_grams: e.target.value ? parseFloat(e.target.value) : null })}
                                             className={INPUT}
+                                        />
+                                    </div>
+
+                                    <div>
+                                        <label className={LABEL}>Unité (ex: unit, kg, heure)</label>
+                                        <input
+                                            value={productForm.unit_label}
+                                            onChange={(e) => setProductForm({ ...productForm, unit_label: e.target.value || 'unit' })}
+                                            className={INPUT}
+                                        />
+                                    </div>
+
+                                    <div>
+                                        <label className={LABEL}>Quantité min commande</label>
+                                        <input
+                                            type="number"
+                                            min="1"
+                                            value={productForm.min_order_quantity}
+                                            onChange={(e) => setProductForm({ ...productForm, min_order_quantity: Math.max(1, parseInt(e.target.value) || 1) })}
+                                            className={INPUT}
+                                        />
+                                    </div>
+
+                                    <div>
+                                        <label className={LABEL}>Quantité max commande</label>
+                                        <input
+                                            type="number"
+                                            min={productForm.min_order_quantity}
+                                            value={productForm.max_order_quantity ?? ''}
+                                            onChange={(e) => setProductForm({ ...productForm, max_order_quantity: e.target.value ? Math.max(productForm.min_order_quantity, parseInt(e.target.value)) : null })}
+                                            className={INPUT}
+                                            placeholder="Illimitée"
                                         />
                                     </div>
 

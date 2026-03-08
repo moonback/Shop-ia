@@ -18,6 +18,8 @@ export interface Product {
   category_id: string;
   slug: string;
   name: string;
+  product_type: string;
+  brand: string | null;
   sku: string | null;
   description: string | null;
   nutriscore: string | null;
@@ -32,6 +34,9 @@ export interface Product {
   is_active: boolean;
   is_bundle: boolean;
   is_subscribable: boolean;
+  unit_label: string;
+  min_order_quantity: number;
+  max_order_quantity: number | null;
   attributes: {
     benefits?: string[];
     aromas?: string[];
