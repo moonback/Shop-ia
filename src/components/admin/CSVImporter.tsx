@@ -103,7 +103,7 @@ export default function CSVImporter({ type, onComplete, exampleUrl }: CSVImporte
                 is_available: row.is_available === 'true' || row.is_available === true,
                 is_active: row.is_active === 'true' || row.is_active === true,
                 is_featured: row.is_featured === 'true' || row.is_featured === true,
-                is_subscribable: row.is_subscribable === 'true' || row.is_subscribable === true,
+                is_bundle: row.is_bundle === 'true' || row.is_bundle === true,
                 image_url: row.image_url || null,
                 attributes: { benefits: [], aromas: [] } // Default attributes
             };
