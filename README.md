@@ -1,237 +1,127 @@
-<p align="center">
-  <img src="public/logo.png" alt="Shop-ia" width="240" />
-</p>
-<p align="center">
-  <img src="public/header.png" alt="Shop-ia Header" width="100%" />
-</p>
+# Shop-ia
 
+## Pitch
+Shop-ia est une application e-commerce orientée épicerie fine, pensée pour une boutique physique qui vend aussi en ligne.
+Elle propose un catalogue produit, un panier, un tunnel de commande et un espace client complet (adresses, commandes, fidélité, favoris).
+Un back-office admin est intégré pour gérer produits, catégories, commandes, promotions, stocks, clients et POS (point de vente).
+Le produit inclut aussi un assistant IA (chat + voix) pour recommander des produits via OpenRouter, Gemini Live et la recherche vectorielle Supabase.
+La cible principale est une équipe retail qui veut centraliser vente en ligne + magasin dans une même base de données sécurisée (RLS Supabase).
 
-<h1 align="center">🛒 Shop-ia — Épicerie Fine & Innovation Gastronomique</h1>
+## Badges
+![Build](https://img.shields.io/badge/build-%C3%A0%20configurer-lightgrey)
+![Licence](https://img.shields.io/badge/licence-MIT-green)
+![Version](https://img.shields.io/badge/version-0.0.0-blue)
 
-<p align="center">
-  <strong>Plateforme e-commerce premium de produits alimentaires avec assistant culinaire IA intégré (Shopia Assistant).</strong><br/>
-  Conçue pour les boutiques physiques souhaitant digitaliser leur activité via Click & Collect, livraison et point de vente (POS).<br/>
-  L'application offre une expérience immersive avec recherche sémantique vectorielle, chat IA et conseiller vocal en temps réel.
-</p>
+## Stack technique
 
-<p align="center">
-  <img src="https://img.shields.io/badge/React-19-blue?logo=react" alt="React 19" />
-  <img src="https://img.shields.io/badge/TypeScript-5.8-blue?logo=typescript" alt="TypeScript" />
-  <img src="https://img.shields.io/badge/Vite-6-purple?logo=vite" alt="Vite 6" />
-  <img src="https://img.shields.io/badge/Supabase-PostgreSQL-green?logo=supabase" alt="Supabase" />
-  <img src="https://img.shields.io/badge/Tailwind%20CSS-v4-blue?logo=tailwindcss" alt="Tailwind v4" />
-  <img src="https://img.shields.io/badge/License-MIT-green" alt="MIT License" />
-</p>
-
----
-
-## 📖 Présentation
-
-**Shop-ia** est une application e-commerce SPA (Single Page Application) conçue pour une boutique physique de gastronomie premium. Elle permet aux clients de parcourir le catalogue, recevoir des conseils personnalisés de l'Assistant Shop-ia (chat texte et voix), passer commande en Click & Collect ou en livraison, et gérer leur compte fidélité. Les administrateurs disposent d'un back-office complet avec POS intégré, analytics et gestion avancée des produits, stocks et commandes.
-
----
-
-## 🛠 Stack Technique
-
-| Technologie | Rôle | Version |
+| Technologie | Rôle | Version détectée |
 |---|---|---|
-| **React** | Framework frontend (SPA) | 19.0.0 |
-| **TypeScript** | Langage principal | ~5.8.2 |
-| **Vite** | Build tool & dev server | ^6.2.0 |
-| **Tailwind CSS** | Framework CSS utilitaire | v4.1.14 |
-| **Zustand** | Gestion d'état global | ^5.0.11 |
-| **React Router DOM** | Routage client-side | ^7.13.1 |
-| **Supabase** | Backend-as-a-Service (PostgreSQL, Auth, Storage, RLS) | ^2.98.0 |
-| **Google Gemini** | IA générative — voix temps réel (Live API) | ^1.29.0 |
-| **OpenRouter** | LLM chat (Assistant), embeddings vectoriels | API REST |
-| **Framer Motion** | Animations & transitions | ^12.23.24 |
-| **Lucide React** | Bibliothèque d'icônes | ^0.546.0 |
-| **Recharts** | Graphiques analytics admin | ^3.7.0 |
-| **React Markdown** | Rendu Markdown dans le chat | ^10.1.0 |
-| **PapaParse** | Import CSV de produits | ^5.5.3 |
-| **Viva Wallet** | Passerelle de paiement | API REST |
-| **html5-qrcode** | Scanner QR code caméra temps réel | ^2.3.8 |
-| **pgvector** | Recherche sémantique vectorielle (PostgreSQL) | Extension |
+| React | UI frontend SPA | 19.0.0 |
+| TypeScript | Typage statique | ~5.8.2 |
+| Vite | Dev server + build frontend | ^6.2.0 |
+| Tailwind CSS | Styles utilitaires | ^4.1.14 |
+| Zustand | State management client | ^5.0.11 |
+| React Router DOM | Routing SPA | ^7.13.1 |
+| Supabase JS | Auth, DB Postgres, Storage, RPC | ^2.98.0 |
+| PostgreSQL + pgvector | Données + recherche vectorielle | via Supabase |
+| OpenRouter API | Chat LLM + embeddings | API externe |
+| Google Gemini (`@google/genai`) | Voix temps réel (Gemini Live) | ^1.29.0 |
+| Recharts | Graphiques dashboard admin | ^3.7.0 |
+| PapaParse | Imports CSV produits/catégories | ^5.5.3 |
+| html5-qrcode | Scan QR côté POS | ^2.3.8 |
 
----
+## Fonctionnalités principales
 
-## ✨ Fonctionnalités
+### Côté utilisateur
+- Navigation catalogue et pages vitrines (home, boutique, guides, qualité).
+- Fiche produit détaillée avec suggestions/recommandations.
+- Panier persistant + application de codes promo.
+- Checkout (click & collect / livraison), création de commande et lignes de commande.
+- Espace compte : profil, adresses, commandes, abonnements, fidélité, avis, favoris, parrainage.
+- Assistant IA texte + assistant vocal (Gemini Live) avec mémoire utilisateur.
 
-### 👤 Utilisateurs (Client)
+### Côté administrateur
+- Dashboard opérationnel (KPIs, analytics, commandes, clients).
+- Gestion CRUD produits/catégories + import CSV + upload d'images (bucket Supabase Storage).
+- Gestion stocks, promotions, abonnements, recommandations croisées, avis.
+- POS intégré (vente en boutique, scanner QR, clôtures, rapports).
+- Paramétrage du comportement assistant IA via `store_settings`.
 
-- **Catalogue en ligne** — parcours par catégories (Épicerie, Frais, Boissons, Sucré, Salé), filtres, tri, recherche sémantique
-- **Fiches produit détaillées** — Nutri-Score, arômes, conseils de dégustation, avis vérifiés, produits complémentaires
-- **Panier persistant** — avec jauges de livraison gratuite, suggestions panier vide, codes promo
-- **Checkout complet** — Click & Collect ou livraison, intégration Viva Wallet
-- **Compte utilisateur** — profil, commandes, adresses, favoris
-- **Système de fidélité premium** — points gagnés/dépensés, carte de fidélité numérique avec QR code, tiers de fidélité (Bronze, Argent, Or, Platine), historique des transactions accessible via le menu utilisateur
-- **Programme parrainage** — codes uniques `SHOP-XXXXXX`, bonus bienvenue, suivi
-- **Abonnements** — livraisons récurrentes (hebdo / bi-mensuel / mensuel)
-- **Avis produits** — notation 5 étoiles, commentaires, modération admin
-- **🤖 Shopia Assistant (chat texte)** — quiz gourmand + conversation libre, mémoire client
-- **🎙 Shopia Assistant (voix)** — conseiller culinaire vocal temps réel via Gemini Live Audio API
-- **Guides Gastronomie** — articles SEO (accords mets-vins, conservation, nutrition)
-- **PWA** — installable, Service Worker, mode offline partiel
-- **SEO avancé** — sitemaps, schema.org, meta tags dynamiques, robots.txt AI-friendly
+## Prérequis
+- Node.js **>= 20** recommandé (Vite 6 + toolchain moderne).
+- npm **>= 10** recommandé.
+- Un projet Supabase avec DB initialisée via `supabase/init_database.sql`.
+- Clés API pour OpenRouter et Gemini si vous utilisez les fonctions IA.
 
-### 🔒 Administrateurs
-
-- **Dashboard** — KPIs temps réel (revenue, commandes, clients) avec interface **Glassmorphism** premium
-- **Marketing IA One-Click** — génération automatique de campagnes d'emailing personnalisées par segments (inactifs, VIP, nouveaux) avec IA, prévisualisation et codes promo uniques
-- **Gestion clients** — base de données complète avec **vue détaillée** (historique des commandes, adresses enregistrées, statistiques de fidélité)
-- **Gestion produits** — CRUD complet, import CSV, upload images, génération IA des descriptions
-- **Gestion catégories** — CRUD, réorganisation, icônes
-- **Gestion commandes** — suivi statuts, mise à jour, détail
-- **Gestion stocks** — mouvements, alertes de réapprovisionnement
-- **POS (Point de Vente)** — caisse enregistreuse intégrée, scan code-barres & QR (identification client via carte fidélité), création client walk-in, rapports de clôture Z, Ecrans client dynamiques
-- **Interface Admin Redesign** — Expérience immersive, thème sombre luxe, animations fluides et accents Neon Green pour un pilotage de précision
-- **Codes promo** — création, limites d'usage, expiration
-- **Bundles / Packs** — création de packs avec synchronisation automatique du stock
-- **Cross-selling** — recommandations manuelles + fallback automatique par catégorie
-- **Analytics** — graphiques revenus, top produits, statuts commandes, acquisition clients
-- **Gestion avis** — modération, publication/suppression
-- **Gestion abonnements** — vue d'ensemble, pause/annulation
-- **Gestion parrainages** — suivi, validation des récompenses
-- **Configuration Assistant** — modèle IA, température, quiz customisable, seuils restock
-- **Paramètres boutique** — bannière, horaires, frais livraison, activations fonctionnalités
-
-### ⚙️ Système / Backend
-
-- **Authentification Supabase** — email/password avec GoTrue, auto-création profil via trigger
-- **Row Level Security (RLS)** — politiques granulaires sur toutes les tables
-- **Recherche vectorielle** — pgvector (3072 dims), embeddings via OpenRouter / Gemini
-- **Fonctions RPC PostgreSQL** — `match_products`, `sync_bundle_stock`, `create_pos_customer`, `increment_promo_uses`, `get_product_recommendations`
-- **Triggers BD** — auto-sync stocks bundles, auto-génération codes parrainage
-- **Storage Supabase** — bucket `product-images` avec upload admin
-- **Caching multi-niveaux** — TTL cache produits (5 min), settings (2 min), LRU embeddings (50 entrées)
-- **Service Worker** — stratégie Stale-While-Revalidate, exclusion appels API
-
----
-
-## 🚀 Installation
-
-### Prérequis
-
-- **Node.js** ≥ 18
-- **npm** ≥ 9
-- Un projet **Supabase** configuré (avec pgvector activé)
-- Clés API : **Gemini**, **OpenRouter**, **Viva Wallet** (optionnel)
-
-### Étapes
+## Installation
+1. Cloner le dépôt.
+2. Installer les dépendances.
+3. Configurer les variables d'environnement.
+4. Lancer le projet.
 
 ```bash
-# 1. Cloner le dépôt
-git clone https://github.com/votre-org/shop-ia.git
-cd shop-ia
-
-# 2. Installer les dépendances
+git clone <URL_DU_REPO>
+cd Shop-ia
 npm install
-
-# 3. Configurer les variables d'environnement
 cp .env.example .env
-# Éditer .env avec vos clés API
-
-# 4. Initialiser la base de données
-# Exécuter supabase/migration.sql dans Supabase SQL Editor
-# Puis exécuter les migrations incrémentales (v3 à v9) dans l'ordre
-
-# 5. (Optionnel) Synchroniser les embeddings vectoriels
-npx tsx scripts/sync-embeddings.ts
-
-# 6. (Optionnel) Générer les sitemaps
-npx tsx scripts/generate-sitemap.ts
 ```
 
----
+## Configuration
 
-## ▶️ Lancement
+| Variable | Description | Exemple | Obligatoire |
+|---|---|---|---|
+| `VITE_SUPABASE_URL` | URL du projet Supabase | `https://xxx.supabase.co` | Oui |
+| `VITE_SUPABASE_ANON_KEY` | Clé publique Supabase | `eyJ...` | Oui |
+| `VITE_OPENROUTER_API_KEY` | Clé API OpenRouter (chat + embeddings) | `sk-or-...` | Oui (IA) |
+| `VITE_OPENROUTER_EMBED_MODEL` | Modèle d'embedding OpenRouter | `openai/text-embedding-3-small` | Non |
+| `VITE_OPENROUTER_EMBED_DIMENSIONS` | Dimensions embeddings attendues | `768` | Non |
+| `VITE_GEMINI_API_KEY` | Clé Gemini Live pour voix | `AIza...` | Oui (voix) |
+| `GEMINI_API_KEY` | Variable exposée dans la config Vite (`process.env.GEMINI_API_KEY`) | `AIza...` | Non |
+| `APP_URL` | URL de déploiement de l'app | `https://app.exemple.com` | Non |
+| `VITE_VIVA_WALLET_BASE_URL` | Base URL Viva Wallet | `https://demo.vivapayments.com` | Non |
+| `VITE_VIVA_CLIENT_ID` | Client ID Viva | `...` | Non |
+| `VITE_VIVA_CLIENT_SECRET` | Secret Viva (⚠️ ne pas exposer en client) | `...` | ⚠️ À compléter : actuellement présent dans `.env.example` mais non exploité côté serveur |
+| `VIVA_MERCHANT_ID` | Merchant ID Viva | `...` | Non |
+| `VIVA_API_KEY` | API key Viva | `...` | Non |
+| `DISABLE_HMR` | Désactive HMR en dev | `true` | Non |
+| `OPENROUTER_API_KEY` | Clé OpenRouter utilisée par scripts Node (`sync_vectors.ts`) | `sk-or-...` | Non (scripts) |
+| `OPENROUTER_SITE_URL` | Header HTTP-Referer scripts OpenRouter | `http://localhost:3000` | Non |
+| `OPENROUTER_APP_NAME` | Header X-Title scripts OpenRouter | `Shop-ia Vector Sync` | Non |
+
+## Lancement
 
 ### Développement
-
 ```bash
 npm run dev
-# → http://localhost:3000
 ```
 
 ### Production
-
 ```bash
 npm run build
 npm run preview
 ```
 
-### Autres commandes
+## Structure du projet
 
-| Commande | Description |
-|---|---|
-| `npm run dev` | Serveur Vite en mode développement (port 3000) |
-| `npm run build` | Build de production (`dist/`) |
-| `npm run preview` | Preview du build de production |
-| `npm run clean` | Supprime le dossier `dist/` |
-| `npm run lint` | Vérification TypeScript sans émission |
-
----
-
-## 🔑 Variables d'environnement
-
-| Variable | Rôle | Obligatoire |
-|---|---|---|
-| `VITE_SUPABASE_URL` | URL du projet Supabase | ✅ |
-| `VITE_SUPABASE_ANON_KEY` | Clé anonyme Supabase | ✅ |
-| `VITE_GEMINI_API_KEY` | Clé API Gemini (voix temps réel) | ✅ |
-| `VITE_OPENROUTER_API_KEY` | Clé API OpenRouter (chat + embeddings) | ✅ |
-| `VITE_OPENROUTER_EMBED_MODEL` | Modèle d'embedding (défaut: `openai/text-embedding-3-small`) | ❌ |
-| `VITE_OPENROUTER_EMBED_DIMENSIONS` | Dimensions embeddings (défaut: `768`) | ❌ |
-| `VITE_VIVA_WALLET_BASE_URL` | URL base Viva Wallet | ❌ |
-| `VITE_VIVA_CLIENT_ID` | Client ID Viva Wallet | ❌ |
-| `VITE_VIVA_CLIENT_SECRET` | Client Secret Viva Wallet | ❌ |
-| `VIVA_MERCHANT_ID` | Merchant ID Viva Wallet | ❌ |
-| `VIVA_API_KEY` | Clé API Viva Wallet | ❌ |
-| `GEMINI_API_KEY` | Clé Gemini (server-side / AI Studio) | ❌ |
-| `APP_URL` | URL de l'application déployée | ❌ |
-
----
-
-## 📂 Structure du projet
-
-```
-shop-ia/
-├── public/                  # Assets statiques, PWA, sitemaps, CSV
-├── scripts/                 # Scripts utilitaires (sitemap, embeddings)
+```text
+.
 ├── src/
-│   ├── components/          # Composants React réutilisables
-│   │   ├── admin/           # Onglets du back-office admin
-│   │   └── shopia-assistant-ui/ # UI de l'Assistant
-│   ├── hooks/               # Hooks personnalisés (mémoire IA, voix)
-│   ├── lib/                 # Types, utilitaires, Supabase, IA, SEO
-│   │   └── seo/             # Builders meta, schema.org, links internes
-│   ├── pages/               # Pages de l'application
-│   │   └── guides/          # Pages guides Gastronomie
-│   ├── seo/                 # Provider SEO global
-│   ├── store/               # Stores Zustand (auth, cart, settings, wishlist, toast)
-│   ├── App.tsx              # Routage principal
-│   ├── main.tsx             # Point d'entrée React
-│   └── index.css            # Design system (thème, fonts, glow, glassmorphism)
-├── supabase/                # Migrations SQL
-├── docs/                    # Documentation fonctionnelle, PRD, audits
-├── .cursorrules             # Règles de développement IA
-├── vite.config.ts           # Configuration Vite
-├── tsconfig.json            # Configuration TypeScript
-└── package.json             # Dépendances & scripts
+│   ├── components/        # UI partagée + UI admin + assistant
+│   ├── pages/             # Pages routées (public, compte, admin, POS)
+│   ├── hooks/             # Hooks métier (chat IA, voix, mémoire, etc.)
+│   ├── store/             # Stores Zustand (auth, panier, wishlist, settings)
+│   ├── lib/               # Clients, helpers, prompts IA, types, SEO
+│   └── seo/               # Provider SEO applicatif
+├── supabase/
+│   ├── init_database.sql  # Schéma principal, fonctions SQL, RLS, storage
+│   └── *.sql/js/cjs       # Scripts correctifs et maintenance
+├── scripts/               # Scripts techniques (sync embeddings, sitemap)
+├── public/                # Assets statiques, sitemaps, PWA
+└── docs/                  # Documents produit/stratégie
 ```
 
----
+## Contribuer
+Voir [CONTRIBUTING.md](./CONTRIBUTING.md).
 
-## 📄 Licence
-
-Ce projet est distribué sous licence **MIT**. Voir le fichier [LICENSE](LICENSE) pour plus de détails.
-
----
-
-## 📚 Documentation complémentaire
-
-- [ARCHITECTURE.md](ARCHITECTURE.md) — Architecture technique détaillée
-- [API_DOCS.md](API_DOCS.md) — Documentation des endpoints et RPC
-- [DB_SCHEMA.md](DB_SCHEMA.md) — Schéma de base de données complet
-- [ROADMAP.md](ROADMAP.md) — Roadmap fonctionnelle
-- [CONTRIBUTING.md](CONTRIBUTING.md) — Guide de contribution
+## Licence
+Ce projet est distribué sous licence **MIT**.
