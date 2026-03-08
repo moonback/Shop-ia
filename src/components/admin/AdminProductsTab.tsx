@@ -142,8 +142,10 @@ export default function AdminProductsTab({ products, categories, onRefresh }: Ad
     const handleSaveProduct = async (e: FormEvent) => {
         e.preventDefault();
         setIsSaving(true);
-        const { is_subscribable, is_bundle, ...restPayload } = productForm;
-        const payload = { ...restPayload, slug: productForm.slug || slugify(productForm.name) };
+        const payload = {
+            ...productForm,
+            slug: productForm.slug || slugify(productForm.name),
+        };
         let savedId = editingProductId;
         if (editingProductId) {
             const { error: updateError } = await supabase.from('products').update(payload).eq('id', editingProductId);

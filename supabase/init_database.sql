@@ -61,6 +61,7 @@ CREATE TABLE IF NOT EXISTS products (
   is_featured     boolean NOT NULL DEFAULT false,
   is_active       boolean NOT NULL DEFAULT true,
   is_bundle       boolean NOT NULL DEFAULT false,
+  is_subscribable boolean NOT NULL DEFAULT false,
   original_value  numeric(10,2),
   attributes      jsonb DEFAULT '{}'::jsonb,
   sku             text UNIQUE,
