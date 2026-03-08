@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Générateur d'Icônes - Shop-ia</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #1a1a2e;
+            color: #eee;
+        }
+        h1 {
+            color: #4ade80;
+            text-align: center;
+        }
+        .container {
+            background: #16213e;
+            padding: 20px;
+            border-radius: 12px;
+            margin: 20px 0;
+        }
+        .icon-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .icon-item {
+            text-align: center;
+            background: #0f3460;
+            padding: 10px;
+            border-radius: 8px;
+        }
+        .icon-item img {
+            image-rendering: pixelated;
+            background: white;
+            border-radius: 4px;
+        }
+        .icon-item p {
+            margin: 5px 0;
+            font-size: 12px;
+            color: #aaa;
+        }
+        button {
+            background: #4ade80;
+            color: #000;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            margin: 5px;
+        }
+        button:hover {
+            background: #22c55e;
+        }
+        .instructions {
+            background: #0f3460;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            line-height: 1.6;
+        }
+        code {
+            background: #1a1a2e;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: monospace;
+            color: #4ade80;
+        }
+    </style>
+</head>
+<body>
+    <h1>🎨 Générateur d'Icônes Shop-ia</h1>
+    
+    <div class="instructions">
+        <h3>Instructions :</h3>
+        <ol>
+            <li>Charge ton logo source (PNG avec fond transparent recommandé) :</li>
+            <input type="file" id="logoInput" accept="image/*">
+            <li>Clique sur "Générer toutes les icônes"</li>
+            <li>Télécharge chaque icône individuellement ou utilise le bouton "Tout télécharger"</li>
+            <li>Place les fichiers dans le dossier <code>/public</code> de ton projet</li>
+        </ol>
+    </div>
+
+    <div style="text-align: center;">
+        <button onclick="generateAllIcons()">🚀 Générer toutes les icônes</button>
+        <button onclick="downloadAll()">⬇️ Tout télécharger (ZIP)</button>
+    </div>
+
+    <div class="container">
+        <h3>Icônes générées :</h3>
+        <div class="icon-grid" id="iconGrid"></div>
+    </div>
+
+    <canvas id="canvas" style="display: none;"></canvas>
+
+    <script>
+        const sizes = [
+            { size: 16, name: 'favicon-16x16.png' },
+            { size: 32, name: 'favicon-32x32.png' },
+            { size: 48, name: 'favicon-48x48.png' },
+            { size: 72, name: 'icon-72x72.png', purpose: 'Android' },
+            { size: 96, name: 'icon-96x96.png', purpose: 'Android/Windows' },
+            { size: 128, name: 'icon-128x128.png', purpose: 'Chrome' },
+            { size: 144, name: 'icon-144x144.png', purpose: 'Windows/iOS' },
+            { size: 152, name: 'icon-152x152.png', purpose: 'iPad' },
+            { size: 167, name: 'icon-167x167.png', purpose: 'iPad Pro' },
+            { size: 180, name: 'apple-touch-icon.png', purpose: 'iPhone/iPad Apple' },
+            { size: 192, name: 'icon-192x192.png', purpose: 'Android/Chrome' },
+            { size: 384, name: 'icon-384x384.png', purpose: 'PWA' },
+            { size: 512, name: 'icon-512x512.png', purpose: 'PWA' }
+        ];
+
+        let sourceImage = null;
+        let generatedIcons = [];
+
+        document.getElementById('logoInput').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    sourceImage = new Image();
+                    sourceImage.onload = function() {
+                        console.log('Logo chargé:', sourceImage.width + 'x' + sourceImage.height);
+                        generateAllIcons();
+                    };
+                    sourceImage.src = event.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        function generateIcon(size, bgColor = null) {
+            const canvas = document.getElementById('canvas');
+            canvas.width = size;
+            canvas.height = size;
+            const ctx = canvas.getContext('2d');
+
+            // Fond transparent ou coloré
+            if (bgColor) {
+                ctx.fillStyle = bgColor;
+                ctx.fillRect(0, 0, size, size);
+            } else {
+                ctx.clearRect(0, 0, size, size);
+            }
+
+            if (sourceImage) {
+                // Calcul pour centrer et remplir
+                const scale = Math.max(size / sourceImage.width, size / sourceImage.height);
+                const x = (size - sourceImage.width * scale) / 2;
+                const y = (size - sourceImage.height * scale) / 2;
+                const w = sourceImage.width * scale;
+                const h = sourceImage.height * scale;
+
+                // Pour les petites tailles, utiliser un fond
+                if (size <= 64) {
+                    ctx.fillStyle = '#22c55e'; // green-primary
+                    ctx.fillRect(0, 0, size, size);
+                }
+
+                ctx.drawImage(sourceImage, x, y, w, h);
+            } else {
+                // Logo placeholder si pas d'image
+                ctx.fillStyle = '#22c55e';
+                ctx.fillRect(0, 0, size, size);
+                ctx.fillStyle = 'white';
+                ctx.font = `bold ${size * 0.5}px Arial`;
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText('S', size / 2, size / 2);
+            }
+
+            return canvas.toDataURL('image/png');
+        }
+
+        function generateAllIcons() {
+            generatedIcons = [];
+            const grid = document.getElementById('iconGrid');
+            grid.innerHTML = '';
+
+            sizes.forEach(({ size, name, purpose }) => {
+                // Fond blanc pour Apple touch icons
+                const bgColor = (size >= 152 || name === 'apple-touch-icon.png') ? '#000000' : null;
+                const dataUrl = generateIcon(size, bgColor);
+                
+                generatedIcons.push({ name, dataUrl });
+
+                const item = document.createElement('div');
+                item.className = 'icon-item';
+                item.innerHTML = `
+                    <img src="${dataUrl}" width="${Math.min(size, 64)}" height="${Math.min(size, 64)}">
+                    <p><strong>${name}</strong></p>
+                    <p>${size}x${size}</p>
+                    ${purpose ? `<p style="color: #4ade80;">${purpose}</p>` : ''}
+                    <button onclick="downloadIcon('${name}', '${dataUrl}')" style="padding: 6px 12px; font-size: 12px;">⬇️</button>
+                `;
+                grid.appendChild(item);
+            });
+        }
+
+        function downloadIcon(name, dataUrl) {
+            const link = document.createElement('a');
+            link.download = name;
+            link.href = dataUrl;
+            link.click();
+        }
+
+        function downloadAll() {
+            generatedIcons.forEach((icon, index) => {
+                setTimeout(() => {
+                    downloadIcon(icon.name, icon.dataUrl);
+                }, index * 200);
+            });
+        }
+
+        // Auto-générer avec le logo.png existant si disponible
+        window.onload = function() {
+            // Tenter de charger le logo.png du projet
+            const img = new Image();
+            img.crossOrigin = 'anonymous';
+            img.onload = function() {
+                sourceImage = img;
+                generateAllIcons();
+            };
+            img.onerror = function() {
+                console.log('Logo.png non accessible, veuillez charger un fichier manuellement');
+            };
+            // Essayer de charger depuis le parent si dans iframe, sinon utiliser placeholder
+            img.src = '/logo.png';
+        };
+    </script>
+</body>
+</html>
