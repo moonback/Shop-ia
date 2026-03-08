@@ -31,6 +31,7 @@ export interface Product {
   is_featured: boolean;
   is_active: boolean;
   is_bundle: boolean;
+  is_subscribable: boolean;
   attributes: {
     benefits?: string[];
     aromas?: string[];
