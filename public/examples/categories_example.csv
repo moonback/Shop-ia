@@ -1,5 +1,7 @@
-name,slug,description,is_active,sort_order
-Fleurs,fleurs,Une sélection des meilleures fleurs CBD de qualité premium.,true,0
-Huiles,huiles,Huiles CBD full spectrum pour votre bien-être quotidien.,true,1
-Résines,resines,Extraits et résines concentrés pour une expérience intense.,true,2
-Accessoires,accessoires,Tout le nécessaire pour profiter de vos produits.,true,3
+id,slug,name,description,icon_name,image_url,sort_order,is_active,created_at
+550e8400-e29b-41d4-a716-446655440001,fromages,Fromages,Sélection de fromages artisanaux français.,cheese-icon,https://images.unsplash.com/photo-1493119537336-3338c8a0cace?auto=format&fit=crop&q=80&w=400,0,true,2024-01-01T00:00:00Z
+550e8400-e29b-41d4-a716-446655440002,charcuteries,Charcuteries,Charcuteries artisanales et traditionnelles.,meat-icon,https://images.unsplash.com/photo-1529692236671-f1f6cf9683ba?auto=format&fit=crop&q=80&w=400,1,true,2024-01-01T00:00:00Z
+550e8400-e29b-41d4-a716-446655440003,miels,Miels et Confitures,Miels de nos régions et confitures artisanales.,honey-icon,https://images.unsplash.com/photo-1587049352846-4a222e784d38?auto=format&fit=crop&q=80&w=400,2,true,2024-01-01T00:00:00Z
+550e8400-e29b-41d4-a716-446655440004,huiles,Huiles et Vinaigres,Huiles d'olive et vinaigres artisanaux.,oil-icon,https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?auto=format&fit=crop&q=80&w=400,3,true,2024-01-01T00:00:00Z
+550e8400-e29b-41d4-a716-446655440005,epices,Épices et Aromates,Mélanges d'épices et herbes aromatiques.,spice-icon,https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&q=80&w=400,4,true,2024-01-01T00:00:00Z
+550e8400-e29b-41d4-a716-446655440006,conserves,Conserves et Terrines,Conserves artisanales et terrines du terroir.,jar-icon,https://images.unsplash.com/photo-1586201375761-83865001e31c?auto=format&fit=crop&q=80&w=400,5,true,2024-01-01T00:00:00Z
