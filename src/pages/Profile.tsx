@@ -255,7 +255,7 @@ export default function Profile() {
     };
 
     return (
-        <div className="min-h-screen bg-zinc-950 text-white pt-24 pb-32">
+        <div className="min-h-screen bg-zinc-950 text-white pt-12 pb-32">
             <SEO title="Paramètres Profil — L'Excellence Shop-ia" description="Gérez vos informations personnelles et préférences alimentaires." />
 
             <div className="max-w-12xl mx-auto px-4 sm:px-6 lg:px-8">

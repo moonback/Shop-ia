@@ -256,7 +256,7 @@ export default function ProductDetail() {
   if (!product) return null;
 
   return (
-    <div className="min-h-screen bg-zinc-950 text-white pt-24 pb-32">
+    <div className="min-h-screen bg-zinc-950 text-white pt-12 pb-32">
       <SEO
         {...buildProductSEO(product)}
         schema={[

@@ -1,39 +1,575 @@
-# Project Context
-# Shop-ia est une plateforme e-commerce premium et système POS pour boutique physique. 
-# Orientée intégration IA (GenAI/Supabase Vectors), performances client lourdes et esthétique moderne/sombre "Glassmorphism".
+# .cursorrules — Configuration AI-Assisted Development
 
-# Tech Stack  
-# TypeScript, React 19, Tailwind CSS 4, Zustand, Supabase (PostgreSQL), Vite.
+> Règles et conventions pour le développement assisté par IA sur le projet Shop-ia.
+> Langue : Français (standard pour les outils de dev)
+> Ton : Direct, impératif, actionnable
 
-# Code Style & Conventions
-- Use strict TypeScript typing: avoid `any` completely, prefer `unknown` if needed.
-- Always use explicit imports from `react` and `lucide-react`.
-- Variables in `camelCase`, components in `PascalCase`.
-- Interfaces and Types must be defined in `src/lib/types.ts` whenever shared.
+---
 
-# Architecture Patterns
-- Use "Zustand" for global state. Do not introduce Redux or Context API for state management.
-- Always interact with the database using the official Supabase JS Client exported from `src/lib/supabase.ts`.
-- Treat all UI state (modals, dropdowns) with local `useState` or standalone Zustand slice.
+## Project Context
 
-# Best Practices
-- Always clean up event listeners and `setTimeout` inside `useEffect` with return callbacks.
-- Use `lucide-react` for all icons. Avoid importing SVGs directly unless it is a custom primary logo.
-- Extract complex utility logic into `src/lib/Helpers`. Let Components be strictly UI and binding focused.
+Shop-ia est une plateforme e-commerce premium + système POS pour boutique CBD/cannabis légale.
+Architecture moderne avec IA intégrée (recherche vectorielle, assistant conversationnel), 
+performances client optimisées, design "Glassmorphism" sombre et élégant.
 
-# Common Workflows
-- When adding a new Tailwind class for a color, ensure it relies on the `--color-xyz` vars defined in `index.css`.
-- When modifying database schemas, you must mention that `init_database.sql` might need an update to reflect the change.
+### Domaine métier
+- E-commerce CBD (fleurs, huiles, résines, infusions)
+- Click & Collect + livraison
+- Programme fidélité et parrainage
+- Point de vente physique (POS)
+- Recommandations IA personnalisées
 
-# Preferred Dependencies
-- For animations: `motion` (formerly framer-motion) ONLY.
-- For routing: `react-router-dom` hooks (`useNavigate`, `useLocation`).
+---
 
-# Anti-patterns to Avoid
-- Never fetch data directly inside a `.tsx` view logic without a `useEffect` or dedicated hook.
-- Never hardcode `.env` variables. Use `import.meta.env.VITE_XYZ`.
-- Never create generic `div` soup. Prefer semantic HTML wrappers (`header`, `nav`, `main`, `article`).
+## Tech Stack
 
-# Documentation Rules
-- If a function is complex, use JSDoc `/** ... */` annotations to explain parameters and return values.
-- Keep comments in French or English consistently, but technical concepts should be clearly stated.
+| Couche | Technologie | Version |
+|--------|-------------|---------|
+| Langage | TypeScript | 5.8+ |
+| Framework | React | 19.0+ |
+| Build | Vite | 6.2+ |
+| Styling | TailwindCSS | 4.1+ |
+| State | Zustand | 5.0+ |
+| Backend | Supabase | 2.98+ |
+| Animations | Motion | 12.23+ |
+| Icons | Lucide React | 0.546+ |
+
+---
+
+## Code Style & Conventions
+
+### TypeScript
+- **NEVER** utiliser `any`. Toujours typer explicitement.
+- Utiliser `unknown` si le type est indéterminé, puis caster avec garde.
+- Préférer les `interface` aux `type` pour les objets.
+- Utiliser `satisfies` pour la validation de type sans élargissement.
+
+```typescript
+// ✅ Bien
+interface Product {
+  id: string;
+  name: string;
+  price: number;
+}
+
+function processProduct(product: Product): string {
+  return product.name;
+}
+
+// ❌ À éviter
+function processProduct(product: any): any { ... }
+```
+
+### Naming Conventions
+
+| Élément | Convention | Exemple |
+|---------|------------|---------|
+| Variables | camelCase | `const productCount = 5;` |
+| Fonctions | camelCase, verbe d'action | `function fetchProducts() {}` |
+| Composants | PascalCase | `function ProductCard() {}` |
+| Interfaces | PascalCase, suffixe si type | `interface ProductProps {}` |
+| Types union | PascalCase | `type Status = 'active' \| 'inactive';` |
+| Constants | SCREAMING_SNAKE_CASE | `const MAX_CART_ITEMS = 50;` |
+| Hooks | camelCase, prefixe `use` | `function useProductData() {}` |
+| Fichiers | PascalCase (composants), camelCase (utils) | `ProductCard.tsx`, `formatPrice.ts` |
+
+### Imports
+
+```typescript
+// ✅ Ordre : React → Libs tierces → Internal → Types
+import { useState, useEffect } from 'react';
+import { motion } from 'motion/react';
+import { ShoppingCart } from 'lucide-react';
+
+import { supabase } from '../lib/supabase';
+import { useCartStore } from '../store/cartStore';
+import type { Product } from '../lib/types';
+```
+
+### Organisations des imports
+
+1. React & hooks
+2. Librairies externes (motion, recharts, etc.)
+3. Icons (lucide-react)
+4. Lib internes (supabase, types)
+5. Stores (zustand)
+6. Hooks custom
+7. Composants relatifs
+
+---
+
+## Architecture Patterns
+
+### State Management
+
+- **Zustand uniquement** pour l'état global. Jamais Redux ou Context API pour le state.
+- Stores atomiques, un par domaine : `cartStore`, `authStore`, `settingsStore`.
+- Pas de providers React, pas de prop drilling.
+
+```typescript
+// ✅ Pattern Zustand
+import { create } from 'zustand';
+
+interface CartStore {
+  items: CartItem[];
+  addItem: (item: CartItem) => void;
+}
+
+export const useCartStore = create<CartStore>((set) => ({
+  items: [],
+  addItem: (item) => set((state) => ({ items: [...state.items, item] })),
+}));
+```
+
+### Database Access
+
+- TOUJOURS utiliser le client Supabase exporté depuis `src/lib/supabase.ts`.
+- TOUJOURS typer les requêtes avec les types de `src/lib/types.ts`.
+- Jamais de SQL raw côté client.
+
+```typescript
+// ✅ Pattern Supabase
+import { supabase } from '../lib/supabase';
+import type { Product } from '../lib/types';
+
+const { data, error } = await supabase
+  .from('products')
+  .select('*, category(*)')
+  .eq('is_active', true)
+  .single();
+
+if (error) throw error;
+return data as Product;
+```
+
+### Component Architecture
+
+```typescript
+// Structure d'un composant
+import { useState, useCallback } from 'react';
+import { motion } from 'motion/react';
+import type { Product } from '../lib/types';
+
+// Types privés
+interface ProductCardProps {
+  product: Product;
+  onAddToCart: (id: string) => void;
+}
+
+// Sous-composants privés (si petit, même fichier)
+const StockBadge = ({ quantity }: { quantity: number }) => (
+  <span className={quantity > 0 ? 'text-green-500' : 'text-red-500'}>
+    {quantity > 0 ? 'En stock' : 'Rupture'}
+  </span>
+);
+
+// Composant principal
+export default function ProductCard({ product, onAddToCart }: ProductCardProps) {
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleAddToCart = useCallback(async () => {
+    setIsLoading(true);
+    try {
+      await onAddToCart(product.id);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [product.id, onAddToCart]);
+
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      className="p-4 bg-zinc-900 rounded-xl"
+    >
+      <h3 className="font-bold text-white">{product.name}</h3>
+      <StockBadge quantity={product.stock_quantity} />
+      <button
+        onClick={handleAddToCart}
+        disabled={isLoading}
+        className="mt-2 px-4 py-2 bg-green-600 text-white rounded-lg"
+      >
+        {isLoading ? 'Chargement...' : 'Ajouter'}
+      </button>
+    </motion.div>
+  );
+}
+```
+
+### Hooks Custom
+
+- Extraire la logique complexe dans des hooks custom.
+- Nommer avec prefixe `use`.
+- Documenter avec JSDoc si complexe.
+
+```typescript
+// ✅ Pattern Hook
+import { useState, useEffect } from 'react';
+import { supabase } from '../lib/supabase';
+
+interface UseProductsReturn {
+  products: Product[];
+  isLoading: boolean;
+  error: Error | null;
+}
+
+export function useProducts(categoryId?: string): UseProductsReturn {
+  const [products, setProducts] = useState<Product[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<Error | null>(null);
+
+  useEffect(() => {
+    let mounted = true;
+
+    async function fetchProducts() {
+      try {
+        let query = supabase.from('products').select('*');
+        if (categoryId) query = query.eq('category_id', categoryId);
+        
+        const { data, error } = await query;
+        if (error) throw error;
+        
+        if (mounted) setProducts(data || []);
+      } catch (err) {
+        if (mounted) setError(err as Error);
+      } finally {
+        if (mounted) setIsLoading(false);
+      }
+    }
+
+    fetchProducts();
+    return () => { mounted = false; };
+  }, [categoryId]);
+
+  return { products, isLoading, error };
+}
+```
+
+---
+
+## Best Practices
+
+### React
+
+- **Hooks** : Toujours en haut du composant, jamais dans des conditions.
+- **useEffect** : Cleanup obligatoire pour listeners, timeouts, subscriptions.
+- **useCallback** : Pour les fonctions passées aux enfants ou deps d'autres hooks.
+- **useMemo** : Pour les calculs coûteux uniquement.
+- **Événements** : Prefixe `handle` : `handleClick`, `handleSubmit`, `handleChange`.
+
+```typescript
+// ✅ Cleanup useEffect
+useEffect(() => {
+  const timer = setTimeout(() => { ... }, 1000);
+  const listener = () => { ... };
+  window.addEventListener('resize', listener);
+
+  return () => {
+    clearTimeout(timer);
+    window.removeEventListener('resize', listener);
+  };
+}, []);
+```
+
+### TailwindCSS
+
+- **Ordre des classes** : Layout → Box Model → Visual → Typography → Misc
+- **Couleurs** : Utiliser les variables CSS du projet (`--green-primary`, etc.)
+- **Responsive** : Mobile-first (`sm:`, `md:`, `lg:`)
+- **États** : `hover:`, `focus:`, `active:`, `disabled:`
+
+```tsx
+// ✅ Ordre cohérent
+<div className="
+  flex items-center justify-between gap-4    /* Layout */
+  px-4 py-3 bg-zinc-900 rounded-xl shadow-lg  /* Box Model + Visual */
+  text-sm font-medium text-white              /* Typography */
+  hover:bg-zinc-800 transition-colors          /* Misc */
+"/>
+```
+
+### Supabase & RLS
+
+- **Toutes les tables** doivent avoir RLS activé.
+- **Policies** : owner_read, owner_write, admin_all.
+- **Fonctions RPC** : Pour la logique complexe, jamais dans le client.
+
+```sql
+-- ✅ Pattern RLS
+CREATE POLICY "products_owner_read" ON products
+FOR SELECT USING (user_id = auth.uid());
+
+CREATE POLICY "products_admin_all" ON products
+FOR ALL USING (public.is_admin());
+```
+
+### Icons
+
+- **Lucide React uniquement**. Jamais de SVG inline sauf logo custom.
+- Import tree-shakeable : `import { ShoppingCart } from 'lucide-react';`
+
+### Error Handling
+
+```typescript
+// ✅ Pattern Error
+async function fetchData() {
+  try {
+    const { data, error } = await supabase.from('products').select('*');
+    if (error) throw error;
+    return data;
+  } catch (err) {
+    console.error('Failed to fetch products:', err);
+    // User feedback via toast
+    showToast('Erreur lors du chargement des produits', 'error');
+    return null;
+  }
+}
+```
+
+---
+
+## Common Workflows
+
+### Ajouter un nouveau composant
+
+1. Créer fichier dans `src/components/` ou sous-dossier
+2. Définir les props interface
+3. Implémenter avec TypeScript strict
+4. Exporter par défaut
+5. Ajouter au catalogue si réutilisable
+
+### Modifier la base de données
+
+1. Mettre à jour `supabase/init_database.sql`
+2. Ajouter les migrations si existantes
+3. Créer/maj les policies RLS
+4. Mettre à jour `src/lib/types.ts`
+5. Tester les changements
+
+### Ajouter une route
+
+1. Créer page dans `src/pages/`
+2. Ajouter lazy import dans `App.tsx`
+3. Configurer route dans `<Routes>`
+4. Ajouter SEO metadata si publique
+
+### Travailler avec les couleurs
+
+Les couleurs du projet sont définies dans `src/index.css` :
+
+```css
+:root {
+  --green-primary: #22c55e;
+  --green-neon: #4ade80;
+  --green-dark: #166534;
+  --zinc-950: #09090b;
+  --zinc-900: #18181b;
+}
+```
+
+Utiliser `bg-zinc-900`, `text-green-neon`, etc.
+
+---
+
+## Preferred Dependencies
+
+| Usage | Dépendance | Alternative interdite |
+|-------|------------|------------------------|
+| Animations | `motion` | framer-motion (ancien nom) |
+| Routing | `react-router-dom` | wouter, reach-router |
+| State | `zustand` | Redux, MobX, Context API |
+| Icons | `lucide-react` | react-icons, font-awesome |
+| Charts | `recharts` | chart.js, d3 (sauf cas complexe) |
+| Markdown | `react-markdown` | html-react-parser |
+| CSV | `papaparse` | csv-parser côté client |
+| QR Code | `qrcode.react` | qrcode.js |
+
+---
+
+## Anti-patterns to Avoid
+
+### React
+
+```typescript
+// ❌ Ne pas faire
+function BadComponent() {
+  // Pas de fetch direct sans useEffect
+  const data = fetch('/api/data');
+  
+  // Pas de conditions sur les hooks
+  if (condition) {
+    const [state, setState] = useState(0);
+  }
+  
+  // Pas de useEffect sans deps explicites
+  useEffect(() => { ... });
+  
+  // Pas de console.log en production
+  console.log('Debug:', data);
+}
+
+// ✅ Faire
+function GoodComponent() {
+  const [data, setData] = useState(null);
+  
+  useEffect(() => {
+    fetch('/api/data').then(setData);
+  }, []); // deps explicites
+}
+```
+
+### TypeScript
+
+```typescript
+// ❌ Ne pas faire
+let x: any;
+const fn = (a: any): any => a;
+
+// ✅ Faire
+let x: unknown;
+const fn = <T>(a: T): T => a;
+```
+
+### CSS/Tailwind
+
+```tsx
+// ❌ Ne pas faire
+<div style={{ marginTop: '10px' }} />  // Inline styles
+<div className="mt-[10px]" />         // Arbitrary values sauf nécessaire
+
+// ✅ Faire
+<div className="mt-2" />               // Standard spacing scale
+```
+
+### Env Variables
+
+```typescript
+// ❌ Ne pas faire
+const API_KEY = 'sk-123456';  // Hardcoded
+
+// ✅ Faire
+const API_KEY = import.meta.env.VITE_API_KEY;
+```
+
+### HTML Sémantique
+
+```tsx
+// ❌ Ne pas faire
+<div className="header">...</div>
+<div className="nav">...</div>
+
+// ✅ Faire
+<header>...</header>
+<nav>...</nav>
+<main>...</main>
+<article>...</article>
+```
+
+---
+
+## Documentation Rules
+
+### JSDoc pour fonctions complexes
+
+```typescript
+/**
+ * Calcule le total du panier avec remises et frais de port.
+ * @param items - Les articles du panier
+ * @param promoCode - Code promo optionnel
+ * @param deliveryFee - Frais de livraison
+ * @returns Le montant total TTC
+ * @throws {Error} Si le panier est vide
+ */
+function calculateCartTotal(
+  items: CartItem[],
+  promoCode?: string,
+  deliveryFee: number = 0
+): number {
+  // ...
+}
+```
+
+### Commentaires
+
+- **Préférer** le code auto-documenté avec bons noms.
+- **Commenter** le "pourquoi", pas le "quoi".
+- **Langue** : Français pour les règles métier, anglais pour les concepts techniques.
+
+```typescript
+// ✅ Bon commentaire
+// On utilise <=> (cosine distance) car il est plus performant
+// que < (euclidean) pour les embeddings normalisés
+
+// ❌ Mauvais commentaire
+// Boucle sur les produits
+products.forEach(product => { ... });
+```
+
+---
+
+## Performance Guidelines
+
+1. **Lazy loading** : Routes avec `React.lazy()`
+2. **Code splitting** : Séparer admin chunks
+3. **Images** : WebP, lazy loading, blur placeholder
+4. **Memoization** : `useMemo`, `useCallback` judicieux
+5. **Virtualization** : Pour les listes longues (>100 items)
+6. **Bundle** : Analyser avec `vite-bundle-visualizer`
+
+---
+
+## Security Guidelines
+
+1. **Jamais** de secrets côté client (sauf clés publiques)
+2. **Toujours** valider les entrées utilisateur
+3. **RLS** obligatoire sur toutes les tables
+4. **XSS** : Échapper le HTML, utiliser ReactMarkdown safe
+5. **CSP** : Envisager Content-Security-Policy headers
+
+---
+
+## Testing Guidelines (à venir)
+
+```bash
+# Tests unitaires
+npm run test:unit
+
+# Tests E2E
+npm run test:e2e
+
+# Lint
+npm run lint
+```
+
+---
+
+## Summary
+
+| Règle | Priorité |
+|-------|----------|
+| TypeScript strict (no `any`) | 🔴 Critique |
+| Zustand pour state | 🔴 Critique |
+| Supabase client typé | 🔴 Critique |
+| RLS policies | 🔴 Critique |
+| Lucide icons | 🟡 Important |
+| Motion animations | 🟡 Important |
+| JSDoc complexe | 🟢 Recommandé |
+| Cleanup effects | 🔴 Critique |
+
+---
+
+# STOP - Réfléchis avant de générer
+
+1. Ce code respecte-t-il toutes les règles ci-dessus ?
+2. Les types sont-ils explicites et stricts ?
+3. Les hooks suivent-ils les règles de React ?
+4. Les couleurs utilisent-elles le design system ?
+5. La sécurité RLS est-elle prise en compte ?
+
+Si réponse non à l'une de ces questions → Corriger avant de proposer.
+
+---
+
+<p align="center">
+  .cursorrules | Shop-ia | Mars 2026
+</p>

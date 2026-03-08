@@ -59,7 +59,7 @@ export default function Cart() {
   }
 
   return (
-    <div className="min-h-screen bg-zinc-950 text-white pt-24 pb-32 overflow-x-hidden">
+    <div className="min-h-screen bg-zinc-950 text-white pt-12 pb-32 overflow-x-hidden">
       <SEO title="Mon Panier — L'Excellence Shop-ia" description="Récapitulatif de votre panier d'achats." />
 
       <div className="max-w-12xl mx-auto px-4 sm:px-6 lg:px-8">

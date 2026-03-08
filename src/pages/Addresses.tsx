@@ -59,7 +59,7 @@ export default function Addresses() {
   };
 
   return (
-    <div className="min-h-screen bg-zinc-950 text-white pt-24 pb-32">
+    <div className="min-h-screen bg-zinc-950 text-white pt-12 pb-32">
       <SEO title="Mes Adresses — L'Excellence Shop-ia" description="Gérez vos adresses de livraison." />
 
       <div className="max-w-12xl mx-auto px-4 sm:px-6 lg:px-8">
