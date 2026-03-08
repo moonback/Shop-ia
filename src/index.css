@@ -1,0 +1,164 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Dancing+Script:wght@700&display=swap");
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-serif:
+    "Playfair Display", ui-serif, Georgia, Cambria, "Times New Roman", Times,
+    serif;
+  --font-script: "Dancing Script", cursive;
+
+  --color-green-neon: #39ff14;
+  --color-green-dark: #0a2e15;
+  --color-green-primary: #15803d;
+}
+
+@layer base {
+  html {
+    font-size: 80%;
+    /* Réduction de 20% à tout l'app */
+  }
+
+  body {
+    @apply bg-zinc-950 text-zinc-100 font-sans antialiased selection:bg-green-neon selection:text-black;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-serif;
+  }
+
+  /* Accessibilité : focus visible global */
+  *:focus-visible {
+    outline: 2px solid rgba(57, 255, 20, 0.6);
+    outline-offset: 2px;
+    border-radius: 8px;
+  }
+
+  /* Accessibilité : respect du choix utilisateur */
+  @media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+
+  /* Scrollbar sobre sur les zones scrollables */
+  .scrollbar-thin {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.1) transparent;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 9999px;
+  }
+}
+
+@layer utilities {
+  /* ─── Glow system (simplifié : 2 niveaux text + 2 niveaux box) ─── */
+
+  /* Text glow — prix, titres featured */
+  .glow-green {
+    text-shadow:
+      0 0 8px rgba(57, 255, 20, 0.6),
+      0 0 24px rgba(57, 255, 20, 0.25);
+  }
+
+  /* Box glow — boutons primaires, badges actifs */
+  .glow-box-green {
+    box-shadow:
+      0 0 12px rgba(57, 255, 20, 0.35),
+      0 0 24px rgba(57, 255, 20, 0.15),
+      inset 0 0 0 1px rgba(57, 255, 20, 0.12);
+  }
+
+  /* Box glow subtil — bordures, hover secondaires */
+  .glow-box-green-sm {
+    box-shadow:
+      0 0 8px rgba(57, 255, 20, 0.2),
+      0 0 16px rgba(57, 255, 20, 0.08);
+  }
+
+  /* Logo glow */
+  .glow-logo {
+    filter: drop-shadow(0 0 8px rgba(57, 255, 20, 0.5)) drop-shadow(0 0 20px rgba(57, 255, 20, 0.2));
+  }
+
+  /* Pulsation — badges "featured", indicateurs live */
+  .glow-pulse-green {
+    animation: glow-pulse 2.5s ease-in-out infinite;
+  }
+
+  @keyframes glow-pulse {
+
+    0%,
+    100% {
+      box-shadow:
+        0 0 6px rgba(57, 255, 20, 0.3),
+        0 0 14px rgba(57, 255, 20, 0.1);
+    }
+
+    50% {
+      box-shadow:
+        0 0 14px rgba(57, 255, 20, 0.6),
+        0 0 30px rgba(57, 255, 20, 0.25),
+        0 0 50px rgba(57, 255, 20, 0.08);
+    }
+  }
+
+  .font-script {
+    font-family: var(--font-script);
+  }
+
+  /* BudTender slow pulse */
+  .animate-pulse-slow {
+    animation: pulse-slow 2.5s ease-in-out infinite;
+  }
+
+  @keyframes pulse-slow {
+
+    0%,
+    100% {
+      box-shadow:
+        0 0 20px rgba(57, 255, 20, 0.15),
+        0 8px 32px rgba(0, 0, 0, 0.5);
+    }
+
+    50% {
+      box-shadow:
+        0 0 28px rgba(57, 255, 20, 0.4),
+        0 0 50px rgba(57, 255, 20, 0.15),
+        0 8px 32px rgba(0, 0, 0, 0.5);
+    }
+  }
+
+  .glassmorphism {
+    @apply bg-zinc-900/60 backdrop-blur-2xl border border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.5)];
+  }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}

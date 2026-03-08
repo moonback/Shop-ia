@@ -1,0 +1,95 @@
+import { create } from 'zustand';
+import { supabase } from '../lib/supabase';
+
+export interface StoreSettings {
+    delivery_fee: number;
+    delivery_free_threshold: number;
+    store_name: string;
+    store_address: string;
+    store_phone: string;
+    store_hours: string;
+    banner_text: string;
+    banner_enabled: boolean;
+    social_instagram: string;
+    social_facebook: string;
+    budtender_chat_enabled: boolean;
+    budtender_voice_enabled: boolean;
+    subscriptions_enabled: boolean;
+    referral_reward_points: number;
+    referral_welcome_bonus: number;
+    referral_program_enabled: boolean;
+    search_enabled: boolean;
+    home_reviews_enabled: boolean;
+    home_best_sellers_enabled: boolean;
+    empty_cart_suggestions_enabled: boolean;
+    ticker_messages: string[];
+}
+
+export const DEFAULT_SETTINGS: StoreSettings = {
+    delivery_fee: 5.90,
+    delivery_free_threshold: 50.00,
+    store_name: 'Green Mood CBD',
+    store_address: '123 Rue de la Nature, 75000 Paris',
+    store_phone: '01 23 45 67 89',
+    store_hours: 'Lun–Sam 10h00–19h30',
+    banner_text: '🌿 Offre de bienvenue : -10% avec le code GREENMood !',
+    banner_enabled: true,
+    social_instagram: 'https://instagram.com/greenMood_cbd',
+    social_facebook: 'https://facebook.com/greenMood_cbd',
+    budtender_chat_enabled: true,
+    budtender_voice_enabled: true,
+    subscriptions_enabled: true,
+    referral_reward_points: 500,
+    referral_welcome_bonus: 0,
+    referral_program_enabled: true,
+    search_enabled: true,
+    home_reviews_enabled: true,
+    home_best_sellers_enabled: true,
+    empty_cart_suggestions_enabled: true,
+    ticker_messages: [
+        "✦ Livraison offerte dès 50€ d'achat ✦",
+        "✦ Nouveau : Découvrez la gamme N10 ✦",
+        "✦ -10% sur votre première commande avec GREENMOOD ✦"
+    ],
+};
+
+interface SettingsStore {
+    settings: StoreSettings;
+    isLoading: boolean;
+    fetchSettings: () => Promise<void>;
+    updateSettingsInStore: (newSettings: Partial<StoreSettings>) => void;
+}
+
+export const useSettingsStore = create<SettingsStore>((set) => ({
+    settings: DEFAULT_SETTINGS,
+    isLoading: true,
+    fetchSettings: async () => {
+        try {
+            const { data, error } = await supabase.from('store_settings').select('*');
+            if (error) throw error;
+
+            if (data && data.length > 0) {
+                const obj = data.reduce((acc: Record<string, any>, row: { key: string; value: any }) => {
+                    acc[row.key] = row.value;
+                    return acc;
+                }, {});
+
+                // Migration: if old budtender_enabled exists but new ones don't, copy its value
+                if (obj.budtender_enabled !== undefined && obj.budtender_chat_enabled === undefined) {
+                    obj.budtender_chat_enabled = obj.budtender_enabled;
+                    obj.budtender_voice_enabled = obj.budtender_enabled;
+                }
+
+                set({ settings: { ...DEFAULT_SETTINGS, ...obj }, isLoading: false });
+            } else {
+                set({ isLoading: false });
+            }
+        } catch (err) {
+            console.error('Error fetching settings:', err);
+            set({ isLoading: false });
+        }
+    },
+    updateSettingsInStore: (newSettings) => {
+        set((state) => ({ settings: { ...state.settings, ...newSettings } }));
+    },
+}));
