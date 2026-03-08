@@ -1,6 +1,6 @@
 import { supabase } from './supabase';
 import { Product } from './types';
-import { BudTenderSettings, BUDTENDER_DEFAULTS } from './budtenderSettings';
+import { ShopiaAssistantSettings, SHOPIA_ASSISTANT_DEFAULTS } from './shopiaAssistantSettings';
 
 // ─── Generic TTL Cache ───────────────────────────────────────────────────────
 
@@ -68,10 +68,10 @@ export function invalidateProductsCache(): void {
 
 // ─── Settings Cache (TTL 2 min) ──────────────────────────────────────────────
 
-const settingsCache = new TTLCache<BudTenderSettings>(2 * 60 * 1000);
-let settingsFetchPromise: Promise<BudTenderSettings> | null = null;
+const settingsCache = new TTLCache<ShopiaAssistantSettings>(2 * 60 * 1000);
+let settingsFetchPromise: Promise<ShopiaAssistantSettings> | null = null;
 
-export async function getCachedSettings(): Promise<BudTenderSettings> {
+export async function getCachedSettings(): Promise<ShopiaAssistantSettings> {
     const cached = settingsCache.get();
     if (cached) {
         console.log('[Cache HIT] settings');
@@ -83,8 +83,8 @@ export async function getCachedSettings(): Promise<BudTenderSettings> {
     settingsFetchPromise = (async () => {
         try {
             console.log('[Cache MISS] settings — fetching from Supabase');
-            const { fetchBudTenderSettings } = await import('./budtenderSettings');
-            const settings = await fetchBudTenderSettings();
+            const { fetchShopiaAssistantSettings } = await import('./shopiaAssistantSettings');
+            const settings = await fetchShopiaAssistantSettings();
             settingsCache.set(settings);
             return settings;
         } finally {

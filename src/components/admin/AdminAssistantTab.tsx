@@ -11,7 +11,7 @@ import {
 } from 'recharts';
 import { supabase } from '../../lib/supabase';
 
-import { BudTenderSettings, BUDTENDER_DEFAULTS, BUDTENDER_LS_KEY } from '../../lib/budtenderSettings';
+import { ShopiaAssistantSettings as AssistantSettings, ASSISTANT_DEFAULTS, ASSISTANT_LS_KEY } from '../../lib/shopiaAssistantSettings';
 import { useSettingsStore } from '../../store/settingsStore';
 
 const INPUT =
@@ -117,9 +117,9 @@ function SliderField({
 
 // ─── Main component ──────────────────────────────────────────────────────────
 
-export default function AdminBudTenderTab() {
+export default function AdminAssistantTab() {
     const { settings: globalSettings, updateSettingsInStore } = useSettingsStore();
-    const [settings, setSettings] = useState<BudTenderSettings>(BUDTENDER_DEFAULTS);
+    const [settings, setSettings] = useState<AssistantSettings>(ASSISTANT_DEFAULTS);
     const [isSaving, setIsSaving] = useState(false);
     const [saved, setSaved] = useState(false);
     const [activeTab, setActiveTab] = useState<'general' | 'ai' | 'memory' | 'quiz' | 'stats'>('general');
@@ -139,18 +139,18 @@ export default function AdminBudTenderTab() {
                 const { data } = await supabase
                     .from('store_settings')
                     .select('value')
-                    .eq('key', 'budtender_config')
+                    .eq('key', 'Assistant_config')
                     .maybeSingle();
 
                 if (data?.value) {
-                    setSettings({ ...BUDTENDER_DEFAULTS, ...data.value });
+                    setSettings({ ...ASSISTANT_DEFAULTS, ...data.value });
                 } else {
                     // 2. Fallback to localStorage
-                    const raw = localStorage.getItem(BUDTENDER_LS_KEY);
-                    if (raw) setSettings({ ...BUDTENDER_DEFAULTS, ...JSON.parse(raw) });
+                    const raw = localStorage.getItem(ASSISTANT_LS_KEY);
+                    if (raw) setSettings({ ...ASSISTANT_DEFAULTS, ...JSON.parse(raw) });
                 }
             } catch (err) {
-                console.error('[AdminBudTenderTab] load error:', err);
+                console.error('[AdminAssistantTab] load error:', err);
             }
         };
         load();
@@ -175,7 +175,7 @@ export default function AdminBudTenderTab() {
                 { data: paidOrders }
             ] = await Promise.all([
                 supabase
-                    .from('budtender_interactions')
+                    .from('Assistant_interactions')
                     .select('*')
                     .gte('created_at', sinceISO),
                 supabase
@@ -241,13 +241,13 @@ export default function AdminBudTenderTab() {
                 }
             });
         } catch (err) {
-            console.error('[AdminBudTenderTab] loadStats error:', err);
+            console.error('[AdminAssistantTab] loadStats error:', err);
         } finally {
             setIsLoadingStats(false);
         }
     };
 
-    const update = (patch: Partial<BudTenderSettings>) => {
+    const update = (patch: Partial<AssistantSettings>) => {
         setSettings((prev) => ({ ...prev, ...patch }));
     };
 
@@ -255,23 +255,23 @@ export default function AdminBudTenderTab() {
         setIsSaving(true);
         try {
             // Keep localStorage as local cache
-            localStorage.setItem(BUDTENDER_LS_KEY, JSON.stringify(settings));
+            localStorage.setItem(ASSISTANT_LS_KEY, JSON.stringify(settings));
 
             // Sync the entire configuration to Supabase
             // We use multiple keys: visibility flags and full config
             await Promise.all([
                 supabase.from('store_settings').upsert([
-                    { key: 'budtender_chat_enabled', value: globalSettings.budtender_chat_enabled, updated_at: new Date().toISOString() },
-                    { key: 'budtender_voice_enabled', value: globalSettings.budtender_voice_enabled, updated_at: new Date().toISOString() },
-                    { key: 'budtender_enabled', value: globalSettings.budtender_chat_enabled || globalSettings.budtender_voice_enabled, updated_at: new Date().toISOString() },
-                    { key: 'budtender_config', value: settings, updated_at: new Date().toISOString() }
+                    { key: 'assistant_chat_enabled', value: globalSettings.assistant_chat_enabled, updated_at: new Date().toISOString() },
+                    { key: 'assistant_voice_enabled', value: globalSettings.assistant_voice_enabled, updated_at: new Date().toISOString() },
+                    { key: 'assistant_enabled', value: globalSettings.assistant_chat_enabled || globalSettings.assistant_voice_enabled, updated_at: new Date().toISOString() },
+                    { key: 'assistant_config', value: settings, updated_at: new Date().toISOString() }
                 ], { onConflict: 'key' })
             ]);
 
             setSaved(true);
             setTimeout(() => setSaved(false), 3000);
         } catch (err) {
-            console.error('[AdminBudTenderTab] save error:', err);
+            console.error('[AdminAssistantTab] save error:', err);
             alert("Erreur lors de la sauvegarde en base de données.");
         } finally {
             setIsSaving(false);
@@ -293,10 +293,10 @@ export default function AdminBudTenderTab() {
                 <div>
                     <h2 className="font-serif text-2xl font-bold flex items-center gap-3">
                         <Leaf className="w-6 h-6 text-green-neon" />
-                        BudTender IA
+                        Assistant Shop-ia IA
                     </h2>
                     <p className="text-zinc-400 text-sm mt-1">
-                        Configurez le comportement de votre conseiller CBD intelligent.
+                        Configurez le comportement de votre conseiller culinaire intelligent.
                     </p>
                 </div>
                 <div className="flex items-center gap-3">
@@ -352,23 +352,23 @@ export default function AdminBudTenderTab() {
                             <Section icon={Leaf} title="Activation par Canal" description="Distinguez le chat écrit du conseiller vocal">
                                 <div className="flex items-center justify-between py-2 border-b border-zinc-800/50 pb-4">
                                     <div>
-                                        <p className="text-sm font-medium text-white">BudTender Chat (écrit)</p>
+                                        <p className="text-sm font-medium text-white">Assistant Chat (écrit)</p>
                                         <p className="text-xs text-zinc-500 mt-0.5">Active la bulle de discussion et le quiz interactif.</p>
                                     </div>
                                     <Toggle
-                                        enabled={globalSettings.budtender_chat_enabled}
-                                        onChange={(v) => updateSettingsInStore({ budtender_chat_enabled: v })}
+                                        enabled={globalSettings.assistant_chat_enabled}
+                                        onChange={(v) => updateSettingsInStore({ assistant_chat_enabled: v })}
                                     />
                                 </div>
 
                                 <div className="flex items-center justify-between py-2 pt-2">
                                     <div>
-                                        <p className="text-sm font-medium text-white">BudTender Vocal (IA Live)</p>
+                                        <p className="text-sm font-medium text-white">Assistant Vocal (IA Live)</p>
                                         <p className="text-xs text-zinc-500 mt-0.5">Active l'accès au conseiller vocal temps réel (Gemini Live).</p>
                                     </div>
                                     <Toggle
-                                        enabled={globalSettings.budtender_voice_enabled}
-                                        onChange={(v) => updateSettingsInStore({ budtender_voice_enabled: v })}
+                                        enabled={globalSettings.assistant_voice_enabled}
+                                        onChange={(v) => updateSettingsInStore({ assistant_voice_enabled: v })}
                                     />
                                 </div>
                             </Section>
@@ -398,7 +398,7 @@ export default function AdminBudTenderTab() {
                                         value={settings.welcome_message}
                                         onChange={(e) => update({ welcome_message: e.target.value })}
                                         className={INPUT + ' resize-none'}
-                                        placeholder="Bonjour ! Je suis BudTender..."
+                                        placeholder="Bonjour ! Je suis l'assistant Shop-ia..."
                                     />
                                     <p className="text-[10px] text-zinc-600 italic flex items-center gap-1">
                                         <Info className="w-3 h-3" />
@@ -504,24 +504,24 @@ export default function AdminBudTenderTab() {
                             <Section icon={Zap} title="Seuils de Réapprovisionnement" description="Nombre de jours avant de suggérer un rachat par catégorie">
                                 <div className={!settings.memory_enabled ? 'opacity-40 pointer-events-none space-y-4' : 'space-y-4'}>
                                     <SliderField
-                                        label="Huiles (CBD)"
+                                        label="Épicerie & Produits Secs"
                                         value={settings.restock_threshold_oils}
                                         min={7}
                                         max={90}
                                         step={1}
                                         unit="jours"
                                         onChange={(v) => update({ restock_threshold_oils: v })}
-                                        hint="Durée estimée d'une huile 10ml. Recommandé : 25-35 jours."
+                                        hint="Durée estimée d'un pack de pâtes ou riz. Recommandé : 25-35 jours."
                                     />
                                     <SliderField
-                                        label="Fleurs & Résines"
+                                        label="Produits Frais"
                                         value={settings.restock_threshold_flowers}
                                         min={3}
                                         max={60}
                                         step={1}
                                         unit="jours"
                                         onChange={(v) => update({ restock_threshold_flowers: v })}
-                                        hint="Durée estimée pour 1g-3g. Recommandé : 10-21 jours."
+                                        hint="Durée estimée pour fruits/légumes. Recommandé : 7-10 jours."
                                     />
                                     <SliderField
                                         label="Autres produits (Infusions, etc.)"
@@ -733,7 +733,7 @@ export default function AdminBudTenderTab() {
 
                             {/* Main Charts Row */}
                             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                                <Section icon={MessageSquare} title="Top Questions Clients" description="Les interrogations les plus fréquentes posées au BudTender">
+                                <Section icon={MessageSquare} title="Top Questions Clients" description="Les interrogations les plus fréquentes posées à l'Assistant">
                                     {isLoadingStats ? (
                                         <div className="h-48 flex items-center justify-center"><Clock className="w-6 h-6 animate-spin text-zinc-700" /></div>
                                     ) : stats.topQuestions.length > 0 ? (
@@ -837,7 +837,7 @@ export default function AdminBudTenderTab() {
                         className="fixed bottom-6 right-6 z-50 flex items-center gap-3 bg-green-neon text-black font-black text-sm px-5 py-3 rounded-2xl shadow-xl"
                     >
                         <CheckCircle className="w-4 h-4" />
-                        Paramètres BudTender sauvegardés
+                        Paramètres Assistant sauvegardés
                     </motion.div>
                 )}
             </AnimatePresence>

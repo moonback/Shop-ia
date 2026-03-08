@@ -1,15 +1,15 @@
 <p align="center">
-  <img src="public/logo.png" alt="Green Mood CBD" width="240" />
+  <img src="public/logo.png" alt="Shop-ia" width="240" />
 </p>
 <p align="center">
-  <img src="public/header.png" alt="Green Mood CBD Header" width="100%" />
+  <img src="public/header.png" alt="Shop-ia Header" width="100%" />
 </p>
 
 
-<h1 align="center">🌿 Green Mood CBD — Boutique Premium & Innovation N10</h1>
+<h1 align="center">🛒 Shop-ia — Épicerie Fine & Innovation Gastronomique</h1>
 
 <p align="center">
-  <strong>Plateforme e-commerce premium de CBD avec conseiller IA intégré (BudTender).</strong><br/>
+  <strong>Plateforme e-commerce premium de produits alimentaires avec assistant culinaire IA intégré (Shopia Assistant).</strong><br/>
   Conçue pour les boutiques physiques souhaitant digitaliser leur activité via Click & Collect, livraison et point de vente (POS).<br/>
   L'application offre une expérience immersive avec recherche sémantique vectorielle, chat IA et conseiller vocal en temps réel.
 </p>
@@ -27,7 +27,7 @@
 
 ## 📖 Présentation
 
-**Green Mood CBD** est une application e-commerce SPA (Single Page Application) conçue pour une boutique physique de CBD premium. Elle permet aux clients de parcourir le catalogue, recevoir des conseils personnalisés de l'IA BudTender (chat texte et voix), passer commande en Click & Collect ou en livraison, et gérer leur compte fidélité. Les administrateurs disposent d'un back-office complet avec POS intégré, analytics et gestion avancée des produits, stocks et commandes.
+**Shop-ia** est une application e-commerce SPA (Single Page Application) conçue pour une boutique physique de gastronomie premium. Elle permet aux clients de parcourir le catalogue, recevoir des conseils personnalisés de l'Assistant Shop-ia (chat texte et voix), passer commande en Click & Collect ou en livraison, et gérer leur compte fidélité. Les administrateurs disposent d'un back-office complet avec POS intégré, analytics et gestion avancée des produits, stocks et commandes.
 
 ---
 
@@ -43,7 +43,7 @@
 | **React Router DOM** | Routage client-side | ^7.13.1 |
 | **Supabase** | Backend-as-a-Service (PostgreSQL, Auth, Storage, RLS) | ^2.98.0 |
 | **Google Gemini** | IA générative — voix temps réel (Live API) | ^1.29.0 |
-| **OpenRouter** | LLM chat (BudTender), embeddings vectoriels | API REST |
+| **OpenRouter** | LLM chat (Assistant), embeddings vectoriels | API REST |
 | **Framer Motion** | Animations & transitions | ^12.23.24 |
 | **Lucide React** | Bibliothèque d'icônes | ^0.546.0 |
 | **Recharts** | Graphiques analytics admin | ^3.7.0 |
@@ -59,18 +59,18 @@
 
 ### 👤 Utilisateurs (Client)
 
-- **Catalogue en ligne** — parcours par catégories (Fleurs, Résines, Huiles, Infusions), filtres, tri, recherche sémantique
-- **Fiches produit détaillées** — CBD %, arômes, bénéfices, avis vérifiés, produits complémentaires
+- **Catalogue en ligne** — parcours par catégories (Épicerie, Frais, Boissons, Sucré, Salé), filtres, tri, recherche sémantique
+- **Fiches produit détaillées** — Nutri-Score, arômes, conseils de dégustation, avis vérifiés, produits complémentaires
 - **Panier persistant** — avec jauges de livraison gratuite, suggestions panier vide, codes promo
 - **Checkout complet** — Click & Collect ou livraison, intégration Viva Wallet
 - **Compte utilisateur** — profil, commandes, adresses, favoris
 - **Système de fidélité premium** — points gagnés/dépensés, carte de fidélité numérique avec QR code, tiers de fidélité (Bronze, Argent, Or, Platine), historique des transactions accessible via le menu utilisateur
-- **Programme parrainage** — codes uniques `GRN-XXXXXX`, bonus bienvenue, suivi
+- **Programme parrainage** — codes uniques `SHOP-XXXXXX`, bonus bienvenue, suivi
 - **Abonnements** — livraisons récurrentes (hebdo / bi-mensuel / mensuel)
 - **Avis produits** — notation 5 étoiles, commentaires, modération admin
-- **🤖 BudTender IA (chat texte)** — quiz guidé + conversation libre, mémoire client
-- **🎙 BudTender IA (voix)** — conseiller vocal temps réel via Gemini Live Audio API
-- **Guides CBD** — articles SEO (huile, dosage, sommeil, anxiété, légalité)
+- **🤖 Shopia Assistant (chat texte)** — quiz gourmand + conversation libre, mémoire client
+- **🎙 Shopia Assistant (voix)** — conseiller culinaire vocal temps réel via Gemini Live Audio API
+- **Guides Gastronomie** — articles SEO (accords mets-vins, conservation, nutrition)
 - **PWA** — installable, Service Worker, mode offline partiel
 - **SEO avancé** — sitemaps, schema.org, meta tags dynamiques, robots.txt AI-friendly
 
@@ -92,7 +92,7 @@
 - **Gestion avis** — modération, publication/suppression
 - **Gestion abonnements** — vue d'ensemble, pause/annulation
 - **Gestion parrainages** — suivi, validation des récompenses
-- **Configuration BudTender** — modèle IA, température, quiz customisable, seuils restock
+- **Configuration Assistant** — modèle IA, température, quiz customisable, seuils restock
 - **Paramètres boutique** — bannière, horaires, frais livraison, activations fonctionnalités
 
 ### ⚙️ Système / Backend
@@ -121,8 +121,8 @@
 
 ```bash
 # 1. Cloner le dépôt
-git clone https://github.com/votre-org/Green-Moon-project.git
-cd Green-Moon-project
+git clone https://github.com/votre-org/shop-ia.git
+cd shop-ia
 
 # 2. Installer les dépendances
 npm install
@@ -195,24 +195,24 @@ npm run preview
 ## 📂 Structure du projet
 
 ```
-Green-Moon-project/
+shop-ia/
 ├── public/                  # Assets statiques, PWA, sitemaps, CSV
 ├── scripts/                 # Scripts utilitaires (sitemap, embeddings)
 ├── src/
 │   ├── components/          # Composants React réutilisables
-│   │   ├── admin/           # 19 onglets du back-office admin
-│   │   └── budtender-ui/    # Composants UI du BudTender
+│   │   ├── admin/           # Onglets du back-office admin
+│   │   └── shopia-assistant-ui/ # UI de l'Assistant
 │   ├── hooks/               # Hooks personnalisés (mémoire IA, voix)
 │   ├── lib/                 # Types, utilitaires, Supabase, IA, SEO
 │   │   └── seo/             # Builders meta, schema.org, links internes
-│   ├── pages/               # Pages de l'application (27+)
-│   │   └── guides/          # Pages guides CBD
+│   ├── pages/               # Pages de l'application
+│   │   └── guides/          # Pages guides Gastronomie
 │   ├── seo/                 # Provider SEO global
 │   ├── store/               # Stores Zustand (auth, cart, settings, wishlist, toast)
 │   ├── App.tsx              # Routage principal
 │   ├── main.tsx             # Point d'entrée React
 │   └── index.css            # Design system (thème, fonts, glow, glassmorphism)
-├── supabase/                # Migrations SQL (v1 → v9)
+├── supabase/                # Migrations SQL
 ├── docs/                    # Documentation fonctionnelle, PRD, audits
 ├── .cursorrules             # Règles de développement IA
 ├── vite.config.ts           # Configuration Vite

@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { ThumbsUp, ThumbsDown } from 'lucide-react';
 
-export interface BudTenderFeedbackProps {
+export interface ShopiaAssistantFeedbackProps {
     /** Callback fired when the user clicks thumbs-up or thumbs-down */
     onFeedback: (type: 'positive' | 'negative') => void;
     /** Whether the buttons should be disabled (e.g. already submitted) */
@@ -13,7 +13,7 @@ export interface BudTenderFeedbackProps {
  * Thumbs up / thumbs down feedback buttons shown after recommendation cards.
  * After clicking, a brief "Merci !" confirmation is displayed.
  */
-export default function BudTenderFeedback({ onFeedback, disabled = false }: BudTenderFeedbackProps) {
+export default function ShopiaAssistantFeedback({ onFeedback, disabled = false }: ShopiaAssistantFeedbackProps) {
     const [submitted, setSubmitted] = useState<'positive' | 'negative' | null>(null);
 
     const handleClick = (type: 'positive' | 'negative') => {

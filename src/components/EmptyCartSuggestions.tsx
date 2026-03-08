@@ -5,7 +5,7 @@ import { ShoppingCart, Star, Sparkles, Plus } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import { Product } from '../lib/types';
 import { useCartStore } from '../store/cartStore';
-import { useBudTenderMemory, SavedPrefs } from '../hooks/useBudTenderMemory';
+import { useShopiaAssistantMemory, SavedPrefs } from '../hooks/useShopiaAssistantMemory';
 import { CATEGORY_SLUGS } from '../lib/constants';
 import { useAuthStore } from '../store/authStore';
 
@@ -18,7 +18,7 @@ export default function EmptyCartSuggestions() {
     const [loading, setLoading] = useState(true);
     const addItem = useCartStore((s) => s.addItem);
     const closeSidebar = useCartStore((s) => s.closeSidebar);
-    const { savedPrefs } = useBudTenderMemory();
+    const { savedPrefs } = useShopiaAssistantMemory();
     const user = useAuthStore((s) => s.user);
 
     useEffect(() => {
@@ -62,20 +62,20 @@ export default function EmptyCartSuggestions() {
         const name = product.name.toLowerCase();
         const desc = (product.description ?? '').toLowerCase();
 
-        if (prefs.goal === 'sleep') {
-            if (name.includes('sommeil') || desc.includes('sommeil') || desc.includes('nuit')) score += 5;
-            if (cat === CATEGORY_SLUGS.OILS && (product.cbd_percentage ?? 0) >= 15) score += 3;
+        if (prefs.goal === 'health') {
+            if (name.includes('bio') || desc.includes('santé') || desc.includes('vitamine')) score += 5;
+            if (cat === CATEGORY_SLUGS.OILS && (product.price ?? 0) >= 15) score += 3;
         }
-        if (prefs.goal === 'stress') {
-            if (desc.includes('détente') || desc.includes('stress') || desc.includes('relaxat')) score += 5;
+        if (prefs.goal === 'gourmet') {
+            if (desc.includes('gastronom') || desc.includes('saveur') || desc.includes('affiné')) score += 5;
         }
-        if (prefs.goal === 'pain') {
-            if ((product.cbd_percentage ?? 0) >= 20) score += 5;
+        if (prefs.goal === 'local') {
+            if (desc.includes('producteur') || desc.includes('français')) score += 5;
         }
 
         if (prefs.format === 'oil' && cat === CATEGORY_SLUGS.OILS) score += 4;
-        if (prefs.format === 'flower' && (cat === CATEGORY_SLUGS.FLOWERS || cat === CATEGORY_SLUGS.RESINS)) score += 4;
-        if (prefs.format === 'infusion' && cat === CATEGORY_SLUGS.INFUSIONS) score += 4;
+        if (prefs.format === 'fresh_produce' && (cat === CATEGORY_SLUGS.FLOWERS || cat === CATEGORY_SLUGS.RESINS)) score += 4;
+        if (prefs.format === 'grocery' && cat === CATEGORY_SLUGS.INFUSIONS) score += 4;
 
         if (product.is_featured) score += 2;
 

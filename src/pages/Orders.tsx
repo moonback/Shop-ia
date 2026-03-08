@@ -83,7 +83,7 @@ export default function Orders() {
 
   return (
     <div className="min-h-screen bg-zinc-950 text-white pt-24 pb-32">
-      <SEO title="Mes Commandes — L'Excellence Green Mood" description="Historique de vos commandes." />
+      <SEO title="Mes Commandes — L'Excellence Shop-ia" description="Historique de vos commandes." />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
@@ -249,7 +249,7 @@ export default function Orders() {
                               </div>
                               <div className="space-y-1">
                                 <p className="text-[10px] font-mono text-zinc-600 uppercase tracking-widest">LIEU DE RETRAIT</p>
-                                <p className="text-sm text-white/80 leading-relaxed italic font-serif">Retrait expert disponible en boutique Green Mood.</p>
+                                <p className="text-sm text-white/80 leading-relaxed italic font-serif">Retrait expert disponible en boutique Shop-ia.</p>
                               </div>
                             </div>
                           )}

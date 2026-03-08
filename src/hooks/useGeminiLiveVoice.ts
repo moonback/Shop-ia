@@ -1,10 +1,10 @@
 import { useState, useCallback, useRef, useMemo, useEffect } from 'react';
 import { GoogleGenAI, Modality, type FunctionResponse, type LiveServerMessage, type Session } from '@google/genai';
 import { Product } from '../lib/types';
-import { PastProduct, SavedPrefs } from './useBudTenderMemory';
+import { PastProduct, SavedPrefs } from './useShopiaAssistantMemory';
 import { supabase } from '../lib/supabase';
 import { generateEmbedding } from '../lib/embeddings';
-import { getVoicePrompt } from '../lib/budtenderPrompts';
+import { getVoicePrompt } from '../lib/shopiaAssistantPrompts';
 
 const LIVE_MODEL = 'models/gemini-2.5-flash-native-audio-preview-12-2025';
 const INPUT_SAMPLE_RATE = 16000;

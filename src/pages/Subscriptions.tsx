@@ -86,7 +86,7 @@ export default function Subscriptions() {
 
   return (
     <>
-      <SEO title="Mes abonnements — Green Mood CBD" description="Gérez vos livraisons automatiques." />
+      <SEO title="Mes abonnements — Shop-ia" description="Gérez vos livraisons automatiques." />
 
       <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
         <div className="flex items-center gap-3 mb-8">

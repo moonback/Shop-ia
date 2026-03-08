@@ -199,7 +199,7 @@ export default function ReviewCarousel() {
                                             </div>
                                             <div>
                                                 <p className="text-white font-bold text-sm tracking-wide uppercase">
-                                                    {review.profile?.full_name || 'Client Green Mood'}
+                                                    {review.profile?.full_name || 'Client Shop-ia'}
                                                 </p>
                                                 <p className="text-zinc-500 text-[10px] uppercase tracking-widest">Achat vérifié</p>
                                             </div>

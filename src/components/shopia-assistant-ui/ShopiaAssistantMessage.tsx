@@ -4,7 +4,7 @@ import ReactMarkdown from 'react-markdown';
 
 type MessageType = 'standard' | 'restock' | 'skip-quiz' | 'terpene';
 
-export interface BudTenderMessageProps {
+export interface ShopiaAssistantMessageProps {
     /** Who sent the message */
     sender: 'bot' | 'user';
     /** The text content of the message */
@@ -25,13 +25,13 @@ export interface BudTenderMessageProps {
  * - Any extra content (product cards, quiz options, feedback) can be passed as
  *   `children` and will render inside the same row layout.
  */
-export default function BudTenderMessage({
+export default function ShopiaAssistantMessage({
     sender,
     text,
     type: _type,
     isTyping: _isTyping,
     children,
-}: BudTenderMessageProps) {
+}: ShopiaAssistantMessageProps) {
 
     // Custom components for Markdown rendering
     const markdownComponents = {
@@ -61,8 +61,8 @@ export default function BudTenderMessage({
                         initial={{ opacity: 0, scale: 0.95, y: 10 }}
                         animate={{ opacity: 1, scale: 1, y: 0 }}
                         className={`px-5 py-3.5 sm:px-6 sm:py-4.5 rounded-[1.5rem] sm:rounded-[1.75rem] text-sm sm:text-base leading-relaxed shadow-xl ${sender === 'user'
-                                ? 'bg-gradient-to-br from-green-neon to-emerald-400 text-black font-black rounded-br-none'
-                                : 'text-zinc-100 font-medium rounded-bl-none border border-white/10'
+                            ? 'bg-gradient-to-br from-green-neon to-emerald-400 text-black font-black rounded-br-none'
+                            : 'text-zinc-100 font-medium rounded-bl-none border border-white/10'
                             }`}
                         style={sender === 'bot' ? {
                             backgroundColor: 'rgba(24, 24, 27, 0.7)',

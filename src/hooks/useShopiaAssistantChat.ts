@@ -1,24 +1,24 @@
 import { useCallback } from 'react';
 import { supabase } from '../lib/supabase';
 import { Product } from '../lib/types';
-import { BudTenderSettings } from '../lib/budtenderSettings';
-import { getChatPrompt } from '../lib/budtenderPrompts';
-import { Message } from '../lib/budtenderHelpers';
-import { getRelevantProductsForQuery } from '../lib/budtenderVectorSearch';
+import { ShopiaAssistantSettings } from '../lib/shopiaAssistantSettings';
+import { getChatPrompt } from '../lib/shopiaAssistantPrompts';
+import { Message } from '../lib/shopiaAssistantHelpers';
+import { getRelevantProductsForQuery } from '../lib/shopiaAssistantVectorSearch';
 
-interface BudTenderMemoryContext {
+interface ShopiaAssistantMemoryContext {
     savedPrefs: Record<string, any> | null;
     userName: string | null;
     pastProducts: { product_name: string }[];
 }
 
-interface UseBudTenderChatParams {
+interface UseShopiaAssistantChatParams {
     chatInput: string;
     isTyping: boolean;
-    settings: BudTenderSettings;
+    settings: ShopiaAssistantSettings;
     messages: Message[];
     products: Product[];
-    memory: BudTenderMemoryContext;
+    memory: ShopiaAssistantMemoryContext;
     setChatInput: React.Dispatch<React.SetStateAction<string>>;
     setIsTyping: React.Dispatch<React.SetStateAction<boolean>>;
     setMessages: React.Dispatch<React.SetStateAction<Message[]>>;
@@ -29,7 +29,7 @@ interface UseBudTenderChatParams {
     logQuestion: (text: string) => void;
 }
 
-export function useBudTenderChat({
+export function useShopiaAssistantChat({
     chatInput,
     isTyping,
     settings,
@@ -44,7 +44,7 @@ export function useBudTenderChat({
     addItem,
     openSidebar,
     logQuestion,
-}: UseBudTenderChatParams) {
+}: UseShopiaAssistantChatParams) {
     return useCallback(async (e?: React.FormEvent) => {
         if (e) e.preventDefault();
         const text = chatInput.trim();
@@ -117,7 +117,7 @@ export function useBudTenderChat({
         }
 
         const modelToUse = settings.ai_model || 'google/gemini-2.0-flash-lite-preview-02-05:free';
-        console.log('[BudTender Chat] Sending messages to:', modelToUse);
+        console.log('[ShopiaAssistant Chat] Sending messages to:', modelToUse);
 
         const tools = [{
             type: 'function',
@@ -142,7 +142,7 @@ export function useBudTenderChat({
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${apiKey}`,
-                    'X-Title': 'Green Mood BudTender',
+                    'X-Title': 'Shopia Assistant',
                     'HTTP-Referer': window.location.origin,
                 },
                 body: JSON.stringify({
@@ -197,7 +197,7 @@ export function useBudTenderChat({
                                 .maybeSingle();
                             if (data) product = data as Product;
                         } catch (error) {
-                            console.error('[BudTender Chat] Supabase fallback failed:', error);
+                            console.error('[ShopiaAssistant Chat] Supabase fallback failed:', error);
                         }
                     }
 

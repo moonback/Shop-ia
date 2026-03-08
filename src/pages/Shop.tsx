@@ -21,7 +21,7 @@ export default function Shop() {
   const shopSchema = {
     "@context": "https://schema.org",
     "@type": "Store",
-    "name": "La Boutique Green Mood",
+    "name": "Shop-ia",
     "description": "Un espace pensé pour la détente, la découverte et le conseil personnalisé autour du CBD.",
     "image": "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?q=80&w=2070&auto=format&fit=crop"
   };
@@ -52,9 +52,9 @@ export default function Shop() {
   return (
     <div className="min-h-screen bg-zinc-950 text-white overflow-hidden pb-32">
       <SEO
-        title="L'ADN Green Mood — Notre Boutique & Nos Valeurs"
-        description="Plongez dans l'univers Green Mood. Découvrez notre histoire, nos valeurs de transparence et d'exigence, et venez nous rencontrer dans notre boutique à Paris."
-        keywords="boutique CBD Paris, magasin CBD, histoire Green Mood, valeurs CBD, achat CBD en boutique"
+        title="L'ADN Shop-ia — Notre Boutique & Nos Valeurs"
+        description="Plongez dans l'univers Shop-ia. Découvrez notre histoire, nos valeurs de transparence et d'exigence, et venez nous rencontrer dans notre boutique à Paris."
+        keywords="boutique CBD Paris, magasin CBD, histoire Shop-ia, valeurs CBD, achat CBD en boutique"
         schema={shopSchema}
       />
 
@@ -63,7 +63,7 @@ export default function Shop() {
         <div className="absolute inset-0 z-0">
           <img
             src="./images/hero-bg-shop.png"
-            alt="Intérieur de la boutique Green Mood"
+            alt="Intérieur de la boutique Shop-ia"
             className="w-full h-full object-cover opacity-100"
           />
           <div className="absolute inset-0 bg-gradient-to-b from-zinc-950/20 via-zinc-950/60 to-zinc-950" />
@@ -82,7 +82,7 @@ export default function Shop() {
             </div>
             <h1 className="text-5xl md:text-7xl lg:text-8xl font-serif font-bold tracking-tighter leading-none mb-8">
               L'EXPERIENCE <br />
-              <span className="not-italic text-green-neon glow-green">GREEN MOOD.</span>
+              <span className="not-italic text-green-neon glow-green">Shop-ia.</span>
             </h1>
             <p className="text-xl md:text-2xl text-zinc-400 max-w-3xl mx-auto font-light leading-relaxed pt-6">
               Plus qu'un point de vente, un sanctuaire dédié à la sérénité
@@ -110,7 +110,7 @@ export default function Shop() {
                 <div className="w-20 h-1 bg-green-neon" />
                 <p className="text-xl text-zinc-400 leading-relaxed font-light">
                   Née de la volonté d'offrir une alternative authentique et exigeante,
-                  Green Mood a été fondée par des experts passionnés par les multiples
+                  Shop-ia a été fondée par des experts passionnés par les multiples
                   facettes du chanvre. Notre mission : démocratiser les bienfaits du CBD
                   tout en élevant les standards de qualité du marché français.
                 </p>
@@ -123,7 +123,7 @@ export default function Shop() {
               <div className="grid grid-cols-2 gap-4 pt-4">
                 <div className="p-6 rounded-3xl bg-white/5 border border-white/5 backdrop-blur-sm">
                   <p className="text-4xl font-black text-green-neon tracking-tighter">2019</p>
-                  <p className="text-xs font-bold uppercase tracking-widest text-zinc-500">Naissance de Green Mood</p>
+                  <p className="text-xs font-bold uppercase tracking-widest text-zinc-500">Naissance de Shop-ia</p>
                 </div>
                 <div className="p-6 rounded-3xl bg-white/5 border border-white/5 backdrop-blur-sm">
                   <p className="text-4xl font-black text-white tracking-tighter">50+</p>
@@ -160,7 +160,7 @@ export default function Shop() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-24 space-y-4">
             <h2 className="text-4xl md:text-6xl font-serif font-black text-white">Nos <span className="text-green-neon">Piliers</span></h2>
-            <p className="text-zinc-500 text-lg">La charte qui définit chaque décision chez Green Mood.</p>
+            <p className="text-zinc-500 text-lg">La charte qui définit chaque décision chez Shop-ia.</p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -249,7 +249,7 @@ export default function Shop() {
         <div className="max-w-4xl mx-auto px-4 text-center">
           <Sparkles className="w-10 h-10 text-green-neon mx-auto mb-8 animate-pulse" />
           <p className="text-2xl md:text-3xl font-serif font-light text-zinc-300 italic leading-relaxed">
-            "L'essence de Green Mood réside dans l'équilibre parfait entre la rigueur de la science
+            "L'essence de Shop-ia réside dans l'équilibre parfait entre la rigueur de la science
             et la bienveillance de la nature."
           </p>
         </div>

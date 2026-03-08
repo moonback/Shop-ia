@@ -1,58 +1,58 @@
 import { useCallback } from 'react';
 import { supabase } from '../lib/supabase';
 import { Product } from '../lib/types';
-import { QuizOption, BudTenderSettings } from '../lib/budtenderSettings';
-import { SavedPrefs } from './useBudTenderMemory';
+import { QuizOption, ShopiaAssistantSettings } from '../lib/shopiaAssistantSettings';
+import { SavedPrefs } from './useShopiaAssistantMemory';
 import { useAuthStore } from '../store/authStore';
-import { Answers, Message, scoreProduct, scoreTerpenes, generateAdvice, callAI } from '../lib/budtenderHelpers';
+import { Answers, Message, scoreProduct, scoreAromas, generateAdvice, callAI } from '../lib/shopiaAssistantHelpers';
 
-interface BudTenderMemoryLike {
+interface ShopiaAssistantMemoryLike {
     savePrefs: (prefs: SavedPrefs) => Promise<void> | void;
     pastProducts: { product_name: string }[];
     savedPrefs: SavedPrefs | null;
 }
 
-interface UseBudTenderQuizParams {
-    settings: BudTenderSettings;
+interface UseShopiaAssistantQuizParams {
+    settings: ShopiaAssistantSettings;
     products: Product[];
     messages: Message[];
     answers: Answers;
     stepIndex: number;
-    terpeneSelection: string[];
-    memory: BudTenderMemoryLike;
+    aromaSelection: string[];
+    memory: ShopiaAssistantMemoryLike;
     setStepIndex: React.Dispatch<React.SetStateAction<number>>;
     setAnswers: React.Dispatch<React.SetStateAction<Answers>>;
-    setAwaitingTerpene: React.Dispatch<React.SetStateAction<boolean>>;
-    setTerpeneSelection: React.Dispatch<React.SetStateAction<string[]>>;
+    setAwaitingAroma: React.Dispatch<React.SetStateAction<boolean>>;
+    setAromaSelection: React.Dispatch<React.SetStateAction<string[]>>;
     setIsTyping: React.Dispatch<React.SetStateAction<boolean>>;
     setMessages: React.Dispatch<React.SetStateAction<Message[]>>;
     addBotMessage: (msg: Partial<Message>, delay?: number) => void;
     addUserMessage: (text: string) => void;
 }
 
-export function useBudTenderQuiz({
+export function useShopiaAssistantQuiz({
     settings,
     products,
     messages,
     answers,
     stepIndex,
-    terpeneSelection,
+    aromaSelection,
     memory,
     setStepIndex,
     setAnswers,
-    setAwaitingTerpene,
-    setTerpeneSelection,
+    setAwaitingAroma,
+    setAromaSelection,
     setIsTyping,
     setMessages,
     addBotMessage,
     addUserMessage,
-}: UseBudTenderQuizParams) {
+}: UseShopiaAssistantQuizParams) {
     const generateRecommendations = useCallback(async (finalAnswers: Answers) => {
         setIsTyping(true);
         memory.savePrefs(finalAnswers as unknown as SavedPrefs);
 
         const scored = [...products]
-            .map((p) => ({ product: p, score: scoreProduct(p, finalAnswers) + scoreTerpenes(p, terpeneSelection) }))
+            .map((p) => ({ product: p, score: scoreProduct(p, finalAnswers) + scoreAromas(p, aromaSelection) }))
             .sort((a, b) => b.score - a.score)
             .filter((x) => x.score > 0)
             .slice(0, settings.recommendations_count)
@@ -62,8 +62,8 @@ export function useBudTenderQuiz({
         if (memory.pastProducts.length > 0) {
             ctxParts.push(`Derniers achats : ${memory.pastProducts.slice(0, 3).map((p) => p.product_name).join(', ')}.`);
         }
-        if (terpeneSelection.length > 0) {
-            ctxParts.push(`Arômes & effets préférés : ${terpeneSelection.join(', ')}.`);
+        if (aromaSelection.length > 0) {
+            ctxParts.push(`Arômes & saveurs préférés : ${aromaSelection.join(', ')}.`);
         }
         const geminiContext = ctxParts.join(' ') || undefined;
 
@@ -75,7 +75,7 @@ export function useBudTenderQuiz({
             }));
 
         const aiText = await callAI(finalAnswers, products, settings, history, geminiContext);
-        const adviceText = aiText ?? generateAdvice(finalAnswers, terpeneSelection);
+        const adviceText = aiText ?? generateAdvice(finalAnswers, aromaSelection);
 
         setMessages((prev) => [...prev, {
             id: Math.random().toString(36).substring(7),
@@ -88,21 +88,21 @@ export function useBudTenderQuiz({
         const { user } = useAuthStore.getState();
         if (user && scored.length > 0) {
             try {
-                const { error } = await supabase.from('budtender_interactions').insert({
+                const { error } = await supabase.from('Assistant_interactions').insert({
                     user_id: user.id,
                     interaction_type: 'recommendation',
                     recommended_products: scored.map((p) => p.id),
                     quiz_answers: finalAnswers,
                     created_at: new Date().toISOString(),
                 });
-                if (error) console.error('[BudTender] Recommendation log error:', error);
+                if (error) console.error('[ShopiaAssistant] Recommendation log error:', error);
             } catch (err) {
-                console.error('[BudTender] Recommendation log exception:', err);
+                console.error('[ShopiaAssistant] Recommendation log exception:', err);
             }
         }
 
         setIsTyping(false);
-    }, [memory, messages, products, setIsTyping, setMessages, settings, terpeneSelection]);
+    }, [memory, messages, products, setIsTyping, setMessages, settings, aromaSelection]);
 
     const startQuiz = useCallback(() => {
         setStepIndex(0);
@@ -140,7 +140,7 @@ export function useBudTenderQuiz({
             return;
         }
         if (option.value === 'upsell_info') {
-            addBotMessage({ text: "Excellent réflexe ! Mixer fleurs et huiles permet de bénéficier de l'effet d'entourage complet. Voici mes meilleures recommandations d'huiles pour compléter votre panier :" }, 400);
+            addBotMessage({ text: "Excellent réflexe ! Varier les plaisirs permet de découvrir toute l'étendue de nos saveurs. Voici mes meilleures recommandations pour compléter votre panier :" }, 400);
             await generateRecommendations({ ...answers, format: 'oil' });
             return;
         }
@@ -156,11 +156,11 @@ export function useBudTenderQuiz({
 
         if (stepId === 'experience' && option.value === 'expert') {
             setStepIndex(nextIndex);
-            setAwaitingTerpene(true);
-            setTerpeneSelection([]);
+            setAwaitingAroma(true);
+            setAromaSelection([]);
             addBotMessage({
-                type: 'terpene',
-                text: '🧪 En tant que connaisseur, affinez votre profil ! Sélectionnez vos arômes et effets préférés (optionnel) :',
+                type: 'aroma',
+                text: '🍎 En tant que gourmet, affinez votre profil ! Sélectionnez vos arômes et saveurs préférés (optionnel) :',
             });
             return;
         }
@@ -177,12 +177,12 @@ export function useBudTenderQuiz({
         } else {
             await generateRecommendations(newAnswers);
         }
-    }, [addBotMessage, addUserMessage, answers, generateRecommendations, setAnswers, setAwaitingTerpene, setStepIndex, setTerpeneSelection, settings.quiz_steps, startQuiz, stepIndex]);
+    }, [addBotMessage, addUserMessage, answers, generateRecommendations, setAnswers, setAwaitingAroma, setStepIndex, setAromaSelection, settings.quiz_steps, startQuiz, stepIndex]);
 
-    const confirmTerpeneSelection = useCallback(() => {
-        setAwaitingTerpene(false);
-        if (terpeneSelection.length > 0) {
-            addUserMessage(`Arômes & effets : ${terpeneSelection.join(', ')} ✨`);
+    const confirmAromaSelection = useCallback(() => {
+        setAwaitingAroma(false);
+        if (aromaSelection.length > 0) {
+            addUserMessage(`Arômes & saveurs : ${aromaSelection.join(', ')} ✨`);
         } else {
             addUserMessage('Je passe cette étape →');
         }
@@ -198,13 +198,13 @@ export function useBudTenderQuiz({
         } else {
             generateRecommendations(answers);
         }
-    }, [addBotMessage, addUserMessage, answers, generateRecommendations, setAwaitingTerpene, settings.quiz_steps, stepIndex, terpeneSelection]);
+    }, [addBotMessage, addUserMessage, answers, generateRecommendations, setAwaitingAroma, settings.quiz_steps, stepIndex, aromaSelection]);
 
     return {
         startQuiz,
         skipQuizAndRecommend,
         handleAnswer,
-        confirmTerpeneSelection,
+        confirmAromaSelection,
         generateRecommendations,
     };
 }

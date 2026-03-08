@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
 import { Product } from '../lib/types';
 import { useAuthStore } from '../store/authStore';
-import { getBudTenderSettings, QuizOption, BudTenderSettings } from '../lib/budtenderSettings';
+import { getShopiaAssistantSettings as getAssistantSettings, QuizOption, ShopiaAssistantSettings as AssistantSettings } from '../lib/shopiaAssistantSettings';
 import { CATEGORY_SLUGS } from '../lib/constants';
 
 // ─── Types ───────────────────────────────────────────────────────────────────
@@ -14,7 +14,7 @@ export interface SavedPrefs {
     budget: string;
     age?: string;
     intensity?: string;
-    terpenes?: string[]; // Multiple choice possible
+    aromas?: string[]; // Multiple choice possible
     [key: string]: any; // Support for dynamic/extra fields
 }
 
@@ -57,9 +57,9 @@ interface OrderHistoryItem {
     } | null;
 }
 
-// Maps a category slug to the matching BudTenderSettings threshold key.
+// Maps a category slug to the matching AssistantSettings threshold key.
 // Any slug not present falls back to 'restock_threshold_other'.
-const CATEGORY_THRESHOLD_KEYS: Partial<Record<string, keyof BudTenderSettings>> = {
+const CATEGORY_THRESHOLD_KEYS: Partial<Record<string, keyof AssistantSettings>> = {
     [CATEGORY_SLUGS.OILS]: 'restock_threshold_oils',
     [CATEGORY_SLUGS.FLOWERS]: 'restock_threshold_flowers',
     [CATEGORY_SLUGS.RESINS]: 'restock_threshold_flowers',
@@ -74,11 +74,11 @@ const FALLBACK_THRESHOLDS: Record<string, number> = {
 };
 const FALLBACK_DEFAULT = 21;
 
-const LS_KEY = 'budtender_prefs_v1';
+const LS_KEY = 'shop_ia_assistant_prefs_v1';
 
 // ─── Hook ────────────────────────────────────────────────────────────────────
 
-export function useBudTenderMemory() {
+export function useShopiaAssistantMemory() {
     const { user, profile } = useAuthStore();
 
     const [pastProducts, setPastProducts] = useState<PastProduct[]>([]);
@@ -100,7 +100,7 @@ export function useBudTenderMemory() {
             const rawPrefs = localStorage.getItem(LS_KEY);
             if (rawPrefs) setSavedPrefs(JSON.parse(rawPrefs) as SavedPrefs);
 
-            const rawChat = localStorage.getItem('budtender_chat_history_v1');
+            const rawChat = localStorage.getItem('shop_ia_assistant_chat_history_v1');
             if (rawChat) setChatHistory(JSON.parse(rawChat));
         } catch {
             // ignore corrupt data
@@ -127,7 +127,7 @@ export function useBudTenderMemory() {
 
                 if (!orders) return;
 
-                const settings = getBudTenderSettings();
+                const settings = getAssistantSettings();
                 if (!settings.memory_enabled) {
                     setIsLoading(false);
                     return;
@@ -174,7 +174,7 @@ export function useBudTenderMemory() {
                 setPastProducts(past.slice(0, 5));
                 setRestockCandidates(restock.slice(0, 2)); // max 2 restock suggestions
             } catch (err) {
-                if (import.meta.env.DEV) console.error('[BudTenderMemory]', err);
+                if (import.meta.env.DEV) console.error('[ShopiaAssistantMemory]', err);
             } finally {
                 setIsLoading(false);
             }
@@ -201,13 +201,13 @@ export function useBudTenderMemory() {
                     budget,
                     age,
                     intensity,
-                    terpenes,
+                    aromas,
                     experience_level,
                     preferred_format,
                     budget_range,
                     age_range,
                     intensity_preference,
-                    terpene_preferences,
+                    aroma_preferences,
                     ...extra
                 } = prefs as any;
 
@@ -219,26 +219,26 @@ export function useBudTenderMemory() {
                     budget_range: budget || budget_range,
                     age_range: age || age_range,
                     intensity_preference: intensity || intensity_preference,
-                    terpene_preferences: terpenes || terpene_preferences || [],
+                    aroma_preferences: aromas || aroma_preferences || [],
                     extra_prefs: extra, // This can store any dynamic questions added in Admin
                     updated_at: new Date().toISOString()
                 };
 
                 if (import.meta.env.DEV) {
-                    console.log('[BudTenderMemory] Supabase Upsert Payload:', payload);
+                    console.log('[AssistantMemory] Supabase Upsert Payload:', payload);
                 }
 
                 await supabase.from('user_ai_preferences').upsert(payload, { onConflict: 'user_id' });
             }
         } catch (err) {
-            if (import.meta.env.DEV) console.error('[BudTenderMemory] Error saving prefs:', err);
+            if (import.meta.env.DEV) console.error('[ShopiaAssistantMemory] Error saving prefs:', err);
         }
     };
 
     const saveChatHistory = async (history: ChatMessage[]) => {
         try {
             // Local fallback
-            localStorage.setItem('budtender_chat_history_v1', JSON.stringify(history));
+            localStorage.setItem('shop_ia_assistant_chat_history_v1', JSON.stringify(history));
             setChatHistory(history);
 
             // Supabase sync (Record interaction session)
@@ -246,7 +246,7 @@ export function useBudTenderMemory() {
                 // We use a simple session_id based on the first message id or date
                 const sessionId = history[0].id || new Date().toISOString();
 
-                await supabase.from('budtender_interactions').upsert({
+                await supabase.from('Assistant_interactions').upsert({
                     user_id: user.id,
                     session_id: sessionId,
                     interaction_type: 'chat_session',
@@ -255,7 +255,7 @@ export function useBudTenderMemory() {
                 }, { onConflict: 'user_id,session_id' });
             }
         } catch (err) {
-            if (import.meta.env.DEV) console.error('[BudTenderMemory] Error saving history:', err);
+            if (import.meta.env.DEV) console.error('[ShopiaAssistantMemory] Error saving history:', err);
         }
     };
 
@@ -264,7 +264,7 @@ export function useBudTenderMemory() {
         setIsHistoryLoading(true);
         try {
             const { data } = await supabase
-                .from('budtender_interactions')
+                .from('Assistant_interactions')
                 .select('session_id, quiz_answers, created_at')
                 .eq('user_id', user.id)
                 .eq('interaction_type', 'chat_session')
@@ -297,7 +297,7 @@ export function useBudTenderMemory() {
                 setAllChatSessions(sessions);
             }
         } catch (err) {
-            console.error('[BudTenderMemory] Error fetching sessions:', err);
+            console.error('[ShopiaAssistantMemory] Error fetching sessions:', err);
         } finally {
             setIsHistoryLoading(false);
         }
@@ -306,26 +306,26 @@ export function useBudTenderMemory() {
     const logQuestion = async (question: string) => {
         if (!user) return;
         try {
-            const { error } = await supabase.from('budtender_interactions').insert({
+            const { error } = await supabase.from('Assistant_interactions').insert({
                 user_id: user.id,
                 interaction_type: 'question',
                 quiz_answers: { question },
                 created_at: new Date().toISOString()
             });
-            if (error) console.error('[BudTenderMemory] Question log error:', error);
+            if (error) console.error('[ShopiaAssistantMemory] Question log error:', error);
         } catch (err) {
-            console.error('[BudTenderMemory] Question log exception:', err);
+            console.error('[ShopiaAssistantMemory] Question log exception:', err);
         }
     };
 
     const clearChatHistory = () => {
-        localStorage.removeItem('budtender_chat_history_v1');
+        localStorage.removeItem('shop_ia_assistant_chat_history_v1');
         setChatHistory([]);
     };
 
     const clearPrefs = () => {
         localStorage.removeItem(LS_KEY);
-        localStorage.removeItem('budtender_chat_history_v1');
+        localStorage.removeItem('shop_ia_assistant_chat_history_v1');
         setSavedPrefs(null);
         setChatHistory([]);
     };
@@ -351,7 +351,7 @@ export function useBudTenderMemory() {
                         budget: prefsData.budget_range ?? '',
                         age: prefsData.age_range ?? '',
                         intensity: prefsData.intensity_preference ?? '',
-                        terpenes: prefsData.terpene_preferences ?? [],
+                        aromas: prefsData.aroma_preferences ?? [],
                         ...(prefsData.extra_prefs || {}) // Restore any dynamic/custom questions
                     };
                     setSavedPrefs(syncedPrefs);
@@ -360,7 +360,7 @@ export function useBudTenderMemory() {
 
                 // 2. Fetch Latest Chat Session
                 const { data: interactionData } = await supabase
-                    .from('budtender_interactions')
+                    .from('Assistant_interactions')
                     .select('quiz_answers')
                     .eq('user_id', user.id)
                     .eq('interaction_type', 'chat_session')
@@ -371,7 +371,7 @@ export function useBudTenderMemory() {
                 if (interactionData && interactionData.quiz_answers?.messages) {
                     const history = interactionData.quiz_answers.messages as ChatMessage[];
                     setChatHistory(history);
-                    localStorage.setItem('budtender_chat_history_v1', JSON.stringify(history));
+                    localStorage.setItem('shop_ia_assistant_chat_history_v1', JSON.stringify(history));
                 }
             } catch {
                 // Likely no data yet or single() error, normal

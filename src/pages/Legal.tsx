@@ -5,9 +5,9 @@ export default function Legal() {
   return (
     <div className="min-h-screen bg-zinc-950 pt-20">
       <SEO
-        title="Mentions Légales - Green Mood CBD Shop"
-        description="Consultez les mentions légales, conditions générales d'utilisation et avertissements légaux de Green Mood CBD Shop."
-        keywords="mentions légales CBD, CGU Green Mood"
+        title="Mentions Légales - Shop-ia"
+        description="Consultez les mentions légales, conditions générales d'utilisation et avertissements légaux de Shop-ia."
+        keywords="mentions légales épicerie, CGU Shop-ia"
       />
       {/* Header */}
       <section className="py-24 text-center px-4 sm:px-6 lg:px-8 border-b border-white/10">
@@ -16,7 +16,7 @@ export default function Legal() {
           animate={{ opacity: 1, y: 0 }}
           className="text-3xl md:text-5xl font-serif font-bold text-white mb-6"
         >
-          Mentions <span className="text-green-neon">Légales</span>
+          Mentions <span className="text-amber-400">Légales</span>
         </motion.h1>
       </section>
 
@@ -34,18 +34,16 @@ export default function Legal() {
                 1. Éditeur du site
               </h2>
               <p className="text-zinc-400 leading-relaxed">
-                Le site Green Mood CBD Shop est édité par :<br />
-                <strong>Raison sociale :</strong> Green Mood SAS
+                Le site Shop-ia est édité par :<br />
+                <strong>Raison sociale :</strong> Shop-ia SAS
                 <br />
-                <strong>Siège social :</strong> 123 Rue de la Nature, 75000
-                Paris
+                <strong>Siège social :</strong> 45 Avenue de la Fraîcheur, 75001 Paris
                 <br />
-                <strong>Numéro SIRET :</strong> 123 456 789 00012
+                <strong>Numéro SIRET :</strong> 987 654 321 00012
                 <br />
-                <strong>Directeur de la publication :</strong> [Nom du
-                Directeur]
+                <strong>Directeur de la publication :</strong> Mayssa
                 <br />
-                <strong>Contact :</strong> contact@greenMood-cbd.fr
+                <strong>Contact :</strong> hello@shop-ia.fr
               </p>
             </div>
 
@@ -67,23 +65,13 @@ export default function Legal() {
 
             <div>
               <h2 className="text-2xl font-serif font-bold text-white mb-4">
-                3. Avertissement Légal N10 & CBD
+                3. Qualité & Consommation
               </h2>
               <p className="text-zinc-400 leading-relaxed">
-                Les produits proposés sur ce site et en boutique, incluant nos
-                gammes exclusives N10 et CBD, sont strictement conformes à la
-                législation européenne et française en vigueur. Leur taux de
-                Delta-9-THC est rigoureusement inférieur à 0.3%.
+                Les produits proposés sur ce site sont sélectionnés pour leur qualité et leur origine. Nous nous engageons à respecter toutes les normes sanitaires en vigueur.
               </p>
               <p className="text-zinc-400 leading-relaxed mt-4">
-                <strong>Ces produits ne sont pas des médicaments.</strong> Ils
-                ne peuvent en aucun cas se substituer à un traitement médical.
-                En cas de doute, consultez un professionnel de santé.
-              </p>
-              <p className="text-zinc-400 leading-relaxed mt-4">
-                <strong>Interdit aux mineurs.</strong> La vente de produits à
-                base de CBD est interdite aux personnes de moins de 18 ans.
-                Déconseillé aux femmes enceintes ou allaitantes.
+                <strong>Conservation :</strong> Pour une qualité optimale, suivez les conseils de conservation indiqués sur les emballages.
               </p>
             </div>
 
@@ -93,11 +81,11 @@ export default function Legal() {
               </h2>
               <p className="text-zinc-400 leading-relaxed">
                 L'ensemble du contenu de ce site (textes, images, logos, etc.)
-                est la propriété exclusive de Green Mood SAS, sauf mention
+                est la propriété exclusive de Shop-ia SAS, sauf mention
                 contraire. Toute reproduction, distribution, modification,
                 adaptation, retransmission ou publication de ces différents
                 éléments est strictement interdite sans l'accord exprès par
-                écrit de Green Mood SAS.
+                écrit de Shop-ia SAS.
               </p>
             </div>
 

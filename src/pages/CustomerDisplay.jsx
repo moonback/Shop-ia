@@ -9,7 +9,7 @@ import { supabase } from '../lib/supabase';
 
 // Example payload shown before the cashier starts a live cart.
 const EXAMPLE_CART_STATE = [
-  { id: 'demo-1', name: 'Huile CBD 10%', quantity: 1, unitPrice: 39.9 },
+  { id: 'demo-1', name: "Huile d'Olive Bio", quantity: 1, unitPrice: 39.9 },
   { id: 'demo-2', name: 'Infusion Relax', quantity: 2, unitPrice: 12.5 },
   { id: 'demo-3', name: 'Gummies Nuit', quantity: 1, unitPrice: 24.0 },
 ];
@@ -224,7 +224,7 @@ export default function CustomerDisplay() {
         <section className="col-span-8 rounded-[2rem] border border-white/10 bg-zinc-900/70 backdrop-blur-xl p-8 flex flex-col shadow-2xl shadow-black/30">
           <header className="flex items-end justify-between border-b border-white/10 pb-6">
             <div>
-              <p className="text-sm uppercase tracking-[0.28em] text-zinc-400 mb-3">Green Mood CBD</p>
+              <p className="text-sm uppercase tracking-[0.28em] text-zinc-400 mb-3">Shop-ia Gastronomie</p>
               <h1 className="text-5xl font-black tracking-tight">Bonjour {customerLabel}</h1>
             </div>
 

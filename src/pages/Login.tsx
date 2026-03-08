@@ -88,7 +88,7 @@ export default function Login() {
   return (
     <>
       <SEO
-        title={mode === 'login' ? 'Connexion — Green Mood CBD' : 'Créer un compte — Green Mood CBD'}
+        title={mode === 'login' ? 'Connexion — Shop-ia CBD' : 'Créer un compte — Shop-ia CBD'}
         description="Connectez-vous ou créez un compte pour accéder à votre historique de commandes et programme de fidélité."
       />
 

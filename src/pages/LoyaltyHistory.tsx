@@ -137,7 +137,7 @@ export default function LoyaltyHistory() {
 
   return (
     <div className="min-h-screen bg-zinc-950 text-white pt-24 pb-32">
-      <SEO title="Programme Privilège — L'Excellence Green Mood" description="Consultez l'historique de vos points de fidélité." />
+      <SEO title="Programme Privilège — L'Excellence Shop-ia" description="Consultez l'historique de vos points de fidélité." />
 
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
 
@@ -207,7 +207,7 @@ export default function LoyaltyHistory() {
               <p className="text-sm text-zinc-400 font-serif italic max-w-md">
                 {currentTier.name === 'Bronze' && 'Bienvenue dans le programme. Chaque achat vous rapproche de nouveaux privilèges.'}
                 {currentTier.name === 'Silver' && 'Vous avez atteint le palier Silver. Profitez d\'avantages exclusifs sur vos commandes.'}
-                {currentTier.name === 'Gold' && 'Statut Gold atteint. Vous bénéficiez de l\'intégralité des privilèges Green Mood.'}
+                {currentTier.name === 'Gold' && 'Statut Gold atteint. Vous bénéficiez de l\'intégralité des privilèges Shop-ia.'}
               </p>
             </div>
 
@@ -441,7 +441,7 @@ export default function LoyaltyHistory() {
         <div className="mt-20 p-10 bg-white/[0.01] border border-dashed border-white/5 rounded-[3rem] text-center max-w-2xl mx-auto">
           <h4 className="text-lg font-serif font-black italic mb-4 text-white">L'Exquise Loyauté.</h4>
           <p className="text-sm text-zinc-500 leading-relaxed font-serif">
-            Chaque gramme, chaque goutte, chaque moment partagé avec Green Mood vous rapproche de privilèges inaccessibles.
+            Chaque gramme, chaque goutte, chaque moment partagé avec Shop-ia vous rapproche de privilèges inaccessibles.
             Cultivons ensemble l'exception.
           </p>
         </div>

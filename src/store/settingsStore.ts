@@ -12,8 +12,8 @@ export interface StoreSettings {
     banner_enabled: boolean;
     social_instagram: string;
     social_facebook: string;
-    budtender_chat_enabled: boolean;
-    budtender_voice_enabled: boolean;
+    assistant_chat_enabled: boolean;
+    assistant_voice_enabled: boolean;
     subscriptions_enabled: boolean;
     referral_reward_points: number;
     referral_welcome_bonus: number;
@@ -26,18 +26,18 @@ export interface StoreSettings {
 }
 
 export const DEFAULT_SETTINGS: StoreSettings = {
-    delivery_fee: 5.90,
-    delivery_free_threshold: 50.00,
-    store_name: 'Green Mood CBD',
-    store_address: '123 Rue de la Nature, 75000 Paris',
-    store_phone: '01 23 45 67 89',
-    store_hours: 'Lun–Sam 10h00–19h30',
-    banner_text: '🌿 Offre de bienvenue : -10% avec le code GREENMood !',
+    delivery_fee: 4.90,
+    delivery_free_threshold: 60.00,
+    store_name: 'Shop-ia',
+    store_address: '45 Avenue de la Fraîcheur, 75001 Paris',
+    store_phone: '01 99 88 77 66',
+    store_hours: 'Lun–Sam 09h00–20h00',
+    banner_text: '🛒 Bienvenue chez Shop-ia : Votre panier intelligent livré chez vous !',
     banner_enabled: true,
-    social_instagram: 'https://instagram.com/greenMood_cbd',
-    social_facebook: 'https://facebook.com/greenMood_cbd',
-    budtender_chat_enabled: true,
-    budtender_voice_enabled: true,
+    social_instagram: 'https://instagram.com/shop_ia',
+    social_facebook: 'https://facebook.com/shop_ia',
+    assistant_chat_enabled: true,
+    assistant_voice_enabled: true,
     subscriptions_enabled: true,
     referral_reward_points: 500,
     referral_welcome_bonus: 0,
@@ -47,9 +47,9 @@ export const DEFAULT_SETTINGS: StoreSettings = {
     home_best_sellers_enabled: true,
     empty_cart_suggestions_enabled: true,
     ticker_messages: [
-        "✦ Livraison offerte dès 50€ d'achat ✦",
-        "✦ Nouveau : Découvrez la gamme N10 ✦",
-        "✦ -10% sur votre première commande avec GREENMOOD ✦"
+        "✦ Livraison offerte dès 60€ d'achat ✦",
+        "✦ Nouveau : Découvrez nos produits frais du terroir ✦",
+        "✦ -15% sur votre première commande avec OUVERTURE ✦"
     ],
 };
 
@@ -74,10 +74,10 @@ export const useSettingsStore = create<SettingsStore>((set) => ({
                     return acc;
                 }, {});
 
-                // Migration: if old budtender_enabled exists but new ones don't, copy its value
-                if (obj.budtender_enabled !== undefined && obj.budtender_chat_enabled === undefined) {
-                    obj.budtender_chat_enabled = obj.budtender_enabled;
-                    obj.budtender_voice_enabled = obj.budtender_enabled;
+                // Migration: if old Assistant_enabled exists but new ones don't, copy its value
+                if (obj.Assistant_enabled !== undefined && obj.assistant_chat_enabled === undefined) {
+                    obj.assistant_chat_enabled = obj.Assistant_enabled;
+                    obj.assistant_voice_enabled = obj.Assistant_enabled;
                 }
 
                 set({ settings: { ...DEFAULT_SETTINGS, ...obj }, isLoading: false });

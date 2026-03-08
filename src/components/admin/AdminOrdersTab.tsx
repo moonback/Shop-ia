@@ -187,7 +187,7 @@ export default function AdminOrdersTab({ orders, onRefresh, storeName, storeAddr
                                                     <div className="flex items-start gap-3">
                                                         <Store className="w-5 h-5 text-purple-400 shrink-0 mt-0.5" />
                                                         <div>
-                                                            <p className="text-sm font-semibold text-white">Click & Collect — Boutique Green Mood</p>
+                                                            <p className="text-sm font-semibold text-white">Click & Collect — Boutique Shop-ia</p>
                                                             <p className="text-xs text-zinc-400">{storeAddress || '123 Rue de la Nature, 75000 Paris'}</p>
                                                         </div>
                                                     </div>

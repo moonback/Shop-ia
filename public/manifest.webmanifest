@@ -1,11 +1,11 @@
 {
-    "name": "Green Mood CBD",
-    "short_name": "Green Mood",
-    "description": "Boutique CBD Premium & Innovation N10 — Click & Collect et Livraison.",
+    "name": "Shop-ia",
+    "short_name": "Shop-ia",
+    "description": "Votre Épicerie Intelligente & Produits Frais — Click & Collect et Livraison.",
     "start_url": "/",
     "display": "standalone",
     "background_color": "#000000",
-    "theme_color": "#39FF14",
+    "theme_color": "#FFD700",
     "orientation": "portrait-primary",
     "icons": [
         {
@@ -22,7 +22,7 @@
     ],
     "categories": [
         "shopping",
-        "health"
+        "food"
     ],
     "shortcuts": [
         {

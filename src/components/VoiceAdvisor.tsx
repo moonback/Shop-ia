@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Mic, MicOff, PhoneOff, Volume2, X, Radio, Headphones } from 'lucide-react';
 import { Product } from '../lib/types';
-import { PastProduct, SavedPrefs } from '../hooks/useBudTenderMemory';
+import { PastProduct, SavedPrefs } from '../hooks/useShopiaAssistantMemory';
 import { useGeminiLiveVoice, VoiceState } from '../hooks/useGeminiLiveVoice';
 import { useSettingsStore } from '../store/settingsStore';
 
@@ -29,7 +29,7 @@ const STATUS: Record<VoiceState, string> = {
     idle: 'Démarrage…',
     connecting: 'Connexion…',
     listening: 'À votre écoute',
-    speaking: 'BudTender répond',
+    speaking: 'L\'Assistant répond',
     error: 'Erreur',
 };
 
@@ -286,7 +286,7 @@ export default function VoiceAdvisor({
                                 <div>
                                     <div className="flex items-center gap-2">
                                         <span className="text-[12px] font-black text-white uppercase tracking-[0.2em]">
-                                            BudTender Privilège
+                                            Assistant Privilège
                                         </span>
                                         <motion.span
                                             animate={isActive ? { opacity: [1, 0.6, 1], scale: [1, 1.05, 1] } : { opacity: 0.5 }}
@@ -298,7 +298,7 @@ export default function VoiceAdvisor({
                                         </motion.span>
                                     </div>
                                     <p className="text-[10px] text-zinc-500 font-bold mt-0.5 tracking-tight">
-                                        Assistant Personnel · Audio Haute Fidélité
+                                        Conseiller Culinaire · Audio Haute Fidélité
                                     </p>
                                 </div>
                             </div>

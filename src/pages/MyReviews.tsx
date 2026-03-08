@@ -28,7 +28,7 @@ export default function MyReviews() {
 
   return (
     <div className="min-h-screen bg-zinc-950 text-white pt-24 pb-32">
-      <SEO title="Mes Impressions — L'Excellence Green Mood" description="Consultez et gérez vos avis produits." />
+      <SEO title="Mes Impressions — L'Excellence Shop-ia" description="Consultez et gérez vos avis produits." />
 
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
 

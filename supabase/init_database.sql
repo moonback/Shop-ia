@@ -1,5 +1,5 @@
 -- ═══════════════════════════════════════════════════════════════════════════
--- Green Mood CBD — Script d'initialisation consolidé
+-- Shop-ia — Script d'initialisation consolidé
 -- Généré le 2026-03-08
 -- ═══════════════════════════════════════════════════════════════════════════
 --
@@ -505,8 +505,8 @@ RETURNS TABLE (
   slug text,
   name text,
   description text,
-  cbd_percentage numeric(5,2),
-  thc_max numeric(5,3),
+  nutriscore text,
+  weight_info text,
   weight_grams numeric(8,2),
   price numeric(10,2),
   image_url text,
@@ -530,8 +530,8 @@ BEGIN
     p.slug,
     p.name,
     p.description,
-    p.cbd_percentage,
-    p.thc_max,
+    p.nutriscore,
+    p.weight_info,
     p.weight_grams,
     p.price,
     p.image_url,
@@ -981,139 +981,122 @@ GRANT ALL ON public.referrals TO service_role;
 -- ─── Categories ────────────────────────────────────────────────────────────
 
 INSERT INTO categories (slug, name, description, icon_name, image_url, sort_order) VALUES
-  ('fleurs', 'Fleurs CBD', 'Fleurs de CBD de haute qualité, récoltées avec soin pour une expérience aromatique exceptionnelle.', 'Flower', 'https://images.unsplash.com/photo-1584467541268-b040f83be3fd?w=800', 1),
-  ('resines', 'Résines & Pollens', 'Concentrés de CBD artisanaux, extraits selon des méthodes traditionnelles respectueuses des terpènes.', 'Droplets', 'https://images.unsplash.com/photo-1611241893603-3c359704e0ee?w=800', 2),
-  ('huiles', 'Huiles & Infusions', 'Huiles CBD full spectrum et infusions relaxantes, formulées pour votre bien-être quotidien.', 'Leaf', 'https://images.unsplash.com/photo-1617791160505-6f00504e3519?w=800', 3)
+  ('epicerie-salee', 'Épicerie Salée', 'Une sélection de produits salés de qualité pour vos repas quotidiens.', 'Utensils', 'https://images.unsplash.com/photo-1542838132-92c53300491e?w=800', 1),
+  ('epicerie-sucree', 'Épicerie Sucrée', 'Douceurs, chocolats et produits sucrés pour tous les gourmands.', 'Cookie', 'https://images.unsplash.com/photo-1481391319762-47dff72954d9?w=800', 2),
+  ('boissons', 'Boissons', 'Jus artisanaux, thés bios et rafraîchissements naturels.', 'Coffee', 'https://images.unsplash.com/photo-1544145945-f904253d0c71?w=800', 3),
+  ('produits-frais', 'Produits Frais', 'Sélection de produits de la ferme et produits laitiers frais.', 'Egg', 'https://images.unsplash.com/photo-1546487813-f931b2691761?w=800', 4)
 ON CONFLICT (slug) DO NOTHING;
 
 -- ─── Products ──────────────────────────────────────────────────────────────
 
 DO $$
 DECLARE
-  cat_fleurs  uuid;
-  cat_resines uuid;
-  cat_huiles  uuid;
+  cat_salee   uuid;
+  cat_sucree  uuid;
+  cat_boisson uuid;
+  cat_frais   uuid;
 BEGIN
-  SELECT id INTO cat_fleurs  FROM categories WHERE slug = 'fleurs';
-  SELECT id INTO cat_resines FROM categories WHERE slug = 'resines';
-  SELECT id INTO cat_huiles  FROM categories WHERE slug = 'huiles';
+  SELECT id INTO cat_salee   FROM categories WHERE slug = 'epicerie-salee';
+  SELECT id INTO cat_sucree  FROM categories WHERE slug = 'epicerie-sucree';
+  SELECT id INTO cat_boisson FROM categories WHERE slug = 'boissons';
+  SELECT id INTO cat_frais   FROM categories WHERE slug = 'produits-frais';
 
-  INSERT INTO products (category_id, slug, name, description, cbd_percentage, thc_max, weight_grams, price, image_url, stock_quantity, is_featured) VALUES
-    (cat_fleurs, 'amnesia-haze', 'Amnesia Haze', 'Variété sativa légendaire aux arômes citronnés et terreux. Idéale pour la journée.', 18.5, 0.2, 3, 12.90, 'https://images.unsplash.com/photo-1526770542827-70b22c6e7e8d?w=800', 50, true),
-    (cat_fleurs, 'gelato', 'Gelato', 'Hybride équilibré aux notes sucrées de dessert. Parfum floral et fruité intense.', 22.0, 0.2, 3, 14.90, 'https://images.unsplash.com/photo-1559757175-5700dde675bc?w=800', 35, true),
-    (cat_fleurs, 'white-widow', 'White Widow', 'Classique intemporel aux cristaux de résine abondants. Goût boisé et épicé.', 20.0, 0.2, 3, 13.90, 'https://images.unsplash.com/photo-1585435421671-0c16764628a9?w=800', 40, false),
-    (cat_fleurs, 'strawberry', 'Strawberry', 'Notes fruitées de fraise mûre. L''une de nos variétés les plus appréciées.', 16.0, 0.2, 3, 11.90, 'https://images.unsplash.com/photo-1587049352846-4a222e784d38?w=800', 60, false),
-    (cat_resines, 'afghan', 'Afghan', 'Résine afghane traditionnelle aux arômes terreux et épicés. Texture souple et malléable.', 30.0, 0.2, 3, 18.90, 'https://images.unsplash.com/photo-1611241893603-3c359704e0ee?w=800', 25, true),
-    (cat_resines, 'jaune-mousseux', 'Jaune Mousseux', 'Pollen pressé à froid aux reflets dorés. Goût doux et légèrement floral.', 25.0, 0.2, 3, 16.90, 'https://images.unsplash.com/photo-1584467541268-b040f83be3fd?w=800', 20, false),
-    (cat_resines, 'filtre-x3', 'Filtré x3', 'Triple filtration pour une pureté maximale. Texture fine et homogène.', 35.0, 0.2, 3, 22.90, 'https://images.unsplash.com/photo-1617791160505-6f00504e3519?w=800', 15, false),
-    (cat_resines, 'ice-o-lator', 'Ice O Lator', 'Extraction à l''eau glacée pour préserver les terpènes. Qualité premium.', 40.0, 0.2, 3, 28.90, 'https://images.unsplash.com/photo-1526770542827-70b22c6e7e8d?w=800', 10, true),
-    (cat_huiles, 'huile-10-full-spectrum', 'Huile 10% Full Spectrum', 'Huile CBD full spectrum 10% avec tous les cannabinoïdes bénéfiques. Flacon 30ml.', 10.0, 0.2, null, 34.90, 'https://images.unsplash.com/photo-1606813907291-d86efa9b94db?w=800', 30, true),
-    (cat_huiles, 'huile-20-sommeil', 'Huile 20% Sommeil', 'Formule enrichie en mélatonine et CBD 20% pour un sommeil réparateur. Flacon 30ml.', 20.0, 0.2, null, 54.90, 'https://images.unsplash.com/photo-1559757175-5700dde675bc?w=800', 20, true),
-    (cat_huiles, 'infusion-detente', 'Infusion Détente', 'Mélange de plantes bio avec fleurs de CBD. Camomille, tilleul et lavande. Boîte 30 sachets.', 5.0, 0.1, null, 16.90, 'https://images.unsplash.com/photo-1587049352846-4a222e784d38?w=800', 45, false),
-    (cat_huiles, 'infusion-digestion', 'Infusion Digestion', 'Association fenouil, menthe et CBD pour soutenir le confort digestif. Boîte 30 sachets.', 5.0, 0.1, null, 16.90, 'https://images.unsplash.com/photo-1585435421671-0c16764628a9?w=800', 45, false)
+  INSERT INTO products (category_id, slug, name, description, nutriscore, weight_info, weight_grams, price, image_url, stock_quantity, is_featured) VALUES
+    (cat_salee, 'huile-olive-bio', 'Huile d''Olive Bio', 'Huile d''olive extra vierge extraite à froid. Origine Provence.', 'A', '500ml', 500, 14.90, 'https://images.unsplash.com/photo-1474979266404-7eaacbadcbaf?w=800', 50, true),
+    (cat_salee, 'pates-artisanales', 'Pâtes Artisanales', 'Pâtes de blé dur séchées lentement pour une texture parfaite.', 'A', '500g', 500, 4.50, 'https://images.unsplash.com/photo-1551183053-bf91a1d81141?w=800', 100, false),
+    (cat_sucree, 'chocolat-noir', 'Chocolat Noir 70%', 'Chocolat noir intense issu du commerce équitable.', 'B', '100g', 100, 3.90, 'https://images.unsplash.com/photo-1511381939415-e44015466834?w=800', 80, true),
+    (cat_sucree, 'miel-lavande', 'Miel de Lavande', 'Miel crémeux récolté au cœur de la Provence.', 'C', '250g', 250, 9.90, 'https://images.unsplash.com/photo-1587049352846-4a222e784d38?w=800', 45, false),
+    (cat_boisson, 'jus-pomme', 'Jus de Pomme Artisanal', 'Pur jus de pomme fraîchement pressé sans sucres ajoutés.', 'B', '1L', 1000, 5.50, 'https://images.unsplash.com/photo-1567306226416-28f0efdc88ce?w=800', 60, true),
+    (cat_boisson, 'the-vert', 'Thé Vert Bio', 'Thé vert bio de haute qualité aux notes délicates.', 'A', '100g', 100, 12.00, 'https://images.unsplash.com/photo-1597481499750-3e6b21643c12?w=800', 40, false),
+    (cat_frais, 'fromage-chevre', 'Fromage de Chèvre', 'Fromage de chèvre frais de producteur local.', 'B', '200g', 200, 6.90, 'https://images.unsplash.com/photo-1485962391045-8c707d835041?w=800', 25, true),
+    (cat_frais, 'yaourt-nature', 'Yaourt Nature Bio', 'Pack de 4 yaourts nature au lait entier bio.', 'A', '4x125g', 500, 3.20, 'https://images.unsplash.com/photo-1485962391045-8c707d835041?w=800', 30, false)
   ON CONFLICT (slug) DO NOTHING;
 
   -- ─── Store Settings ──────────────────────────────────────────────────────
   INSERT INTO store_settings (key, value) VALUES
-    ('delivery_fee', '5.90'),
-    ('delivery_free_threshold', '50.00'),
-    ('store_name', '"Green Mood CBD"'),
-    ('store_address', '"123 Rue de la Nature, 75000 Paris"'),
-    ('store_phone', '"01 23 45 67 89"'),
-    ('store_hours', '"Lun–Sam 10h00–19h30"'),
-    ('banner_text', '"🌿 Offre de bienvenue : -10% avec le code GREENMood !"'),
+    ('delivery_fee', '4.90'),
+    ('delivery_free_threshold', '60.00'),
+    ('store_name', '"Shop-ia"'),
+    ('store_address', '"45 Avenue de la Fraîcheur, 75001 Paris"'),
+    ('store_phone', '"01 99 88 77 66"'),
+    ('store_hours', '"Lun–Sam 09h00–20h00"'),
+    ('banner_text', '"🛒 Bienvenue chez Shop-ia : Votre panier intelligent livré chez vous !"'),
     ('banner_enabled', 'true')
   ON CONFLICT (key) DO NOTHING;
 END $$;
 
--- ─── SKU exemples (v6) ────────────────────────────────────────────────────
+-- ─── SKU exemples ──────────────────────────────────────────────────────────
 
-UPDATE products SET sku = '10001' WHERE slug = 'amnesia-haze' AND sku IS NULL;
-UPDATE products SET sku = '10002' WHERE slug = 'gelato' AND sku IS NULL;
-UPDATE products SET sku = '10003' WHERE slug = 'afghan' AND sku IS NULL;
+UPDATE products SET sku = 'F-001' WHERE slug = 'huile-olive-bio' AND sku IS NULL;
+UPDATE products SET sku = 'F-002' WHERE slug = 'chocolat-noir' AND sku IS NULL;
+UPDATE products SET sku = 'F-003' WHERE slug = 'jus-pomme' AND sku IS NULL;
 
 -- ─── Attributs produits ────────────────────────────────────────────────────
 
 DO $$
 BEGIN
   UPDATE products SET attributes = jsonb_build_object(
-    'benefits', jsonb_build_array('Détente Profonde'),
-    'aromas', jsonb_build_array('Terreux', 'Épicé')
-  ) WHERE slug IN ('amnesia-haze', 'afghan');
+    'origin', 'France',
+    'labels', jsonb_build_array('Bio', 'Extra Vierge')
+  ) WHERE slug = 'huile-olive-bio';
 
   UPDATE products SET attributes = jsonb_build_object(
-    'benefits', jsonb_build_array('Focus & Énergie'),
-    'aromas', jsonb_build_array('Fruité')
-  ) WHERE slug = 'gelato';
+    'origin', 'Équateur',
+    'labels', jsonb_build_array('Commerce Équitable', 'Vegan')
+  ) WHERE slug = 'chocolat-noir';
 
   UPDATE products SET attributes = jsonb_build_object(
-    'benefits', jsonb_build_array('Détente Profonde'),
-    'aromas', jsonb_build_array('Naturel')
-  ) WHERE slug LIKE 'huile%';
-
-  UPDATE products SET attributes = jsonb_build_object(
-    'benefits', jsonb_build_array('Sommeil Réparateur'),
-    'aromas', jsonb_build_array('Naturel')
-  ) WHERE slug = 'huile-20-sommeil';
-
-  UPDATE products SET attributes = jsonb_build_object(
-    'benefits', jsonb_build_array('Détente Profonde'),
-    'aromas', jsonb_build_array('Fruité', 'Floral')
-  ) WHERE slug = 'infusion-detente';
-
-  UPDATE products SET attributes = jsonb_build_object(
-    'benefits', jsonb_build_array('Confort Digestif'),
-    'aromas', jsonb_build_array('Herbacé')
-  ) WHERE slug = 'infusion-digestion';
+    'origin', 'France',
+    'allergens', jsonb_build_array('Lactose')
+  ) WHERE slug IN ('fromage-chevre', 'yaourt-nature');
 END $$;
 
 -- ─── Promo Codes ───────────────────────────────────────────────────────────
 
 INSERT INTO promo_codes (code, description, discount_type, discount_value, min_order_value, max_uses, expires_at)
 VALUES
-  ('WEEDKEND-20', 'Weekend spécial -20%', 'percent', 20, 30, 100, now() + interval '30 days'),
-  ('BIENVENUE10', 'Réduction de bienvenue 10%', 'percent', 10, 0, NULL, NULL),
-  ('CBD5EUR', 'Bon de réduction 5€', 'fixed', 5, 20, 50, now() + interval '60 days')
+  ('OUVERTURE', 'Offre de bienvenue -15%', 'percent', 15, 20, 500, now() + interval '90 days'),
+  ('LIVRGRATUITE', 'Livraison offerte sur votre panier', 'fixed', 4.90, 40, NULL, NULL)
 ON CONFLICT (code) DO NOTHING;
 
--- ─── Bundle : Pack Nuit Paisible ───────────────────────────────────────────
+-- ─── Bundle : Pack Petit Déjeuner ──────────────────────────────────────────
 
 DO $$
 DECLARE
   bundle_id   uuid;
-  oil_id      uuid;
-  infusion_id uuid;
+  jus_id      uuid;
+  yaourt_id   uuid;
 BEGIN
-  SELECT id INTO oil_id      FROM products WHERE slug = 'huile-20-sommeil'  LIMIT 1;
-  SELECT id INTO infusion_id FROM products WHERE slug = 'infusion-detente'  LIMIT 1;
+  SELECT id INTO jus_id      FROM products WHERE slug = 'jus-pomme'  LIMIT 1;
+  SELECT id INTO yaourt_id   FROM products WHERE slug = 'yaourt-nature'  LIMIT 1;
 
-  IF oil_id IS NOT NULL AND infusion_id IS NOT NULL THEN
+  IF jus_id IS NOT NULL AND yaourt_id IS NOT NULL THEN
     INSERT INTO products (
       category_id, slug, name, description,
       price, original_value, image_url, stock_quantity,
       is_available, is_featured, is_active, is_bundle
     )
     SELECT
-      (SELECT id FROM categories WHERE slug = 'huiles'),
-      'pack-nuit-paisible',
-      'Pack Nuit Paisible',
-      'Le duo parfait pour des nuits sereines : Huile CBD 20% Sommeil + Infusion Détente. Économisez 10€ vs l''achat séparé.',
-      64.90, 71.80,
+      (SELECT id FROM categories WHERE slug = 'produits-frais'),
+      'pack-petit-dej',
+      'Pack Petit Déjeuner',
+      'Le réveil parfait avec un pur jus de pomme et des yaourts bios. Économisez sur le duo.',
+      7.50, 8.70,
       'https://images.unsplash.com/photo-1540574163026-643ea20ade25?w=800',
       0, true, true, true, true
-    WHERE NOT EXISTS (SELECT 1 FROM products WHERE slug = 'pack-nuit-paisible')
+    WHERE NOT EXISTS (SELECT 1 FROM products WHERE slug = 'pack-petit-dej')
     RETURNING id INTO bundle_id;
 
     IF bundle_id IS NOT NULL THEN
       INSERT INTO bundle_items (bundle_id, product_id, quantity) VALUES
-        (bundle_id, oil_id, 1),
-        (bundle_id, infusion_id, 1)
+        (bundle_id, jus_id, 1),
+        (bundle_id, yaourt_id, 1)
       ON CONFLICT DO NOTHING;
 
       PERFORM public.sync_bundle_stock(bundle_id);
 
       -- SKU for bundle
-      UPDATE products SET sku = '20001' WHERE id = bundle_id AND sku IS NULL;
+      UPDATE products SET sku = 'B-001' WHERE id = bundle_id AND sku IS NULL;
     END IF;
   END IF;
 END $$;
@@ -1122,36 +1105,20 @@ END $$;
 
 DO $$
 DECLARE
-  oil10   uuid; oil20 uuid; inf_det uuid; inf_dig uuid;
-  amnesia uuid; gelato uuid; afghan  uuid;
+  huile   uuid; pates uuid; jus uuid; yaourt uuid;
 BEGIN
-  SELECT id INTO oil10   FROM products WHERE slug = 'huile-10-full-spectrum' LIMIT 1;
-  SELECT id INTO oil20   FROM products WHERE slug = 'huile-20-sommeil'       LIMIT 1;
-  SELECT id INTO inf_det FROM products WHERE slug = 'infusion-detente'       LIMIT 1;
-  SELECT id INTO inf_dig FROM products WHERE slug = 'infusion-digestion'     LIMIT 1;
-  SELECT id INTO amnesia FROM products WHERE slug = 'amnesia-haze'           LIMIT 1;
-  SELECT id INTO gelato  FROM products WHERE slug = 'gelato'                 LIMIT 1;
-  SELECT id INTO afghan  FROM products WHERE slug = 'afghan'                 LIMIT 1;
+  SELECT id INTO huile  FROM products WHERE slug = 'huile-olive-bio' LIMIT 1;
+  SELECT id INTO pates  FROM products WHERE slug = 'pates-artisanales' LIMIT 1;
+  SELECT id INTO jus    FROM products WHERE slug = 'jus-pomme'       LIMIT 1;
+  SELECT id INTO yaourt FROM products WHERE slug = 'yaourt-nature'    LIMIT 1;
 
-  IF oil10 IS NOT NULL AND inf_det IS NOT NULL THEN
+  IF huile IS NOT NULL AND pates IS NOT NULL THEN
     INSERT INTO product_recommendations (product_id, recommended_id, sort_order)
-    VALUES (oil10, inf_det, 0) ON CONFLICT DO NOTHING;
+    VALUES (pates, huile, 0) ON CONFLICT DO NOTHING;
   END IF;
-  IF oil10 IS NOT NULL AND inf_dig IS NOT NULL THEN
+  IF jus IS NOT NULL AND yaourt IS NOT NULL THEN
     INSERT INTO product_recommendations (product_id, recommended_id, sort_order)
-    VALUES (oil10, inf_dig, 1) ON CONFLICT DO NOTHING;
-  END IF;
-  IF oil20 IS NOT NULL AND inf_det IS NOT NULL THEN
-    INSERT INTO product_recommendations (product_id, recommended_id, sort_order)
-    VALUES (oil20, inf_det, 0) ON CONFLICT DO NOTHING;
-  END IF;
-  IF amnesia IS NOT NULL AND gelato IS NOT NULL THEN
-    INSERT INTO product_recommendations (product_id, recommended_id, sort_order)
-    VALUES (amnesia, gelato, 0) ON CONFLICT DO NOTHING;
-  END IF;
-  IF amnesia IS NOT NULL AND afghan IS NOT NULL THEN
-    INSERT INTO product_recommendations (product_id, recommended_id, sort_order)
-    VALUES (amnesia, afghan, 1) ON CONFLICT DO NOTHING;
+    VALUES (yaourt, jus, 0) ON CONFLICT DO NOTHING;
   END IF;
 END $$;
 

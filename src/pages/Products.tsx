@@ -98,9 +98,9 @@ export default function Products() {
   return (
     <div className="min-h-screen bg-zinc-950 text-white overflow-hidden pb-32">
       <SEO
-        title="Nos Produits CBN Premium : Huiles, Fleurs & Résines — Green Mood"
-        description="Découvrez nos gammes de produits infusés au CBN. Fleurs, huiles et résines de haute qualité pour la relaxation, la détente musculaire et le sommeil."
-        keywords="CBN, produits CBN, Huile CBN, Fleurs CBN, Résine CBN, achat CBN, CBD sommeil"
+        title="Nos Produits Frais & Épicerie Fine — Shop-ia"
+        description="Découvrez nos gammes de produits alimentaires d'exception. Frais, épicerie fine et spécialités locales pour une cuisine saine et gourmande."
+        keywords="épicerie fine, produits frais, bio, gastronomie Paris, alimentation saine"
         schema={productsSchema}
       />
 
@@ -314,7 +314,7 @@ export default function Products() {
             <ShoppingBag className="w-16 h-16 text-green-neon mx-auto animate-bounce-slow" />
             <div className="space-y-4">
               <h2 className="text-5xl md:text-7xl font-serif font-black text-white italic">
-                L'expérience <br /> Green Mood <span className="text-green-neon not-italic font-sans">Online.</span>
+                L'expérience <br /> Shop-ia <span className="text-green-neon not-italic font-sans">Online.</span>
               </h2>
               <p className="text-xl text-zinc-400 font-light max-w-2xl mx-auto leading-relaxed">
                 Profitez du Click & Collect rapide à Paris ou de la livraison

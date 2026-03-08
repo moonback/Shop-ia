@@ -30,7 +30,7 @@ export async function getRelevantProductsForQuery(text: string, products: Produc
     let relevantProducts: Product[] = [];
 
     try {
-        console.log('[BudTender RAG] Semantic search for:', text);
+        console.log('[Assistant RAG] Semantic search for:', text);
         const embedding = await generateEmbedding(text);
         const { data, error } = await supabase.rpc('match_products', {
             query_embedding: embedding,
@@ -41,10 +41,10 @@ export async function getRelevantProductsForQuery(text: string, products: Produc
         if (error) throw error;
         if (data && data.length > 0) {
             relevantProducts = data;
-            console.log(`[BudTender RAG] Found ${data.length} semantic matches.`);
+            console.log(`[Assistant RAG] Found ${data.length} semantic matches.`);
         }
     } catch (err) {
-        console.warn('[BudTender RAG] Vector search failed, falling back to keywords:', err);
+        console.warn('[Assistant RAG] Vector search failed, falling back to keywords:', err);
         relevantProducts = fallbackKeywordSearch(text, products);
     }
 

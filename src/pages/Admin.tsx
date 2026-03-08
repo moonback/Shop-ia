@@ -43,7 +43,7 @@ import AdminSubscriptionsTab from '../components/admin/AdminSubscriptionsTab';
 import AdminReviewsTab from '../components/admin/AdminReviewsTab';
 import AdminPromoCodesTab from '../components/admin/AdminPromoCodesTab';
 import AdminRecommendationsTab from '../components/admin/AdminRecommendationsTab';
-import AdminBudTenderTab from '../components/admin/AdminBudTenderTab';
+import AdminAssistantTab from '../components/admin/AdminAssistantTab';
 import AdminPOSTab from '../components/admin/AdminPOSTab';
 import AdminMarketingTab from '../components/admin/AdminMarketingTab';
 
@@ -60,7 +60,7 @@ type Tab =
   | 'analytics'
   | 'promo_codes'
   | 'recommendations'
-  | 'budtender'
+  | 'assistant'
   | 'referrals'
   | 'pos'
   | 'marketing';
@@ -202,7 +202,7 @@ export default function Admin() {
     { key: 'reviews', label: 'Avis', icon: MessageSquare },
     { key: 'promo_codes', label: 'Codes Promo', icon: Coins },
     { key: 'recommendations', label: 'Recommandations', icon: TrendingUp },
-    { key: 'budtender', label: 'BudTender IA', icon: Leaf },
+    { key: 'assistant', label: 'Assistant IA', icon: Leaf },
     { key: 'analytics', label: 'Analytique', icon: LineChart },
     { key: 'pos', label: 'Caisse (POS)', icon: ShoppingCart },
     { key: 'marketing', label: 'Marketing IA', icon: Megaphone },
@@ -213,7 +213,7 @@ export default function Admin() {
 
   return (
     <div className="min-h-screen bg-black text-zinc-100 flex overflow-hidden">
-      <SEO title="Administration | Green Mood" description="Panel d'administration pour gérer la boutique Green Mood." />
+      <SEO title="Administration | Shop-ia" description="Panel d'administration pour gérer la boutique Shop-ia." />
 
       {/* Sidebar Desktop */}
       {tab !== 'pos' && (
@@ -236,7 +236,7 @@ export default function Admin() {
                 </div>
                 <div className="flex flex-col">
                   <span className="text-lg font-black tracking-tighter text-white uppercase leading-none">Management</span>
-                  <span className="text-[10px] font-bold text-green-neon/60 uppercase tracking-[0.2em]">Green Mood</span>
+                  <span className="text-[10px] font-bold text-green-neon/60 uppercase tracking-[0.2em]">Shop-ia</span>
                 </div>
               </motion.div>
             )}
@@ -395,7 +395,7 @@ export default function Admin() {
                   {tabs.find((t) => t.key === tab)?.label}
                 </h1>
                 <p className="text-zinc-500 text-sm md:text-base font-medium max-w-2xl">
-                  Pilotez votre écosystème Green Mood avec une précision absolue.
+                  Pilotez votre écosystème Shop-ia avec une précision absolue.
                 </p>
               </div>
             </header>
@@ -447,7 +447,7 @@ export default function Admin() {
               {tab === 'analytics' && <AdminAnalyticsTab />}
               {tab === 'promo_codes' && <AdminPromoCodesTab />}
               {tab === 'recommendations' && <AdminRecommendationsTab />}
-              {tab === 'budtender' && <AdminBudTenderTab />}
+              {tab === 'assistant' && <AdminAssistantTab />}
               {tab === 'pos' && <AdminPOSTab onExit={() => setTab('dashboard')} />}
               {tab === 'marketing' && (
                 <AdminMarketingTab

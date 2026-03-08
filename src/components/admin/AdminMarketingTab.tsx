@@ -71,7 +71,7 @@ export default function AdminMarketingTab({ customers, products, onRefresh }: Ad
 
             const featuredProducts = products.filter(p => p.is_featured).slice(0, 3).map(p => p.name).join(", ") || "Fleurs CBD Premium, Huiles Relaxantes, Infusions Bio";
 
-            const prompt = `Génie Marketing IA pour Green Mood CBD.
+            const prompt = `Génie Marketing IA pour Shop-ia CBD.
             Cible : ${segmentLabel} (${segmentedCustomers.length} personnes).
             Catalogue star : ${featuredProducts}.
             Ton : Luxueux, apaisant, premium, expert en CBD, exclusif.
@@ -95,7 +95,7 @@ export default function AdminMarketingTab({ customers, products, onRefresh }: Ad
                     "Content-Type": "application/json",
                     "Authorization": `Bearer ${apiKey}`,
                     "HTTP-Referer": window.location.origin,
-                    "X-Title": "Green Mood Admin Dashboard",
+                    "X-Title": "Shop-ia Admin Dashboard",
                 },
                 body: JSON.stringify({
                     model: "liquid/lfm-2-24b-a2b:latest",
@@ -250,7 +250,7 @@ export default function AdminMarketingTab({ customers, products, onRefresh }: Ad
                         </div>
                         <div className="space-y-2">
                             <h3 className="text-2xl font-black text-white uppercase italic">Analyse du segment en cours...</h3>
-                            <p className="text-zinc-500 max-w-xs mx-auto text-sm font-medium">L'IA de Green Mood rédige votre contenu VIP personnalisé.</p>
+                            <p className="text-zinc-500 max-w-xs mx-auto text-sm font-medium">L'IA de Shop-ia rédige votre contenu VIP personnalisé.</p>
                         </div>
                         <div className="grid grid-cols-2 gap-2 max-w-sm w-full h-1 bg-zinc-900 rounded-full overflow-hidden">
                             <motion.div
@@ -370,8 +370,8 @@ export default function AdminMarketingTab({ customers, products, onRefresh }: Ad
                                         </div>
 
                                         <div className="pt-12 text-center space-y-2 pb-10">
-                                            <p className="text-[10px] text-zinc-600 font-black uppercase tracking-[0.3em]">Green Mood • L'excellence Naturelle</p>
-                                            <p className="text-[9px] text-zinc-700">Vous recevez cet email car vous êtes un client privilégié de Green Mood.</p>
+                                            <p className="text-[10px] text-zinc-600 font-black uppercase tracking-[0.3em]">Shop-ia • L'excellence Naturelle</p>
+                                            <p className="text-[9px] text-zinc-700">Vous recevez cet email car vous êtes un client privilégié de Shop-ia.</p>
                                         </div>
                                     </div>
                                 </div>

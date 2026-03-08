@@ -278,7 +278,7 @@ export default function ProductDetail() {
           currency: 'EUR',
           availability: product.is_available ? 'instock' : 'oos',
           sku: product.sku ?? undefined,
-          brand: 'Green Mood CBD',
+          brand: 'Shop-ia CBD',
         }}
       />
 
@@ -432,8 +432,8 @@ export default function ProductDetail() {
                     <Leaf className="w-4 h-4 text-green-neon" />
                   </div>
                   <div className="flex flex-col">
-                    <span className="text-[9px] font-black text-zinc-500 uppercase tracking-[0.1em] leading-tight">CBD Pureté</span>
-                    <span className="text-lg font-serif font-bold text-white leading-tight">{product.cbd_percentage}%</span>
+                    <span className="text-[9px] font-black text-zinc-500 uppercase tracking-[0.1em] leading-tight">Nutri-Score</span>
+                    <span className="text-lg font-serif font-bold text-white leading-tight">A+</span>
                   </div>
                 </div>
               )}

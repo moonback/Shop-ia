@@ -197,8 +197,8 @@ export default function Catalog() {
   return (
     <div className="min-h-screen bg-zinc-950 text-white pb-24 overflow-hidden">
       <SEO
-        title="CBN PREMIUM • ANALYSÉ EN LABORATOIRE | Green Mood"
-        description="Explorez l'univers du CBN Premium et de nos meilleurs produits. Livraison express 24h et tests certifiés en laboratoire."
+        title="PRODUITS FRAIS PREMIUM • ANALYSÉS | Shop-ia"
+        description="Explorez l'univers de Shop-ia et de nos meilleurs produits alimentaires. Livraison express 24h et qualité certifiée."
       />
 
       {/* ────────── Hero Header ────────── */}
@@ -234,7 +234,7 @@ export default function Catalog() {
             className="inline-flex items-center gap-3 px-5 py-2 rounded-full bg-green-neon/10 border border-green-neon/20 backdrop-blur-xl mb-10"
           >
             <Sparkles className="w-3.5 h-3.5 text-green-neon animate-pulse" />
-            <span className="text-green-neon text-[10px] font-bold uppercase tracking-[0.3em]">CBN PREMIUM • ANALYSÉ EN LABORATOIRE</span>
+            <span className="text-green-neon text-[10px] font-bold uppercase tracking-[0.3em]">PRODUITS FRAIS PREMIUM • QUALITÉ CERTIFIÉE</span>
           </motion.div>
 
           <div className="space-y-6">
@@ -244,7 +244,7 @@ export default function Catalog() {
               className="text-5xl md:text-7xl lg:text-8xl font-serif font-bold tracking-tighter leading-none mb-4"
             >
               L'EXPÉRIENCE <br />
-              <span className="not-italic text-green-neon glow-green-strong filter hue-rotate-[15deg]">CBN PREMIUM.</span>
+              <span className="not-italic text-green-neon glow-green-strong filter hue-rotate-[15deg]">FRAÎCHEUR PREMIUM.</span>
             </motion.h1>
 
             <motion.p
@@ -253,8 +253,8 @@ export default function Catalog() {
               transition={{ delay: 0.15 }}
               className="text-lg md:text-2xl text-zinc-400 max-w-2xl mx-auto font-light leading-relaxed"
             >
-              Explorez notre sélection de fleurs, résines et huiles CBN rigoureusement sélectionnée pour sa pureté,
-              ses arômes authentiques et ses effets relaxants.
+              Explorez notre sélection de produits frais, épicerie fine et produits locaux rigoureusement sélectionnés pour leur saveur,
+              leur origine authentique et leur qualité nutritionnelle.
             </motion.p>
           </div>
 
@@ -267,7 +267,7 @@ export default function Catalog() {
                   type="text"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="Rechercher un produit CBN, un arôme..."
+                  placeholder="Rechercher un produit frais, une recette..."
                   className="w-full bg-transparent border-none rounded-2xl pl-16 pr-10 py-4 text-lg text-white placeholder:text-zinc-600 focus:outline-none"
                 />
                 {searchQuery && (
@@ -308,7 +308,7 @@ export default function Catalog() {
           <div className="space-y-16">
             <div className="flex items-center gap-6 justify-center">
               <span className="w-12 h-px bg-white/10" />
-              <h2 className="text-[11px] font-black uppercase tracking-[0.5em] text-zinc-500">Sélectionner une Gamme CBN</h2>
+              <h2 className="text-[11px] font-black uppercase tracking-[0.5em] text-zinc-500">Sélectionner un Rayon</h2>
               <span className="w-12 h-px bg-white/10" />
             </div>
 
@@ -540,7 +540,7 @@ export default function Catalog() {
                 <div className="space-y-4">
                   <h2 className="text-4xl font-serif font-bold text-white">Archives Vides</h2>
                   <p className="text-zinc-500 max-w-sm mx-auto text-lg font-light leading-relaxed">
-                    Aucun produit lié au CBN ne correspond à vos paramètres.
+                    Aucun produit ne correspond à vos paramètres.
                   </p>
                 </div>
                 <button
@@ -610,7 +610,7 @@ export default function Catalog() {
         )}
 
 
-        {/* Improved BudTender CTA */}
+        {/* Improved Shopia Assistant IA CTA */}
         {user && (
           <div className="mt-40">
             <motion.div
@@ -626,20 +626,20 @@ export default function Catalog() {
               <div className="relative z-10 px-8 md:px-20 py-20 flex flex-col lg:flex-row items-center justify-between gap-16">
                 <div className="max-w-xl space-y-8 text-center lg:text-left">
                   <div className="inline-flex items-center gap-3 px-5 py-2 rounded-full bg-green-neon/10 border border-green-neon/20 text-green-neon text-[10px] font-bold uppercase tracking-[0.3em]">
-                    BudTender IA Expérientiel
+                    Shopia Assistant IA Expérientiel
                   </div>
                   <h3 className="text-4xl md:text-6xl font-serif font-bold leading-none uppercase tracking-tighter">
                     TROUVEZ VOTRE <br /> <span className="text-green-neon italic hue-rotate-[15deg]">ROUTINE.</span>
                   </h3>
                   <p className="text-zinc-500 text-lg md:text-xl font-light leading-relaxed">
-                    Laissez notre technologie d'analyse identifier le produit CBN parfaitement calibré pour vos nuits et votre équilibre personnel.
+                    Laissez notre technologie d'analyse identifier le panier de produits parfaitement calibré pour votre alimentation et votre équilibre personnel.
                   </p>
                 </div>
 
                 <div className="flex flex-col sm:flex-row gap-6 w-full lg:w-auto">
                   <button
                     onClick={() => {
-                      const btn = document.querySelector('[aria-label="Toggle BudTender"]') as HTMLButtonElement;
+                      const btn = document.querySelector('[aria-label="Toggle Shopia Assistant"]') as HTMLButtonElement;
                       if (btn) btn.click();
                     }}
                     className="flex-1 lg:flex-none px-12 py-5 bg-green-neon text-black font-bold uppercase tracking-widest rounded-2xl hover:scale-105 hover:shadow-[0_0_30px_rgba(57,255,20,0.4)] transition-all text-sm shadow-xl"
@@ -663,18 +663,18 @@ export default function Catalog() {
           {[
             {
               icon: <ShieldCheck className="w-5 h-5" />,
-              title: "Protocoles de Pureté",
-              text: "Chaque lot est soumis à une triple analyse en laboratoires certifiés ISO. Taux de THC < 0.3%, absence totale de métaux lourds et pesticides."
+              title: "Sélection Premium",
+              text: "Chaque produit est rigoureusement sélectionné selon des standards de fraîcheur et de qualité nutritionnelle. Sourcing local et traçabilité totale."
             },
             {
               icon: <Microscope className="w-5 h-5" />,
-              title: "L'Expertise CBN",
-              text: "Des profils cannabinoïdes axés sur la relaxation. Extractions douces pour une biodisponibilité optimisée et un soutien du sommeil naturel."
+              title: "Expertise Shop-ia",
+              text: "Des sélections alimentaires axées sur le goût et la santé. Approvisionnements courts pour une fraîcheur optimisée et un soutien nutritionnel naturel."
             },
             {
               icon: <Info className="w-5 h-5" />,
-              title: "Usage Responsable",
-              text: "Produits destinés exclusivement aux adultes consentants. Usage sensoriel encadré. Ne pas consommer si vous êtes enceinte ou suivez un traitement médical."
+              title: "Sourcing Éthique",
+              text: "Nous privilégions les circuits courts et les producteurs engagés dans une agriculture durable et respectueuse de l'environnement."
             }
           ].map((item, idx) => (
             <div key={idx} className="space-y-4 group">

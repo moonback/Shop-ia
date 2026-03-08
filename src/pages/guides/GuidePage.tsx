@@ -3,54 +3,54 @@ import SEO from '../../components/SEO';
 import { articleSchema, breadcrumbSchema, faqSchema, howToSchema } from '../../lib/seo/schemaBuilder';
 
 export const guideContent = {
-  'guide-huile-cbd': {
-    title: 'Guide complet de l’huile CBD',
-    description: 'Tout comprendre sur les huiles CBD: spectres, concentration, utilisation et qualité.',
-    summary: 'Guide expert pour choisir une huile CBD premium et comprendre son dosage.',
-    body: 'Les huiles CBD sont la forme la plus utilisée du cannabidiol grâce à leur polyvalence. Chez Green Mood CBD, nous privilégions des huiles analysées en laboratoire, avec traçabilité et extraction propre. Pour comparer les produits, regardez le spectre (isolat, broad, full), la concentration, l’origine du chanvre et les certificats.',
+  'guide-conservation-produits-frais': {
+    title: 'Conserver ses produits frais',
+    description: 'Astuces et conseils pour prolonger la fraîcheur de vos fruits, légumes et produits frais.',
+    summary: 'Guide pratique pour optimiser la durée de vie de vos achats et réduire le gaspillage.',
+    body: 'La conservation commence dès le retour des courses. Séparez les fruits climactériques (comme les pommes) des autres, maintenez une hygrométrie adaptée dans le bac à légumes et respectez les zones de froid de votre réfrigérateur. Shop-ia s\'engage à vous livrer des produits extra-frais pour vous faciliter la tâche.',
     faq: [
-      { question: 'Quelle concentration choisir ?', answer: 'Débutez à 10% puis adaptez selon la sensibilité et l’objectif bien-être.' },
-      { question: 'Full spectrum ou broad spectrum ?', answer: 'Le full spectrum inclut plus de composés naturels, le broad retire le THC.' },
+      { question: 'Faut-il laver les légumes avant de les ranger ?', answer: 'Il est préférable de les laver juste avant la consommation pour éviter l\'humidité stagnante qui favorise le flétrissement.' },
+      { question: 'Comment conserver les herbes aromatiques ?', answer: 'Enveloppez-les dans un essuie-tout humide ou placez-les comme un bouquet dans un verre d\'eau au frais.' },
     ],
   },
-  'guide-dosage-cbd': {
-    title: 'Guide dosage CBD',
-    description: 'Comment doser le CBD selon vos besoins: démarrage progressif et suivi.',
-    summary: 'Méthode simple start low, go slow pour optimiser votre routine CBD.',
-    body: 'Le bon dosage dépend du poids, du métabolisme et de l’objectif recherché. Commencez faible pendant 5 à 7 jours, puis augmentez par paliers. Notez vos sensations pour identifier la dose utile.',
+  'guide-saisonnalite-fruits-legumes': {
+    title: 'Calendrier de saisonnalité',
+    description: 'Pourquoi manger de saison et quels produits privilégier chaque mois.',
+    summary: 'Retrouvez le goût authentique en respectant le cycle de la nature.',
+    body: 'Manger de saison, c\'est profiter de produits au sommet de leurs qualités nutritionnelles et gustatives. C\'est aussi un geste pour la planète en limitant les serres chauffées et les transports longue distance. Chez Shop-ia, notre catalogue évolue au fil des mois pour vous proposer le meilleur du moment.',
     faq: [
-      { question: 'Combien de gouttes au départ ?', answer: 'Commencez avec une faible dose quotidienne puis ajustez tous les 3 à 7 jours.' },
-      { question: 'Puis-je prendre du CBD tous les jours ?', answer: 'Oui, une routine régulière est souvent utilisée pour stabiliser les effets.' },
+      { question: 'Pourquoi les tomates d\'hiver ont moins de goût ?', answer: 'Elles sont souvent cultivées hors-sol sous serre et cueillies avant maturité pour supporter le transport.' },
+      { question: 'Quels sont les légumes rois de l\'automne ?', answer: 'Les courges, les poireaux, les choux et les racines comme le panais.' },
     ],
   },
-  'guide-cbd-sommeil': {
-    title: 'CBD et sommeil: guide pratique',
-    description: 'Optimiser votre récupération nocturne avec une routine CBD adaptée.',
-    summary: 'Comprendre quand et comment utiliser le CBD pour améliorer la détente du soir.',
-    body: 'Pour le sommeil, l’important est la régularité, l’hygiène de vie et le bon timing. Une prise 30 à 60 minutes avant le coucher peut favoriser la détente. Associez à une routine sans écran et respiration lente.',
+  'guide-choisir-huile-olive': {
+    title: 'Bien choisir son huile d\'olive',
+    description: 'Comprendre les étiquettes, les origines et les méthodes d\'extraction.',
+    summary: 'Devenez expert en huile d\'olive et sublimez vos plats.',
+    body: 'Vierge extra, pression à froid, origine protégée... les termes ne manquent pas. Une bonne huile d\'olive doit avoir une ardence (piquant) et une amertume équilibrées, signes de la présence de polyphénols. Privilégiez les bouteilles opaques qui protègent l\'huile de l\'oxydation par la lumière.',
     faq: [
-      { question: 'Le CBD aide-t-il à s’endormir ?', answer: 'Il peut favoriser la détente, souvent utile dans une routine du soir.' },
-      { question: 'Quelle forme privilégier ?', answer: 'Les huiles sublinguales sont précises, les infusions sont plus progressives.' },
+      { question: 'Que signifie "pression à froid" ?', answer: 'Cela garantit que l\'huile a été extraite mécaniquement à moins de 27°C, préservant ses arômes et vitamines.' },
+      { question: 'Peut-on cuisiner avec de l\'huile d\'olive vierge extra ?', answer: 'Oui, son point de fumée est élevé (environ 210°C), ce qui la rend stable pour la cuisson.' },
     ],
   },
-  'guide-cbd-anxiete': {
-    title: 'CBD et anxiété: repères essentiels',
-    description: 'Approche responsable du CBD pour la sérénité et la gestion du stress quotidien.',
-    summary: 'Bonnes pratiques CBD pour réduire la charge mentale et soutenir la relaxation.',
-    body: 'Le CBD est recherché pour son potentiel apaisant. Il ne remplace pas un suivi médical, mais peut compléter une routine de gestion du stress: sommeil, activité physique, respiration, et produits de qualité certifiée.',
+  'guide-epicerie-fine': {
+    title: 'Découvrir l\'épicerie fine',
+    description: 'Voyage culinaire à travers des produits d\'exception et des savoir-faire artisanaux.',
+    summary: 'Le plaisir d\'offrir ou de se faire plaisir avec des produits rares.',
+    body: 'L\'épicerie fine chez Shop-ia, c\'est une sélection de produits issus de petits ateliers : confitures cuites au chaudron, pâtes artisanales séchées lentement, épices sourcées à la source. C\'est l\'assurance d\'un goût unique et d\'une histoire derrière chaque flacon.',
     faq: [
-      { question: 'Le CBD est-il une solution unique ?', answer: 'Non, il s’intègre dans une stratégie globale de bien-être.' },
-      { question: 'En combien de temps sentir un effet ?', answer: 'Cela varie selon les profils; la régularité reste essentielle.' },
+      { question: 'Quelle est la différence avec l\'épicerie classique ?', answer: 'La qualité des ingrédients, le temps de fabrication et l\'absence d\'additifs industriels.' },
+      { question: 'Comment conserver les épices ?', answer: 'À l\'abri de la lumière, de la chaleur et de l\'humidité pour préserver leurs huiles essentielles.' },
     ],
   },
-  'guide-legalite-cbd-france': {
-    title: 'Légalité du CBD en France: ce qu’il faut savoir',
-    description: 'Réglementation française du CBD, seuil THC et conformité produit.',
-    summary: 'Guide légal CBD France pour acheter des produits conformes et traçables.',
-    body: 'En France, les produits CBD doivent respecter un taux de THC conforme à la réglementation. Vérifiez les analyses laboratoire, la traçabilité du lot et la transparence du vendeur pour rester dans un cadre sécurisé.',
+  'guide-achat-local': {
+    title: 'Les avantages de l\'achat local',
+    description: 'Soutenir l\'économie régionale et réduire son empreinte carbone.',
+    summary: 'Pourquoi le circuit court est l\'avenir de notre alimentation.',
+    body: 'Acheter local, c\'est recréer un lien entre le producteur et le consommateur. Cela permet une meilleure rémunération de l\'agriculteur et une traçabilité sans faille. Shop-ia privilégie les partenariats en direct pour vous garantir des produits qui n\'ont pas fait trois fois le tour de la terre.',
     faq: [
-      { question: 'Le CBD est-il légal en France ?', answer: 'Oui, sous conditions de conformité, notamment sur le taux de THC.' },
-      { question: 'Comment vérifier un produit ?', answer: 'Consultez les certificats d’analyses et la fiche de lot.' },
+      { question: 'Le local est-il forcément plus cher ?', answer: 'Pas nécessairement, car la réduction des intermédiaires permet de compenser les coûts de production artisanaux.' },
+      { question: 'Comment Shop-ia sélectionne ses producteurs ?', answer: 'Sur des critères de goût, de respect de l\'environnement et de proximité géographique.' },
     ],
   },
 } as const;
@@ -58,55 +58,57 @@ export const guideContent = {
 export default function GuidePage({ slug }: { slug: keyof typeof guideContent }) {
   const content = guideContent[slug];
   const schema = [
-    articleSchema({ title: content.title, description: content.description, path: `/guides/${slug}`, datePublished: '2026-01-01' }),
+    articleSchema({ title: content.title, description: content.description, path: `/guides/${slug}`, datePublished: '2026-03-08' }),
     faqSchema(content.faq),
     breadcrumbSchema([
       { name: 'Accueil', path: '/' },
-      { name: 'Guides CBD', path: '/guides' },
+      { name: 'Guides Gourmets', path: '/guides' },
       { name: content.title, path: `/guides/${slug}` },
     ]),
     howToSchema({
-      name: `Comment utiliser ${content.title}`,
+      name: `Comment profiter de : ${content.title}`,
       description: content.description,
-      steps: ['Choisir un produit CBD testé en laboratoire', 'Commencer à faible dose', 'Ajuster progressivement selon les ressentis'],
+      steps: ['Sélectionner le produit sur Shop-ia', 'Suivre les conseils de conservation', 'Accompagner avec des produits de saison'],
     }),
   ];
 
   return (
     <main className="min-h-screen bg-zinc-950 text-zinc-100 pt-28 pb-20">
       <SEO
-        title={`${content.title} | Green Mood CBD`}
+        title={`${content.title} | Shop-ia`}
         description={content.description}
         canonical={`/guides/${slug}`}
         schema={schema}
-        article={{ publishedTime: '2026-01-01', section: 'Guides CBD' }}
-        keywords={['cbd', 'guide cbd', 'green mood cbd', 'cbd france', ...content.faq.map((f) => f.question)]}
-        semanticKeywords={['cannabidiol', 'sommeil', 'anxiété', 'bien-être', 'relaxation']}
+        article={{ publishedTime: '2026-03-08', section: 'Guides Alimentaires' }}
+        keywords={['alimentation', 'guide culinaire', 'shop-ia', 'produits frais', 'épicerie', ...content.faq.map((f) => f.question)]}
+        semanticKeywords={['gastronomie', 'terroir', 'cuisine', 'bien-manger', 'fraîcheur']}
         aiSummary={content.summary}
-        aiEntity="CBD;Cannabidiol;Sleep;Anxiety;Pain relief;Relaxation"
+        aiEntity="Food;Grocery;Cooking;Nutrition;Local Sourcing;Freshness"
       />
       <section className="max-w-4xl mx-auto px-4 space-y-6">
-        <p className="text-sm uppercase tracking-widest text-green-400">AI Summary</p>
-        <p className="rounded-xl border border-green-500/30 bg-green-500/10 p-4">{content.summary}</p>
-        <h1 className="text-4xl font-bold">{content.title}</h1>
-        <p className="text-zinc-300 leading-7">{content.body}</p>
+        <p className="text-sm uppercase tracking-widest text-amber-400">Résumé IA</p>
+        <p className="rounded-xl border border-amber-500/30 bg-amber-500/10 p-4">{content.summary}</p>
+        <h1 className="text-4xl font-bold font-serif">{content.title}</h1>
+        <p className="text-zinc-300 leading-7 text-lg">{content.body}</p>
 
-        <div className="space-y-3">
-          <h2 className="text-2xl font-semibold">Questions fréquentes</h2>
-          {content.faq.map((item) => (
-            <article key={item.question} className="rounded-lg border border-zinc-800 p-4">
-              <h3 className="font-medium">{item.question}</h3>
-              <p className="text-zinc-300">{item.answer}</p>
-            </article>
-          ))}
+        <div className="space-y-3 pt-6">
+          <h2 className="text-2xl font-serif font-semibold text-white">Questions fréquentes</h2>
+          <div className="grid gap-4">
+            {content.faq.map((item) => (
+              <article key={item.question} className="rounded-2xl border border-zinc-800 bg-white/[0.02] p-6 hover:border-amber-400/30 transition-colors">
+                <h3 className="font-bold text-lg mb-2 text-white">{item.question}</h3>
+                <p className="text-zinc-400 leading-relaxed">{item.answer}</p>
+              </article>
+            ))}
+          </div>
         </div>
 
-        <div className="pt-4 border-t border-zinc-800">
-          <h2 className="text-xl font-semibold mb-3">Liens internes recommandés</h2>
-          <div className="flex flex-wrap gap-3">
-            <Link className="text-green-400 underline" to="/catalogue">Voir les produits CBD</Link>
-            <Link className="text-green-400 underline" to="/boutique">Explorer la boutique</Link>
-            <Link className="text-green-400 underline" to="/contact">Parler à un expert</Link>
+        <div className="pt-12 border-t border-zinc-800">
+          <h2 className="text-xl font-serif font-semibold mb-6 text-white text-center">Recommandations Shop-ia</h2>
+          <div className="flex flex-wrap justify-center gap-4">
+            <Link className="px-6 py-3 rounded-full bg-amber-400 text-black font-bold hover:scale-105 transition-transform" to="/catalogue">Faire mes courses</Link>
+            <Link className="px-6 py-3 rounded-full bg-white/5 border border-white/10 text-white hover:bg-white/10 transition-colors" to="/boutique">Voir les rayons</Link>
+            <Link className="px-6 py-3 rounded-full bg-white/5 border border-white/10 text-white hover:bg-white/10 transition-colors" to="/contact">Besoin d'un conseil ?</Link>
           </div>
         </div>
       </section>

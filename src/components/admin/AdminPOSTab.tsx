@@ -69,7 +69,7 @@ interface AdminPOSTabProps {
 }
 
 function AdminPOSTab({
-    storeName = 'Green Mood CBD',
+    storeName = 'Shop-ia CBD',
     storeAddress = '123 Rue de la Nature, 75000 Paris',
     storePhone = '01 23 45 67 89',
     onExit,
@@ -872,7 +872,7 @@ function AdminPOSTab({
                     </motion.div>
                     <div className="flex flex-col">
                         <h1 className={`text-lg sm:text-2xl font-black tracking-tight leading-none flex items-center gap-1 sm:gap-2 ${isLightTheme ? 'text-emerald-950' : 'text-white'}`}>
-                            Green Mood
+                            Shop-ia
                             <span className={`px-1.5 py-0.5 rounded-lg text-[8px] sm:text-[10px] uppercase tracking-widest border ${isLightTheme ? 'bg-emerald-50 border-emerald-200 text-emerald-600' : 'bg-green-500/10 border-green-500/20 text-green-400'}`}>POS</span>
                         </h1>
                     </div>

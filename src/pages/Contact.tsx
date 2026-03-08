@@ -14,7 +14,7 @@ export default function Contact() {
       "@type": "LocalBusiness",
       "name": settings.store_name,
       "telephone": settings.store_phone,
-      "email": "contact@greenMood-cbd.fr",
+      "email": "contact@shop-ia.fr",
       "address": {
         "@type": "PostalAddress",
         "streetAddress": settings.store_address.split(',')[0],
@@ -28,9 +28,9 @@ export default function Contact() {
   return (
     <div className="min-h-screen bg-zinc-950 text-white pb-32">
       <SEO
-        title="Conciergerie & Contact — Green Mood Paris"
-        description="Une question ? Besoin d'un conseil ? Contactez l'expertise Green Mood ou rendez-vous dans notre écrin parisien."
-        keywords="contact CBD Paris, horaires Green Mood, adresse CBD Paris, téléphone CBD shop"
+        title="Conciergerie & Contact — Shop-ia Paris"
+        description="Une question ? Besoin d'un conseil ? Contactez l'expertise Shop-ia ou rendez-vous dans notre écrin parisien."
+        keywords="contact épicerie Paris, horaires Shop-ia, adresse épicerie Paris, téléphone food shop"
         schema={contactSchema}
       />
 
@@ -178,7 +178,7 @@ export default function Contact() {
             >
               <div className="space-y-4">
                 <h2 className="text-3xl font-serif font-black">Laissez un <br /><span className="text-green-neon italic">Message.</span></h2>
-                <p className="text-zinc-500 text-sm font-light">Réponse sous 24h par un expert Green Mood.</p>
+                <p className="text-zinc-500 text-sm font-light">Réponse sous 24h par un expert Shop-ia.</p>
               </div>
 
               <form className="space-y-8">
@@ -236,7 +236,7 @@ export default function Contact() {
       <section className="mt-32 border-y border-white/5 py-12 px-4 overflow-hidden">
         <div className="max-w-7xl mx-auto flex flex-wrap justify-center md:justify-between items-center gap-8 opacity-30 grayscale">
           <div className="flex items-center gap-3 font-serif font-black italic text-2xl">
-            <Globe className="w-6 h-6" /> GREEN MOOD PARIS
+            <Globe className="w-6 h-6" /> Shop-ia PARIS
           </div>
           <div className="flex items-center gap-3 font-serif font-black italic text-2xl">
             <Sparkles className="w-6 h-6" /> LUXURY CANNABINOIDS
