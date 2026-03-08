@@ -237,13 +237,20 @@ export default function ProductDetail() {
 
   const handleQuantityChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     if (!product) return;
-    setQuantity(Math.max(1, Math.min(parseFloat(e.target.value) || 1, product.stock_quantity)));
-  }, [product?.stock_quantity]);
+    const minQty = Math.max(1, product.min_order_quantity ?? 1);
+    const maxByRules = product.max_order_quantity ?? product.stock_quantity;
+    const maxQty = Math.min(product.stock_quantity, maxByRules);
+    setQuantity(Math.max(minQty, Math.min(parseFloat(e.target.value) || minQty, maxQty)));
+  }, [product?.stock_quantity, product?.min_order_quantity, product?.max_order_quantity]);
 
   const isBulkProduct = false; // Simplified for Shop-ia gourmet domain
   const isPerUnit = !isBulkProduct || product?.is_bundle || (!!product?.weight_grams && product?.weight_grams > 1 && !product?.name.toLowerCase().includes('pack'));
   const showWeightSelector = isBulkProduct && !isPerUnit;
 
+  useEffect(() => {
+    if (!product) return;
+    setQuantity(Math.max(1, product.min_order_quantity ?? 1));
+  }, [product?.id, product?.min_order_quantity]);
 
   if (isLoading) {
     return (
@@ -369,6 +376,10 @@ export default function ProductDetail() {
                 {product.name}.
               </h1>
 
+              <p className="text-xs uppercase tracking-wider text-zinc-500 font-medium">
+                Type: {product.product_type || 'standard'}{product.brand ? ` · Marque: ${product.brand}` : ''}
+              </p>
+
               {reviews.length > 0 && (
                 <div className="flex items-center gap-4 py-2">
                   <div className="flex text-yellow-500">
@@ -466,7 +477,7 @@ export default function ProductDetail() {
                   <div className="w-px h-10 bg-white/10 hidden sm:block" />
                   <div className="space-y-1">
                     <p className="text-[10px] text-green-neon/60 font-black uppercase tracking-widest">
-                      Total Sélectionné ({quantity} {isPerUnit ? `unité${quantity > 1 ? 's' : ''}` : 'g'})
+                      Total Sélectionné ({quantity} {isPerUnit ? `${product.unit_label}${quantity > 1 ? 's' : ''}` : 'g'})
                     </p>
                     <p className="text-4xl font-serif font-bold text-white leading-none">
                       {(product.price * quantity).toFixed(2)}<span className="text-xl ml-2 italic font-sans uppercase tracking-widest text-zinc-500">€</span>
@@ -499,12 +510,12 @@ export default function ProductDetail() {
                     <div className="flex flex-col md:flex-row items-center gap-4">
                       <div className="bg-white/5 border border-white/[0.06] rounded-2xl p-2 flex items-center">
                         <div className="flex items-center gap-1.5 px-3">
-                          <span className="text-[10px] text-zinc-500 font-bold uppercase tracking-widest">{isPerUnit ? 'Quantité:' : 'Poids:'}</span>
+                          <span className="text-[10px] text-zinc-500 font-bold uppercase tracking-widest">{isPerUnit ? `Quantité (${product.unit_label}):` : 'Poids:'}</span>
                           <input
                             type="number"
                             step="1"
-                            min="1"
-                            max={product.stock_quantity}
+                            min={Math.max(1, product.min_order_quantity ?? 1)}
+                            max={Math.min(product.stock_quantity, product.max_order_quantity ?? product.stock_quantity)}
                             value={quantity}
                             onChange={handleQuantityChange}
                             className="w-12 bg-transparent text-sm font-black text-white text-center focus:outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
@@ -520,6 +531,10 @@ export default function ProductDetail() {
                         {addedFeedback ? 'DÉPOSÉ AU PANIER' : 'ACQUÉRIR MAINTENANT'}
                       </button>
                     </div>
+                    <p className="text-[10px] text-zinc-500 uppercase tracking-wider">
+                      Commande min: {Math.max(1, product.min_order_quantity ?? 1)} {product.unit_label}
+                      {product.max_order_quantity ? ` · max: ${product.max_order_quantity} ${product.unit_label}` : ''}
+                    </p>
                   </div>
 
                   <div className="flex items-center gap-4 text-xs text-zinc-500 font-medium uppercase justify-center">
