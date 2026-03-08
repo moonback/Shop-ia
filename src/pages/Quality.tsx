@@ -73,7 +73,7 @@ export default function Quality() {
       </section>
 
       {/* Main Pillars Grid */}
-      <section className="py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="py-24 max-w-12xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {certificates.map((cert, idx) => (
             <motion.div
@@ -98,7 +98,7 @@ export default function Quality() {
 
       {/* Content Deep Dive */}
       <section className="py-32 relative">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-40">
+        <div className="max-w-12xl mx-auto px-4 sm:px-6 lg:px-8 space-y-40">
 
           {/* Legal Compliance Side */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
@@ -211,7 +211,7 @@ export default function Quality() {
       </section>
 
       {/* Warning Footer Banner */}
-      <section className="py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="py-24 max-w-12xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="p-12 bg-white/[0.02] backdrop-blur-3xl border border-white/10 rounded-[3rem] text-center space-y-8">
           <Search className="w-12 h-12 text-zinc-700 mx-auto" />
           <div className="space-y-4">

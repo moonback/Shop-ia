@@ -188,7 +188,7 @@ export default function Products() {
 
       {/* Main Collections */}
       <section className="relative z-10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-40">
+        <div className="max-w-12xl mx-auto px-4 sm:px-6 lg:px-8 space-y-40">
           {categories.map((cat, index) => (
             <div key={cat.id} className="relative">
               {/* Background text for depth */}

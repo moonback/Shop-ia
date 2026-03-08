@@ -139,7 +139,7 @@ export default function LoyaltyHistory() {
     <div className="min-h-screen bg-zinc-950 text-white pt-24 pb-32">
       <SEO title="Programme Privilège — L'Excellence Shop-ia" description="Consultez l'historique de vos points de fidélité." />
 
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-12xl mx-auto px-4 sm:px-6 lg:px-8">
 
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-16">
@@ -297,11 +297,10 @@ export default function LoyaltyHistory() {
                     initial={{ opacity: 0, scale: 0.95 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ delay: 0.5 }}
-                    className={`relative rounded-2xl p-4 text-center transition-all duration-300 ${
-                      isActive
-                        ? `bg-white/[0.05] border-2 ${tier.border}`
-                        : 'bg-white/[0.01] border border-white/5 opacity-50'
-                    }`}
+                    className={`relative rounded-2xl p-4 text-center transition-all duration-300 ${isActive
+                      ? `bg-white/[0.05] border-2 ${tier.border}`
+                      : 'bg-white/[0.01] border border-white/5 opacity-50'
+                      }`}
                   >
                     <TIcon className={`w-6 h-6 mx-auto mb-2 ${tier.color}`} />
                     <p className={`text-sm font-black uppercase tracking-wider ${tier.color}`}>{tier.name}</p>
@@ -425,8 +424,8 @@ export default function LoyaltyHistory() {
                   </div>
                   <div className="text-right flex-shrink-0 space-y-1">
                     <p className={`text-2xl font-serif font-black ${tx.type === 'earned' ? 'text-green-neon' :
-                        tx.type === 'redeemed' || tx.type === 'expired' ? 'text-yellow-500' :
-                          'text-purple-400'
+                      tx.type === 'redeemed' || tx.type === 'expired' ? 'text-yellow-500' :
+                        'text-purple-400'
                       }`}>
                       {tx.type === 'earned' ? '+' : '\u2212'}{tx.points}<span className="text-[10px] ml-1 uppercase font-black font-sans tracking-widest opacity-60">pts</span>
                     </p>
