@@ -163,8 +163,8 @@ export default function RelatedProducts({
                                     {product.name}
                                 </Link>
 
-                                {product.cbd_percentage != null && (
-                                    <p className="text-xs text-zinc-500 mt-1">CBD {product.cbd_percentage}%</p>
+                                {product.nutriscore != null && (
+                                    <p className="text-xs text-zinc-500 mt-1">Nutri-Score {product.nutriscore}</p>
                                 )}
 
                                 {/* Price + CTA */}

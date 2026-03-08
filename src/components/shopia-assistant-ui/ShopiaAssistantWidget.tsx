@@ -1,7 +1,7 @@
 import { motion } from 'motion/react';
 import { Leaf, Mic } from 'lucide-react';
 
-export interface BudTenderWidgetProps {
+export interface ShopiaAssistantWidgetProps {
     /** Called when the user clicks the floating button */
     onClick: () => void;
     /** Called when the user clicks the quick voice button */
@@ -23,14 +23,14 @@ export interface BudTenderWidgetProps {
 }
 
 /**
- * The floating "BudTender IA" button that sits in the bottom-right corner.
+ * The floating "Shop-ia Assistant" button that sits in the bottom-right corner.
  * Includes the Leaf icon, an online-status dot, and an optional unread badge.
  */
-export default function BudTenderWidget({ onClick, onVoiceClick, pulse = false, isVoiceActive = false, isChatEnabled = true, unreadCount = 0, mode = 'default', label, subLabel }: BudTenderWidgetProps) {
+export default function ShopiaAssistantWidget({ onClick, onVoiceClick, pulse = false, isVoiceActive = false, isChatEnabled = true, unreadCount = 0, mode = 'default', label, subLabel }: ShopiaAssistantWidgetProps) {
     const isExpand = mode === 'expand';
 
-    const displayLabel = label || (isExpand ? 'Continuer la discussion' : 'BudTender IA');
-    const displaySubLabel = subLabel || (isExpand ? 'Cliquez pour réouvrir' : 'Votre expert CBD');
+    const displayLabel = label || (isExpand ? 'Continuer la discussion' : 'Assistant Culinaire');
+    const displaySubLabel = subLabel || (isExpand ? 'Cliquez pour réouvrir' : 'Votre expert Shop-ia');
 
     return (
         <div className="fixed bottom-6 right-6 z-[99999] flex items-center gap-3">
@@ -73,7 +73,7 @@ export default function BudTenderWidget({ onClick, onVoiceClick, pulse = false, 
                     whileHover={{ scale: 1.05, y: -4 }}
                     whileTap={{ scale: 0.95 }}
                     onClick={onClick}
-                    aria-label={isExpand ? "Agrandir BudTender" : "Toggle BudTender"}
+                    aria-label={isExpand ? "Agrandir Shopia Assistant" : "Toggle Shopia Assistant"}
                     className={`flex items-center gap-3 border text-white rounded-2xl px-5 py-4 transition-all group ${pulse ? 'animate-pulse-slow' : ''} ${isExpand
                         ? 'border-green-neon bg-zinc-900 shadow-[0_0_50px_rgba(57,255,20,0.3)]'
                         : 'border-green-neon/30 bg-zinc-900/80 shadow-[0_0_30px_rgba(57,255,20,0.1)]'

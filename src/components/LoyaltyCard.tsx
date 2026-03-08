@@ -37,7 +37,7 @@ export default function LoyaltyCard({ userId, fullName, points, referralCode, co
     const cardNum = cardNumber(userId);
 
     // The QR code encodes the card's unique identifier
-    const qrValue = `greenmood://loyalty/${userId}`;
+    const qrValue = `shopia://loyalty/${userId}`;
 
     if (compact) {
         return (
@@ -58,7 +58,7 @@ export default function LoyaltyCard({ userId, fullName, points, referralCode, co
 
                     <div className="flex items-start justify-between mb-4 relative z-10">
                         <div>
-                            <p className="text-[9px] font-mono tracking-[0.3em] text-green-400/60 uppercase mb-1">Green Mood</p>
+                            <p className="text-[9px] font-mono tracking-[0.3em] text-green-400/60 uppercase mb-1">Shop-ia Gourmet</p>
                             <p className="text-white font-black text-base leading-tight truncate max-w-[180px]">{fullName || 'Client'}</p>
                             <p className="text-[10px] font-mono text-zinc-500 mt-0.5">{cardNum}</p>
                         </div>
@@ -131,7 +131,7 @@ export default function LoyaltyCard({ userId, fullName, points, referralCode, co
                 {/* Top section */}
                 <div className="flex items-start justify-between mb-6 relative z-10 pt-2">
                     <div>
-                        <p className="text-[8px] font-mono tracking-[0.4em] text-green-400/50 uppercase mb-2">Green Mood CBD</p>
+                        <p className="text-[8px] font-mono tracking-[0.4em] text-green-400/50 uppercase mb-2">Shop-ia Gourmet</p>
                         <p className="text-white font-black text-xl leading-tight">{fullName || 'Client'}</p>
                     </div>
                     <div className="flex flex-col items-end gap-1.5">
@@ -210,11 +210,11 @@ export default function LoyaltyCard({ userId, fullName, points, referralCode, co
                     onClick={() => {
                         if (navigator.share) {
                             navigator.share({
-                                title: 'Ma Carte Fidélité Green Mood',
+                                title: 'Ma Carte Fidélité Shop-ia',
                                 text: `Mon code: ${cardNum} — ${points} points`,
                             }).catch(() => { });
                         } else {
-                            navigator.clipboard.writeText(`Carte Fidélité Green Mood\nN°: ${cardNum}\nPoints: ${points}`)
+                            navigator.clipboard.writeText(`Carte Fidélité Shop-ia\nN°: ${cardNum}\nPoints: ${points}`)
                                 .then(() => { });
                         }
                     }}

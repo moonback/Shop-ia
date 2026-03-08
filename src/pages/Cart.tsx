@@ -27,7 +27,7 @@ export default function Cart() {
   if (items.length === 0) {
     return (
       <div className="min-h-screen bg-zinc-950 text-white flex flex-col items-center justify-center px-4 overflow-hidden relative">
-        <SEO title="Mon Panier — L'Expérience Green Mood" description="Votre panier d'achats Green Mood CBD." />
+        <SEO title="Mon Panier — L'Expérience Shop-ia" description="Votre panier d'achats Shop-ia Gourmet." />
 
         {/* Background Glow */}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-green-neon/5 rounded-full blur-[120px] -z-10" />
@@ -60,7 +60,7 @@ export default function Cart() {
 
   return (
     <div className="min-h-screen bg-zinc-950 text-white pt-24 pb-32 overflow-x-hidden">
-      <SEO title="Mon Panier — L'Excellence Green Mood" description="Récapitulatif de votre panier d'achats." />
+      <SEO title="Mon Panier — L'Excellence Shop-ia" description="Récapitulatif de votre panier d'achats." />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
@@ -114,9 +114,9 @@ export default function Cart() {
                           {product.name}
                         </Link>
                         <div className="flex flex-wrap gap-3 pt-1">
-                          {product.cbd_percentage && (
+                          {product.nutriscore && (
                             <span className="text-xs font-semibold uppercase tracking-wider text-zinc-500 bg-white/5 px-3 py-1 rounded-full border border-white/[0.06]">
-                              CBD {product.cbd_percentage}%
+                              Nutri-Score {product.nutriscore}
                             </span>
                           )}
                           <span className="text-xs font-semibold uppercase tracking-wider text-zinc-500 bg-white/5 px-3 py-1 rounded-full border border-white/[0.06]">
@@ -245,7 +245,7 @@ export default function Cart() {
 
             <p className="text-xs text-zinc-600 text-center leading-relaxed uppercase px-6">
               Paiement crypté par Viva Wallet. <br />
-              Green Mood respecte votre vie privée.
+              Shop-ia respecte votre vie privée.
             </p>
           </div>
         </div>

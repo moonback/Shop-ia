@@ -2,7 +2,7 @@ import { Outlet, Link, useLocation } from "react-router-dom";
 import {
   Menu,
   X,
-  Leaf,
+  ShoppingBag,
   MapPin,
   Phone,
   Clock,
@@ -15,12 +15,12 @@ import {
   Search,
   Sparkles,
   QrCode,
+  Utensils,
 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import AgeGate from "./AgeGate";
 import CartSidebar from "./CartSidebar";
-import BudTender from "./BudTender";
+import ShopiaAssistant from "./ShopiaAssistant";
 import LoyaltyCard from "./LoyaltyCard";
 import ToastContainer from "./Toast";
 import { useCartStore } from "../store/cartStore";
@@ -179,8 +179,8 @@ export default function Layout() {
     { name: "Accueil", path: "/" },
     { name: "La Boutique", path: "/boutique" },
     { name: "Catalogue", path: "/catalogue" },
-    { name: "Nos Produits", path: "/produits" },
-    { name: "Qualité & Légalité", path: "/qualite" },
+    { name: "Nos Services", path: "/services" },
+    { name: "Qualité & Fraîcheur", path: "/qualite" },
     { name: "Contact", path: "/contact" },
   ];
 
@@ -188,15 +188,12 @@ export default function Layout() {
 
   return (
     <div className="min-h-screen flex flex-col bg-zinc-950 text-zinc-100 font-sans">
-      {/* Age Verification Popup */}
-      <AgeGate />
-
       {/* Cart Sidebar */}
       <CartSidebar />
 
-      {/* BudTender IA Widget */}
-      {/* BudTender IA Widget - Visible for all, respects toggles if they exist */}
-      {((!settings) || (settings.budtender_chat_enabled !== false) || (settings.budtender_voice_enabled !== false)) && <BudTender />}
+      {/* Shopia Assistant IA Widget */}
+      {/* Shopia Assistant IA Widget - Visible for all, respects toggles if they exist */}
+      {((!settings) || (settings.assistant_chat_enabled !== false) || (settings.assistant_voice_enabled !== false)) && <ShopiaAssistant />}
 
       {/* Toast Notifications */}
       <ToastContainer />
@@ -244,7 +241,7 @@ export default function Layout() {
               {/* Left spacer for desktop symmetry, Mobile menu button for mobile */}
               <div className="flex-1 lg:flex items-center hidden">
                 <span className="text-[10px] uppercase tracking-[0.3em] text-zinc-500 font-bold hidden xl:block">
-                  Premium CBD Experience
+                  Votre Épicerie Intelligente
                 </span>
               </div>
 
@@ -261,11 +258,11 @@ export default function Layout() {
 
               {/* Centered Logo */}
               <div className="flex-shrink-0 flex items-center justify-center">
-                <Link to="/" className="flex items-center group relative z-[1000]" aria-label="Green Mood CBD Shop — Accueil">
-                  <div className="absolute -inset-8 bg-green-neon/10 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+                <Link to="/" className="flex items-center group relative z-[1000]" aria-label="Shop-ia — Accueil">
+                  <div className="absolute -inset-8 bg-amber-400/10 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
                   <img
                     src="/logo.png"
-                    alt="Green Mood CBD Shop"
+                    alt="Shop-ia"
                     className="h-38 md:h-40 w-auto object-contain transition-all duration-700 group-hover:scale-105 group-hover:glow-logo"
                   />
                 </Link>
@@ -304,8 +301,8 @@ export default function Layout() {
                     to="/compte"
                     className="hidden lg:flex items-center gap-2.5 px-3.5 py-1.5 bg-white/[0.04] border border-white/[0.08] rounded-full hover:border-green-neon/30 hover:bg-white/[0.06] transition-all duration-300 group"
                   >
-                    <div className="w-5 h-5 rounded-full bg-green-neon/10 flex items-center justify-center group-hover:bg-green-neon/20 transition-colors">
-                      <Leaf className="h-2.5 w-2.5 text-green-neon" />
+                    <div className="w-5 h-5 rounded-full bg-amber-400/10 flex items-center justify-center group-hover:bg-amber-400/20 transition-colors">
+                      <ShoppingBag className="h-2.5 w-2.5 text-amber-400" />
                     </div>
                     <div className="flex flex-col">
                       <span className="text-[8px] text-zinc-500 uppercase font-black leading-none tracking-tighter">Points</span>
@@ -452,7 +449,7 @@ export default function Layout() {
               {/* Mobile header */}
               <div className="flex items-center justify-center px-6 h-32 relative z-10 border-b border-white/[0.04] bg-zinc-950/50 backdrop-blur-md">
                 <Link to="/" className="flex items-center" onClick={() => setIsMenuOpen(false)}>
-                  <img src="/logo.png" alt="Green Mood" className="h-32 w-auto object-contain" />
+                  <img src="/logo.png" alt="Shop-ia" className="h-32 w-auto object-contain" />
                 </Link>
                 <button
                   onClick={() => setIsMenuOpen(false)}
@@ -483,8 +480,8 @@ export default function Layout() {
                           }`}
                       >
                         <span className="text-2xl font-serif font-bold tracking-tight">{link.name}</span>
-                        <div className={`w-8 h-8 rounded-full flex items-center justify-center transition-all duration-500 ${location.pathname === link.path ? "bg-green-neon text-black rotate-0" : "bg-white/5 text-zinc-600 -rotate-45 group-hover:rotate-0 group-hover:bg-white/10 group-hover:text-white"}`}>
-                          <Leaf className="w-4 h-4" />
+                        <div className={`w-8 h-8 rounded-full flex items-center justify-center transition-all duration-500 ${location.pathname === link.path ? "bg-amber-400 text-black rotate-0" : "bg-white/5 text-zinc-600 -rotate-45 group-hover:rotate-0 group-hover:bg-white/10 group-hover:text-white"}`}>
+                          <ShoppingBag className="w-4 h-4" />
                         </div>
                       </Link>
                     </motion.div>
@@ -502,7 +499,7 @@ export default function Layout() {
                       </div>
                       <div className="flex flex-col">
                         <span className="text-xs text-zinc-500 uppercase tracking-widest font-bold">Bienvenue</span>
-                        <span className="text-lg font-serif font-black text-white">{profile?.full_name ?? "Client Mood"}</span>
+                        <span className="text-lg font-serif font-black text-white">{profile?.full_name ?? "Client Shop-ia"}</span>
                       </div>
                     </div>
                     <div className="grid grid-cols-3 gap-3">
@@ -607,16 +604,16 @@ export default function Layout() {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-10 md:gap-12 mb-12">
             {/* Brand */}
             <div className="space-y-4">
-              <Link to="/" className="flex items-center group" aria-label="Green Mood CBD Shop">
+              <Link to="/" className="flex items-center group" aria-label="Shop-ia">
                 <img
                   src="/logo.jpeg"
-                  alt="Green Mood CBD Shop"
+                  alt="Shop-ia"
                   className="h-12 w-auto object-contain opacity-80 group-hover:opacity-100 transition-all duration-500 group-hover:glow-logo"
                 />
               </Link>
               <p className="text-zinc-400 text-sm leading-relaxed">
-                Votre CBD Shop premium. Produits naturels, traçabilité garantie
-                et conseils d'experts pour votre bien-être.
+                Votre Épicerie Intelligente. Produits frais, traçabilité garantie
+                et sélection rigoureuse pour votre quotidien.
               </p>
               <div className="flex gap-3 pt-1">
                 <a href={settings.social_instagram} target="_blank" rel="noopener noreferrer" className="p-2 text-zinc-500 hover:text-green-neon hover:bg-white/[0.04] rounded-lg transition-all" aria-label="Instagram">
@@ -682,7 +679,7 @@ export default function Layout() {
 
           <div className="border-t border-white/[0.06] pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-zinc-600">
             <p>
-              &copy; {new Date().getFullYear()} Green Mood CBD Shop. Tous droits réservés.
+              &copy; {new Date().getFullYear()} Shop-ia. Tous droits réservés.
             </p>
             <div className="flex gap-6">
               <Link to="/mentions-legales" className="hover:text-zinc-400 transition-colors">
@@ -793,7 +790,7 @@ export default function Layout() {
                                       <div className="flex flex-wrap gap-1.5 mt-1.5">
                                         {prod.attributes?.aromas?.slice(0, 2).map((aroma: string, i: number) => (
                                           <div key={i} className="flex items-center gap-1 px-1.5 py-0.5 rounded-md bg-white/[0.03] border border-white/[0.06] text-[8px] text-zinc-400 font-bold uppercase tracking-tighter">
-                                            <Leaf className="w-2 h-2 text-green-neon/50 shrink-0" />
+                                            <Utensils className="w-2 h-2 text-amber-400/50 shrink-0" />
                                             <span className="truncate max-w-[60px]">{aroma}</span>
                                           </div>
                                         ))}
@@ -835,7 +832,7 @@ export default function Layout() {
                     <div className="text-center py-10 space-y-6">
                       <p className="text-zinc-500 text-sm uppercase tracking-[0.2em] font-bold">Suggestions Populaires</p>
                       <div className="flex flex-wrap justify-center gap-3">
-                        {["Amnesia", "N10", "Huile CBD", "Fleurs", "Résines"].map((term) => (
+                        {["Fruits de saison", "Légumes Frais", "Épicerie Fine", "Bio", "Local"].map((term) => (
                           <button
                             key={term}
                             onClick={() => setSearchQuery(term)}

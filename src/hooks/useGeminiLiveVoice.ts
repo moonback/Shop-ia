@@ -1,10 +1,10 @@
 import { useState, useCallback, useRef, useMemo, useEffect } from 'react';
 import { GoogleGenAI, Modality, type FunctionResponse, type LiveServerMessage, type Session } from '@google/genai';
 import { Product } from '../lib/types';
-import { PastProduct, SavedPrefs } from './useBudTenderMemory';
+import { PastProduct, SavedPrefs } from './useShopiaAssistantMemory';
 import { supabase } from '../lib/supabase';
 import { generateEmbedding } from '../lib/embeddings';
-import { getVoicePrompt } from '../lib/budtenderPrompts';
+import { getVoicePrompt } from '../lib/shopiaAssistantPrompts';
 
 const LIVE_MODEL = 'models/gemini-2.5-flash-native-audio-preview-12-2025';
 const INPUT_SAMPLE_RATE = 16000;
@@ -624,7 +624,7 @@ export function useGeminiLiveVoice({
                   });
                   if (rpcError) throw rpcError;
                   if (data && data.length > 0) searchResultsRef.current = data as Product[];
-                  const results = (data as any[]).map(p => `• ${p.name} | ${p.price}€ | CBD ${p.cbd_percentage}% | ${p.description}`).join('\n');
+                  const results = (data as any[]).map(p => `• ${p.name} | ${p.price}€ | Nutri-Score: ${p.nutriscore || 'N/A'} | ${p.weight_info || ''} | ${p.description}`).join('\n');
                   return { name: c.name, id: c.id, response: { results, note: 'Ce sont les produits les plus pertinents du catalogue complet.' } };
                 } catch (e) {
                   console.error('[Voice] Search Tool Error:', e);

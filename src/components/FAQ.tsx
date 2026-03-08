@@ -4,20 +4,20 @@ import { ChevronDown } from 'lucide-react';
 
 const faqs = [
   {
-    question: "Qu’est-ce que le CBN ?",
-    answer: "Le CBN (cannabinol) est un cannabinoïde naturel dérivé du chanvre reconnu pour ses effets relaxants et favorisant le sommeil."
+    question: "Qu'est-ce que Shop-ia ?",
+    answer: "Shop-ia est votre épicerie fine intelligente, proposant des produits alimentaires de haute qualité sélectionnés avec soin."
   },
   {
-    question: "Le CBN est-il légal ?",
-    answer: "Oui, les produits à base de CBN sont légaux en Europe lorsqu’ils respectent la réglementation sur le THC."
+    question: "Vos produits sont-ils bio ?",
+    answer: "La majorité de nos produits sont certifiés Bio ou issus de l'agriculture raisonnée et locale."
   },
   {
-    question: "Quels sont les effets du CBN ?",
-    answer: "Le CBN est souvent utilisé pour : améliorer le sommeil, réduire le stress et favoriser la relaxation."
+    question: "Comment sont sélectionnés vos produits ?",
+    answer: "Nous travaillons directement avec des producteurs passionnés pour garantir une fraîcheur et une qualité gustative exceptionnelle."
   },
   {
-    question: "Comment utiliser l’huile CBN ?",
-    answer: "L’huile CBN se prend généralement sous la langue pour une absorption rapide."
+    question: "Comment conserver mes produits frais ?",
+    answer: "Nous vous recommandons de suivre les indications sur l'emballage. La plupart de nos produits frais se conservent au réfrigérateur entre 0 et 4°C."
   },
   {
     question: "Où puis-je me faire livrer ?",
@@ -25,7 +25,7 @@ const faqs = [
   },
   {
     question: "Comment choisir le bon produit ?",
-    answer: "Vous pouvez consulter notre guide d'achat détaillé, utiliser notre BudTender IA pour une recommandation personnalisée ou nous contacter directement pour une consultation sur-mesure."
+    answer: "Vous pouvez consulter nos guides thématiques, utiliser notre Assistant Shop-ia IA pour une recommandation personnalisée ou nous contacter directement."
   }
 ];
 
@@ -67,7 +67,7 @@ export default function FAQ() {
             transition={{ delay: 0.1 }}
             className="text-zinc-400"
           >
-            Tout ce que vous devez savoir sur le CBD et notre boutique.
+            Tout ce que vous devez savoir sur notre boutique et nos produits.
           </motion.p>
         </div>
 

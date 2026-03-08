@@ -9,13 +9,14 @@ import { supabase } from '../lib/supabase';
 
 // Example payload shown before the cashier starts a live cart.
 const EXAMPLE_CART_STATE = [
-  { id: 'demo-1', name: 'Huile CBD 10%', quantity: 1, unitPrice: 39.9 },
+  { id: 'demo-1', name: "Huile d'Olive Bio", quantity: 1, unitPrice: 39.9 },
   { id: 'demo-2', name: 'Infusion Relax', quantity: 2, unitPrice: 12.5 },
   { id: 'demo-3', name: 'Gummies Nuit', quantity: 1, unitPrice: 24.0 },
 ];
 
-const EXAMPLE_CUSTOMER_NAME = 'Client en caisse';
+const EXAMPLE_CUSTOMER_NAME = 'Client Gourmet';
 const EXAMPLE_POINTS_USED = 120;
+const EXAMPLE_CUSTOMER_EMAIL = 'passion@shopia.fr';
 
 const CURRENCY = new Intl.NumberFormat('fr-FR', {
   style: 'currency',
@@ -56,7 +57,7 @@ export default function CustomerDisplay() {
     return {
       cart: EXAMPLE_CART_STATE,
       customerName: EXAMPLE_CUSTOMER_NAME,
-      customerEmail: 'premium@greenmood.fr',
+      customerEmail: EXAMPLE_CUSTOMER_EMAIL,
       loyaltyPointsUsed: EXAMPLE_POINTS_USED,
       loyaltyPointsBalance: 1450,
       promoDiscount: 0,
@@ -113,7 +114,7 @@ export default function CustomerDisplay() {
       try {
         const { data, error } = await supabase
           .from('order_items')
-          .select('product_id, product_name, unit_price, product:products(id, name, slug, image_url, price, cbd_percentage, attributes, category:categories(name, slug))')
+          .select('product_id, product_name, unit_price, product:products(id, name, slug, image_url, price, nutriscore, attributes, category:categories(name, slug))')
           .not('product_id', 'is', null)
           .limit(300);
 
@@ -129,7 +130,7 @@ export default function CustomerDisplay() {
               name: item.product?.name || item.product_name || 'Produit',
               image_url: item.product?.image_url || null,
               price: item.product?.price || item.unit_price || 0,
-              cbd_percentage: item.product?.cbd_percentage || null,
+              nutriscore: item.product?.nutriscore || null,
               benefit: item.product?.attributes?.benefits?.[0] || item.product?.category?.name || 'Exceptionnel',
               qty: 0,
             };
@@ -210,11 +211,11 @@ export default function CustomerDisplay() {
 
         <div className="absolute inset-0 bg-gradient-to-br from-[#020408] via-transparent to-[#020408] opacity-80" />
         <div
-          className="absolute -top-[10%] -left-[10%] h-[60%] w-[60%] rounded-full bg-emerald-500/10 blur-[120px] animate-pulse"
+          className="absolute -top-[10%] -left-[10%] h-[60%] w-[60%] rounded-full bg-amber-500/10 blur-[120px] animate-pulse"
           style={{ animationDuration: '8s' }}
         />
         <div
-          className="absolute top-[20%] -right-[10%] h-[50%] w-[50%] rounded-full bg-cyan-500/10 blur-[140px] animate-pulse"
+          className="absolute top-[20%] -right-[10%] h-[50%] w-[50%] rounded-full bg-blue-500/10 blur-[140px] animate-pulse"
           style={{ animationDuration: '12s' }}
         />
         <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-[0.02]" />
@@ -224,7 +225,7 @@ export default function CustomerDisplay() {
         <section className="col-span-8 rounded-[2rem] border border-white/10 bg-zinc-900/70 backdrop-blur-xl p-8 flex flex-col shadow-2xl shadow-black/30">
           <header className="flex items-end justify-between border-b border-white/10 pb-6">
             <div>
-              <p className="text-sm uppercase tracking-[0.28em] text-zinc-400 mb-3">Green Mood CBD</p>
+              <p className="text-sm uppercase tracking-[0.28em] text-zinc-400 mb-3">Shop-ia Gastronomie</p>
               <h1 className="text-5xl font-black tracking-tight">Bonjour {customerLabel}</h1>
             </div>
 
@@ -250,7 +251,7 @@ export default function CustomerDisplay() {
 
           <div className="mt-5 rounded-3xl border border-white/5 bg-white/[0.015] p-5 backdrop-blur-md flex items-center justify-between group hover:bg-white/[0.03] transition-all">
             <div className="flex items-center gap-6">
-              <div className="h-14 w-14 rounded-2xl bg-gradient-to-br from-emerald-500/20 to-cyan-500/20 flex items-center justify-center text-emerald-400 border border-emerald-500/20 shadow-lg">
+              <div className="h-14 w-14 rounded-2xl bg-gradient-to-br from-amber-500/20 to-orange-500/20 flex items-center justify-center text-amber-400 border border-amber-500/20 shadow-lg">
                 <User size={28} />
               </div>
               <div className="flex flex-col">
@@ -298,12 +299,12 @@ export default function CustomerDisplay() {
                   animate={{ scale: 1, opacity: 1 }}
                   className="relative flex flex-col items-center"
                 >
-                  <div className="w-24 h-24 rounded-full bg-emerald-500/10 flex items-center justify-center text-emerald-400 mb-8 border border-emerald-500/20 shadow-2xl shadow-emerald-500/20">
-                    <Leaf size={48} strokeWidth={1.5} className="animate-pulse" />
+                  <div className="w-24 h-24 rounded-full bg-amber-500/10 flex items-center justify-center text-amber-400 mb-8 border border-amber-500/20 shadow-2xl shadow-amber-500/20">
+                    <ShoppingBag size={48} strokeWidth={1.5} className="animate-pulse" />
                   </div>
-                  <h2 className="text-zinc-500 text-[10px] uppercase font-black tracking-[0.4em] mb-4">Green Moon – Expérience Boutique</h2>
+                  <h2 className="text-zinc-500 text-[10px] uppercase font-black tracking-[0.4em] mb-4">Shop-ia – Expérience Gastronomique</h2>
                   <p className="max-w-xl text-center text-5xl font-black leading-tight text-white tracking-tighter">
-                    Prêt pour votre <br /><span className="text-emerald-400">bien-être ?</span>
+                    Prêt pour une <br /><span className="text-amber-400">découverte ?</span>
                   </p>
                   <p className="mt-6 text-zinc-500 font-medium text-lg italic">Déposez simplement vos articles pour commencer.</p>
                 </motion.div>
@@ -321,7 +322,7 @@ export default function CustomerDisplay() {
                       className="mb-4 flex items-center justify-between rounded-3xl border border-white/5 bg-white/[0.02] pl-8 pr-10 py-6 group hover:bg-white/[0.04] transition-all relative overflow-hidden"
                     >
                       {/* Side accent */}
-                      <div className="absolute left-0 top-0 bottom-0 w-1 bg-emerald-500 opacity-60" />
+                      <div className="absolute left-0 top-0 bottom-0 w-1 bg-amber-500 opacity-60" />
 
                       <div className="flex flex-col">
                         <span className="text-[10px] uppercase font-black tracking-widest text-zinc-600 mb-1 group-hover:text-emerald-500 transition-colors">Article Sélectionné</span>
@@ -337,7 +338,7 @@ export default function CustomerDisplay() {
                         </div>
                         <div className="flex flex-col text-right min-w-[140px]">
                           <span className="text-[10px] uppercase font-black tracking-widest text-emerald-500/50 mb-1">Prix Ligne</span>
-                          <p className="text-4xl font-black text-emerald-300 tabular-nums">
+                          <p className="text-4xl font-black text-amber-300 tabular-nums">
                             {CURRENCY.format(line.lineTotal)}
                           </p>
                         </div>
@@ -380,7 +381,7 @@ export default function CustomerDisplay() {
         <aside className="col-span-4 flex flex-col gap-6">
           {/* Top Sales Slideshow */}
           <div className="flex-1 rounded-[2.5rem] border border-white/10 bg-zinc-900/60 backdrop-blur-xl overflow-hidden flex flex-col shadow-2xl relative">
-            <div className="absolute top-6 left-6 z-20 flex items-center gap-2 bg-emerald-500/90 text-black px-4 py-2 rounded-full text-[10px] font-black uppercase tracking-[0.2em] shadow-lg shadow-emerald-500/20 backdrop-blur-md">
+            <div className="absolute top-6 left-6 z-20 flex items-center gap-2 bg-amber-500/90 text-black px-4 py-2 rounded-full text-[10px] font-black uppercase tracking-[0.2em] shadow-lg shadow-amber-500/20 backdrop-blur-md">
               <TrendingUp size={14} strokeWidth={3} className="animate-bounce" />
               Sélection Élite
             </div>
@@ -413,9 +414,9 @@ export default function CustomerDisplay() {
                         className="flex flex-col gap-4"
                       >
                         <div className="flex flex-wrap gap-2">
-                          {topProducts[slideIndex]?.cbd_percentage && (
-                            <span className="bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 px-2 py-0.5 rounded-full text-[9px] font-black uppercase tracking-widest backdrop-blur-md">
-                              CBD {topProducts[slideIndex]?.cbd_percentage}%
+                          {topProducts[slideIndex]?.nutriscore && (
+                            <span className="bg-amber-500/20 text-amber-400 border border-amber-500/30 px-2 py-0.5 rounded-full text-[9px] font-black uppercase tracking-widest backdrop-blur-md">
+                              Nutri-Score {topProducts[slideIndex]?.nutriscore}
                             </span>
                           )}
                           <span className="bg-white/5 text-zinc-400 border border-white/10 px-2 py-0.5 rounded-full text-[9px] font-black uppercase tracking-widest backdrop-blur-md">
@@ -433,7 +434,7 @@ export default function CustomerDisplay() {
                         </div>
 
                         <div className="flex items-center justify-between border-t border-white/10 pt-4 mt-2">
-                          <p className="text-3xl font-black text-emerald-400 flex items-baseline gap-1">
+                          <p className="text-3xl font-black text-amber-400 flex items-baseline gap-1">
                             {CURRENCY.format(topProducts[slideIndex]?.price)}
                           </p>
                           <div className="flex gap-2">
@@ -526,19 +527,19 @@ export default function CustomerDisplay() {
                 transition={{ delay: 0.5 }}
                 className="mt-16 flex flex-col items-center"
               >
-                <div className="flex items-center gap-6 text-emerald-400 mb-6">
-                  <div className="h-4 w-4 rounded-full bg-emerald-500/20 flex items-center justify-center border border-emerald-500/30">
-                    <Leaf size={8} />
+                <div className="flex items-center gap-6 text-amber-400 mb-6">
+                  <div className="h-4 w-4 rounded-full bg-amber-500/20 flex items-center justify-center border border-amber-500/30">
+                    <Sparkles size={8} />
                   </div>
-                  <div className="h-px w-24 bg-gradient-to-r from-transparent to-emerald-400/50" />
-                  <span className="text-xl font-black tracking-[0.5em] uppercase">Bien-Être Botanique</span>
-                  <div className="h-px w-24 bg-gradient-to-l from-transparent to-emerald-400/50" />
-                  <div className="h-4 w-4 rounded-full bg-emerald-500/20 flex items-center justify-center border border-emerald-500/30">
-                    <Leaf size={8} />
+                  <div className="h-px w-24 bg-gradient-to-r from-transparent to-amber-400/50" />
+                  <span className="text-xl font-black tracking-[0.5em] uppercase">Saveurs d'Exception</span>
+                  <div className="h-px w-24 bg-gradient-to-l from-transparent to-amber-400/50" />
+                  <div className="h-4 w-4 rounded-full bg-amber-500/20 flex items-center justify-center border border-amber-500/30">
+                    <Sparkles size={8} />
                   </div>
                 </div>
                 <h2 className="text-zinc-500 text-3xl uppercase font-black tracking-[0.8em] animate-pulse">
-                  Green Moon CBD
+                  Shop-ia Gourmet
                 </h2>
               </motion.div>
             </motion.div>

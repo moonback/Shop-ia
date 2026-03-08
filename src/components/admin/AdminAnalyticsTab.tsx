@@ -81,7 +81,7 @@ export default function AdminAnalyticsTab() {
   const [acqData, setAcqData] = useState<CustomerAcquisitionPoint[]>([]);
   const [aovData, setAovData] = useState<{ date: string; aov: number }[]>([]);
   const [categoryPerf, setCategoryPerf] = useState<{ name: string; value: number }[]>([]);
-  const [budtenderStats, setBudtenderStats] = useState<{ type: string; count: number }[]>([]);
+  const [AssistantStats, setAssistantStats] = useState<{ type: string; count: number }[]>([]);
   const [topQuestions, setTopQuestions] = useState<{ question: string; count: number }[]>([]);
   const [kpis, setKpis] = useState({
     totalRevenue: 0,
@@ -123,7 +123,7 @@ export default function AdminAnalyticsTab() {
         .select('created_at')
         .gte('created_at', sinceISO),
       supabase
-        .from('budtender_interactions')
+        .from('assistant_interactions')
         .select('*')
         .gte('created_at', sinceISO),
     ]);
@@ -189,7 +189,7 @@ export default function AdminAnalyticsTab() {
       Array.from(catMap.entries()).map(([name, value]) => ({ name, value }))
     );
 
-    // BudTender Stats
+    // Assistant Stats
     const interactionCounts = new Map<string, number>();
     const questionsMap = new Map<string, number>();
     let quizCount = 0;
@@ -215,7 +215,7 @@ export default function AdminAnalyticsTab() {
 
     setFeedbackStats({ positive: posFeed, negative: negFeed });
 
-    setBudtenderStats(
+    setAssistantStats(
       Array.from(interactionCounts.entries()).map(([type, count]) => ({ type, count }))
     );
     setTopQuestions(
@@ -225,7 +225,7 @@ export default function AdminAnalyticsTab() {
         .slice(0, 5)
     );
 
-    // Conversion: Buyers who used BudTender
+    // Conversion: Buyers who used Assistant
     const usersWithQuiz = new Set(interactions?.filter((i: any) => i.interaction_type === 'chat_session' || i.interaction_type === 'recommendation').map((i: any) => i.user_id));
     const usersWithOrder = new Set(paidOrders?.map((o: any) => o.user_id));
     const buyersWhoDidQuiz = Array.from(usersWithQuiz).filter(uid => usersWithOrder.has(uid)).length;
@@ -274,7 +274,7 @@ export default function AdminAnalyticsTab() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl font-black text-white tracking-tight italic uppercase">Tableau de Performance</h1>
-          <p className="text-sm text-zinc-500 font-medium">Analyse des ventes & Insights BudTender IA.</p>
+          <p className="text-sm text-zinc-500 font-medium">Analyse des ventes & Insights Assistant IA.</p>
         </div>
         <div className="flex gap-2 bg-zinc-900 p-1 rounded-2xl border border-zinc-800 self-start">
           {(Object.keys(RANGE_LABELS) as AnalyticsRange[]).map((r) => (
@@ -328,8 +328,8 @@ export default function AdminAnalyticsTab() {
               <p className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-500 mb-2 flex items-center gap-2">
                 <MessageSquare className="w-3 h-3" /> Intéractions IA
               </p>
-              <h3 className="text-2xl font-black text-white">{(budtenderStats.reduce((s, d) => s + d.count, 0)).toLocaleString()}</h3>
-              <p className="text-xs text-purple-500 mt-1">Points de contact BudTender</p>
+              <h3 className="text-2xl font-black text-white">{(AssistantStats.reduce((s, d) => s + d.count, 0)).toLocaleString()}</h3>
+              <p className="text-xs text-purple-500 mt-1">Points de contact Assistant</p>
             </div>
           </div>
 
@@ -464,10 +464,10 @@ export default function AdminAnalyticsTab() {
               </div>
             </ChartCard>
 
-            {/* BudTender Types Distribution */}
-            <ChartCard title="Intéractions BudTender">
+            {/* Assistant Types Distribution */}
+            <ChartCard title="Intéractions Assistant">
               <ResponsiveContainer width="100%" height={240}>
-                <BarChart data={budtenderStats} layout="vertical">
+                <BarChart data={AssistantStats} layout="vertical">
                   <CartesianGrid strokeDasharray="3 3" stroke="#27272a" horizontal={false} />
                   <XAxis type="number" hide />
                   <YAxis

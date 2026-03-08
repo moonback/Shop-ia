@@ -4,25 +4,25 @@ import { X, Leaf, Mic, RefreshCw, ShoppingCart, ChevronRight, Sparkles, RotateCc
 import { Link, useNavigate } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import { Product } from '../lib/types';
-import { getBudTenderSettings, BudTenderSettings, BUDTENDER_DEFAULTS } from '../lib/budtenderSettings';
-import { getCachedProducts, getCachedSettings } from '../lib/budtenderCache';
+import { getShopiaAssistantSettings as getShopiaSettings, ShopiaAssistantSettings as ShopiaSettings, SHOPIA_ASSISTANT_DEFAULTS as SHOPIA_DEFAULTS } from '../lib/shopiaAssistantSettings';
+import { getCachedProducts, getCachedSettings } from '../lib/shopiaAssistantCache';
 import { useCartStore } from '../store/cartStore';
-import { useBudTenderMemory } from '../hooks/useBudTenderMemory';
-import { BudTenderWidget, BudTenderMessage, BudTenderTypingIndicator, BudTenderFeedback } from './budtender-ui';
+import { useShopiaAssistantMemory as useAssistantMemory } from '../hooks/useShopiaAssistantMemory';
+import { ShopiaAssistantWidget as AssistantWidget, ShopiaAssistantMessage as AssistantMessage, ShopiaAssistantTypingIndicator as AssistantTypingIndicator, ShopiaAssistantFeedback as AssistantFeedback } from './shopia-assistant-ui';
 import VoiceAdvisor from './VoiceAdvisor';
 import { useAuthStore } from '../store/authStore';
 import { useSettingsStore } from '../store/settingsStore';
-import { useBudTenderQuiz } from '../hooks/useBudTenderQuiz';
-import { useBudTenderChat } from '../hooks/useBudTenderChat';
+import { useShopiaAssistantQuiz as useAssistantQuiz } from '../hooks/useShopiaAssistantQuiz';
+import { useShopiaAssistantChat as useAssistantChat } from '../hooks/useShopiaAssistantChat';
 
 // ─── Shared types and logic imported ───
 
 import {
-    TerpeneChip,
-    TERPENE_CHIPS,
+    AromaChip,
+    AROMA_CHIPS,
     Answers,
     Message
-} from '../lib/budtenderHelpers';
+} from '../lib/shopiaAssistantHelpers';
 
 // ─── Header components ───────────────────────────────────────────────────────
 
@@ -48,7 +48,7 @@ function HeaderAction({ icon, title, onClick, isActive, label }: { icon: React.R
 
 // ─── Main component ───────────────────────────────────────────────────────────
 
-export default function BudTender() {
+export default function ShopiaAssistant() {
     const globalSettings = useSettingsStore((s) => s.settings);
     const navigate = useNavigate();
     const [isOpen, setIsOpen] = useState(false);
@@ -58,15 +58,15 @@ export default function BudTender() {
     const [answers, setAnswers] = useState<Answers>({});
     const [products, setProducts] = useState<Product[]>([]);
     const [pulse, setPulse] = useState(false);
-    // Terpene multi-select state
-    const [terpeneSelection, setTerpeneSelection] = useState<string[]>([]);
-    const [awaitingTerpene, setAwaitingTerpene] = useState(false);
+    // Aroma multi-select state
+    const [aromaSelection, setAromaSelection] = useState<string[]>([]);
+    const [awaitingAroma, setAwaitingAroma] = useState(false);
     // Ambassador state
     const [hasShared, setHasShared] = useState(false);
     const [showPromoTooltip, setShowPromoTooltip] = useState(false);
     // Free chat input
     const [chatInput, setChatInput] = useState('');
-    const [settings, setSettings] = useState<BudTenderSettings>(BUDTENDER_DEFAULTS);
+    const [settings, setSettings] = useState<ShopiaSettings>(SHOPIA_DEFAULTS);
     // Voice advisor overlay
     const [isVoiceOpen, setIsVoiceOpen] = useState(false);
     // Shrink state for "viewing product"
@@ -79,7 +79,7 @@ export default function BudTender() {
     const scrollRef = useRef<HTMLDivElement>(null);
     const hasTriedLoad = useRef(false);
 
-    const memory = useBudTenderMemory();
+    const memory = useAssistantMemory();
     const { logQuestion } = memory;
 
     // Load admin settings from DB when opening (cached)
@@ -94,7 +94,7 @@ export default function BudTender() {
         getCachedProducts().then(setProducts);
 
         // Use delay from settings
-        const currentSettings = getBudTenderSettings();
+        const currentSettings = getShopiaSettings();
         if (currentSettings.pulse_delay > 0) {
             const t = setTimeout(() => setPulse(true), currentSettings.pulse_delay * 1000);
             return () => clearTimeout(t);
@@ -166,7 +166,7 @@ export default function BudTender() {
             const last = pastProducts[0];
             greeting = `Content de te revoir${userName ? `, ${userName}` : ''} ! 👋 La dernière fois tu avais commandé **${last.product_name}** — tu l'as apprécié ? Je suis là pour te trouver quelque chose d'encore mieux.`;
         } else {
-            greeting = `Bienvenue${userName ? `, ${userName}` : ''} ! 🌿 Je suis BudTender, votre conseiller CBD de confiance chez Green Mood. Prêt à découvrir votre sélection idéale ?`;
+            greeting = `Bienvenue${userName ? `, ${userName}` : ''} ! 🍎 Je suis Assistant, votre conseiller culinaire chez Shop-ia. Prêt à découvrir votre sélection gourmande ?`;
         }
 
         // Push greeting first
@@ -233,19 +233,19 @@ export default function BudTender() {
         startQuiz,
         skipQuizAndRecommend,
         handleAnswer,
-        confirmTerpeneSelection,
-    } = useBudTenderQuiz({
+        confirmAromaSelection,
+    } = useAssistantQuiz({
         settings,
         products,
         messages,
         answers,
         stepIndex,
-        terpeneSelection,
+        aromaSelection,
         memory,
         setStepIndex,
         setAnswers,
-        setAwaitingTerpene,
-        setTerpeneSelection,
+        setAwaitingAroma,
+        setAromaSelection,
         setIsTyping,
         setMessages,
         addBotMessage,
@@ -257,16 +257,16 @@ export default function BudTender() {
         setMessages([]);
         setStepIndex(-1);
         setAnswers({});
-        setTerpeneSelection([]);
-        setAwaitingTerpene(false);
+        setAromaSelection([]);
+        setAwaitingAroma(false);
         setHasShared(false);
         setTimeout(() => buildWelcomeMessages(), 100);
     };
 
     const handleShare = async () => {
         const shareData = {
-            title: 'Green Mood CBD — Mon diagnostic BudTender',
-            text: 'Je viens de faire mon diagnostic CBD avec BudTender IA Chez Green Mood ! Découvrez vos produits idéaux ici :',
+            title: 'Shop-ia — Mon diagnostic Gourmand',
+            text: 'Je viens de faire mon diagnostic alimentaire avec Assistant IA chez Shop-ia ! Découvrez ma sélection gourmande ici :',
             url: window.location.origin,
         };
 
@@ -290,7 +290,7 @@ export default function BudTender() {
         setTimeout(() => setShowPromoTooltip(false), 2000);
     };
 
-    const handleSendMessage = useBudTenderChat({
+    const handleSendMessage = useAssistantChat({
         chatInput,
         isTyping,
         settings,
@@ -323,20 +323,20 @@ export default function BudTender() {
         <>
             {/* ── Floating button / Expand button ── */}
             <AnimatePresence>
-                {isOpen && !isShrink ? null : ((globalSettings?.budtender_chat_enabled ?? true) || (globalSettings?.budtender_voice_enabled ?? true)) && (
-                    <BudTenderWidget
+                {isOpen && !isShrink ? null : ((globalSettings?.assistant_chat_enabled ?? true) || (globalSettings?.assistant_voice_enabled ?? true)) && (
+                    <AssistantWidget
                         onClick={() => {
                             if (isShrink) {
                                 setIsShrink(false);
-                            } else if (globalSettings?.budtender_chat_enabled !== false) {
+                            } else if (globalSettings?.assistant_chat_enabled !== false) {
                                 setIsOpen(true);
-                            } else if (globalSettings?.budtender_voice_enabled !== false) {
+                            } else if (globalSettings?.assistant_voice_enabled !== false) {
                                 // If chat disabled but voice enabled, click opens voice
                                 setIsVoiceOpen(true);
                             }
                         }}
-                        isChatEnabled={globalSettings?.budtender_chat_enabled ?? true}
-                        onVoiceClick={(globalSettings?.budtender_voice_enabled ?? true) ? () => {
+                        isChatEnabled={globalSettings?.assistant_chat_enabled ?? true}
+                        onVoiceClick={(globalSettings?.assistant_voice_enabled ?? true) ? () => {
                             if (isVoiceOpen) {
                                 setIsVoiceOpen(false);
                             } else {
@@ -413,7 +413,7 @@ export default function BudTender() {
                                         <div className="flex flex-col">
                                             <div className="flex items-center gap-3">
                                                 <h3 className="text-xl sm:text-2xl font-black text-white tracking-tighter uppercase italic">
-                                                    BudTender <span className="text-green-neon not-italic">AI</span>
+                                                    Shopia <span className="text-amber-500 not-italic">Assistant</span>
                                                 </h3>
                                                 <div className="hidden sm:flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-green-neon/5 border border-green-neon/10">
                                                     <span className="w-1.5 h-1.5 bg-green-neon rounded-full animate-pulse shadow-[0_0_5px_rgba(57,255,20,0.8)]" />
@@ -423,7 +423,7 @@ export default function BudTender() {
                                             <p className="text-xs sm:text-sm text-zinc-500 font-medium mt-0.5">
                                                 {memory.isLoggedIn && memory.userName
                                                     ? `Session active · Bonjour, ${memory.userName}`
-                                                    : 'Conseiller spécialisé en cannabinoïdes'}
+                                                    : 'Conseiller culinaire & gastronomique'}
                                             </p>
                                         </div>
                                     </div>
@@ -432,7 +432,7 @@ export default function BudTender() {
                                     <div className="flex items-center gap-1.5 sm:gap-2">
                                         <div className="h-10 w-[1px] bg-white/5 mx-2 hidden sm:block" />
 
-                                        {(globalSettings?.budtender_voice_enabled ?? true) && (
+                                        {(globalSettings?.assistant_voice_enabled ?? true) && (
                                             <HeaderAction
                                                 icon={<Mic className="w-5 h-5" />}
                                                 title="Conseiller vocal (Gemini Live)"
@@ -502,7 +502,7 @@ export default function BudTender() {
                                                     </div>
                                                     <div>
                                                         <p className="text-white font-bold text-lg">Connectez-vous</p>
-                                                        <p className="text-zinc-500 text-sm max-w-xs mx-auto mt-1">L'historique des conversations est réservé aux membres de Green Mood.</p>
+                                                        <p className="text-zinc-500 text-sm max-w-xs mx-auto mt-1">L'historique des conversations est réservé aux membres de Shop-ia.</p>
                                                     </div>
                                                 </div>
                                             ) : memory.isHistoryLoading ? (
@@ -545,7 +545,7 @@ export default function BudTender() {
                                                                     </span>
                                                                 </div>
                                                                 <p className="text-sm font-bold text-white line-clamp-2 group-hover:text-green-neon transition-colors leading-relaxed">
-                                                                    {session.title || "Conseil Wellness personnalisé"}
+                                                                    {session.title || "Conseil Culinaire personnalisé"}
                                                                 </p>
                                                                 <div className="mt-3 flex items-center gap-4 text-[11px] text-zinc-500 font-medium">
                                                                     <span className="flex items-center gap-1.5 bg-white/5 px-2 py-1 rounded-md">
@@ -570,7 +570,7 @@ export default function BudTender() {
                             <div ref={scrollRef} className="flex-1 overflow-y-auto custom-scrollbar bg-gradient-to-b from-transparent via-zinc-900/10 to-green-neon/[0.01]">
                                 <div className="max-w-7xl mx-auto w-full p-5 sm:p-10 space-y-8">
                                     {messages.map((msg) => (
-                                        <BudTenderMessage
+                                        <AssistantMessage
                                             key={msg.id}
                                             sender={msg.sender}
                                             text={msg.text}
@@ -632,21 +632,21 @@ export default function BudTender() {
                                                 </motion.div>
                                             )}
 
-                                            {/* ── Terpene Selection UI ── */}
-                                            {msg.type === 'terpene' && awaitingTerpene && (
+                                            {/* ── Aroma Selection UI ── */}
+                                            {msg.type === 'aroma' && awaitingAroma && (
                                                 <motion.div
                                                     initial={{ opacity: 0, y: 10 }}
                                                     animate={{ opacity: 1, y: 0 }}
                                                     className="space-y-4 pt-2"
                                                 >
                                                     <div className="grid grid-cols-2 xs:grid-cols-3 gap-2">
-                                                        {TERPENE_CHIPS.map((chip) => {
-                                                            const isSelected = terpeneSelection.includes(chip.label);
+                                                        {AROMA_CHIPS.map((chip) => {
+                                                            const isSelected = aromaSelection.includes(chip.label);
                                                             return (
                                                                 <button
                                                                     key={chip.label}
                                                                     onClick={() => {
-                                                                        setTerpeneSelection(prev =>
+                                                                        setAromaSelection(prev =>
                                                                             isSelected ? prev.filter(t => t !== chip.label) : [...prev, chip.label]
                                                                         );
                                                                     }}
@@ -665,11 +665,11 @@ export default function BudTender() {
                                                     <motion.button
                                                         whileHover={{ scale: 1.02 }}
                                                         whileTap={{ scale: 0.98 }}
-                                                        onClick={confirmTerpeneSelection}
+                                                        onClick={confirmAromaSelection}
                                                         className="w-full bg-zinc-100 hover:bg-white text-black font-black py-3 rounded-2xl text-sm transition-all shadow-lg flex items-center justify-center gap-2"
                                                     >
-                                                        {terpeneSelection.length > 0 ? (
-                                                            <>Confirmer la sélection ({terpeneSelection.length}) <ChevronRight className="w-4 h-4" /></>
+                                                        {aromaSelection.length > 0 ? (
+                                                            <>Confirmer la sélection ({aromaSelection.length}) <ChevronRight className="w-4 h-4" /></>
                                                         ) : (
                                                             <>Passer cette étape <ChevronRight className="w-4 h-4" /></>
                                                         )}
@@ -722,9 +722,9 @@ export default function BudTender() {
                                                                     className="w-16 h-16 rounded-2xl object-cover bg-zinc-900 shadow-md transition-transform group-hover:scale-105"
                                                                     alt={product.name}
                                                                 />
-                                                                {product.cbd_percentage && (
-                                                                    <span className="absolute -top-1 -left-1 bg-green-neon text-black text-[9px] font-black px-1.5 py-0.5 rounded-lg shadow-sm">
-                                                                        {product.cbd_percentage}%
+                                                                {product.nutriscore && (
+                                                                    <span className="absolute -top-1 -left-1 bg-amber-500 text-black text-[9px] font-black px-1.5 py-0.5 rounded-lg shadow-sm">
+                                                                        {product.nutriscore}
                                                                     </span>
                                                                 )}
                                                             </div>
@@ -752,15 +752,15 @@ export default function BudTender() {
                                                                     const { user } = useAuthStore.getState();
                                                                     if (user) {
                                                                         try {
-                                                                            const { error } = await supabase.from('budtender_interactions').insert({
+                                                                            const { error } = await supabase.from('Assistant_interactions').insert({
                                                                                 user_id: user.id,
                                                                                 interaction_type: 'click',
                                                                                 clicked_product: product.id,
                                                                                 created_at: new Date().toISOString()
                                                                             });
-                                                                            if (error) console.error('[BudTender] Click log error:', error);
+                                                                            if (error) console.error('[Assistant] Click log error:', error);
                                                                         } catch (err) {
-                                                                            console.error('[BudTender] Click log exception:', err);
+                                                                            console.error('[Assistant] Click log exception:', err);
                                                                         }
                                                                     }
                                                                 }}
@@ -772,20 +772,20 @@ export default function BudTender() {
                                                     ))}
 
                                                     {/* ── Feedback on recommendations ── */}
-                                                    <BudTenderFeedback
+                                                    <AssistantFeedback
                                                         onFeedback={async (type) => {
                                                             const { user } = useAuthStore.getState();
                                                             if (user) {
                                                                 try {
-                                                                    const { error } = await supabase.from('budtender_interactions').insert({
+                                                                    const { error } = await supabase.from('Assistant_interactions').insert({
                                                                         user_id: user.id,
                                                                         interaction_type: 'feedback',
                                                                         feedback: type,
                                                                         created_at: new Date().toISOString()
                                                                     });
-                                                                    if (error) console.error('[BudTender] Feedback log error:', error);
+                                                                    if (error) console.error('[ShopiaAssistant] Feedback log error:', error);
                                                                 } catch (err) {
-                                                                    console.error('[BudTender] Feedback log exception:', err);
+                                                                    console.error('[ShopiaAssistant] Feedback log exception:', err);
                                                                 }
                                                             }
                                                         }}
@@ -828,10 +828,10 @@ export default function BudTender() {
                                                                 <div className="bg-zinc-950/50 border border-green-neon/30 rounded-xl p-3 flex items-center justify-between group">
                                                                     <div>
                                                                         <p className="text-[10px] text-zinc-500 uppercase font-bold tracking-widest">Votre code :</p>
-                                                                        <p className="text-lg font-black text-green-neon tracking-tighter">BUDTENDER10</p>
+                                                                        <p className="text-lg font-black text-green-neon tracking-tighter">Assistant10</p>
                                                                     </div>
                                                                     <button
-                                                                        onClick={() => copyPromoCode('BUDTENDER10')}
+                                                                        onClick={() => copyPromoCode('Assistant10')}
                                                                         className="relative p-2 bg-green-neon/10 hover:bg-green-neon text-green-neon hover:text-black rounded-lg transition-all"
                                                                     >
                                                                         <Copy className="w-4 h-4" />
@@ -842,20 +842,20 @@ export default function BudTender() {
                                                                         )}
                                                                     </button>
                                                                 </div>
-                                                                <p className="text-[10px] text-zinc-500 text-center italic">Valable sur tout le catalogue Green Mood.</p>
+                                                                <p className="text-[10px] text-zinc-500 text-center italic">Valable sur tout le catalogue Shop-ia.</p>
                                                             </div>
                                                         )}
                                                     </motion.div>
                                                 </div>
                                             )}
-                                        </BudTenderMessage>
+                                        </AssistantMessage>
                                     ))}
 
                                     {/* Typing indicator */}
-                                    {isTyping && <BudTenderTypingIndicator />}
+                                    {isTyping && <AssistantTypingIndicator />}
 
                                     {/* ── Welcome CTA ── */}
-                                    {showStartButton && (globalSettings?.budtender_chat_enabled ?? true) && (
+                                    {showStartButton && (globalSettings?.assistant_chat_enabled ?? true) && (
                                         <div className="flex justify-center py-10">
                                             <motion.button
                                                 whileHover={{ scale: 1.05 }}
@@ -916,7 +916,7 @@ export default function BudTender() {
                             </div>
 
                             {/* ── Chat Input Bar ── */}
-                            {(globalSettings?.budtender_chat_enabled ?? true) && (
+                            {(globalSettings?.assistant_chat_enabled ?? true) && (
                                 <div className="p-6 sm:p-10 border-t border-zinc-800 bg-zinc-950/95 backdrop-blur-3xl shrink-0">
                                     <div className="max-w-7xl mx-auto w-full space-y-4">
                                         <form
@@ -941,11 +941,11 @@ export default function BudTender() {
                                         <div className="flex flex-col items-center gap-1.5 px-1">
                                             <p className="text-[10px] text-zinc-500 text-center leading-relaxed max-w-2xl">
                                                 <span className="text-amber-500/80 font-bold uppercase tracking-widest mr-1">Avis important :</span>
-                                                BudTender est une IA de conseil. Les informations fournies ne constituent pas un avis médical.
+                                                Shopia Assistant est une IA de conseil. Les informations fournies ne constituent pas un avis médical.
                                                 Consultez un médecin avant toute consommation, surtout en cas de traitement ou de grossesse.
                                             </p>
                                             <p className="text-[9px] text-green-neon font-black uppercase tracking-[0.4em] opacity-50 mt-1">
-                                                BudTender IA Expérience
+                                                Shopia Assistant Expérience
                                             </p>
                                         </div>
                                     </div>

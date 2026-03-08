@@ -96,7 +96,7 @@ export default function Account() {
 
   return (
     <div className="min-h-screen bg-zinc-950 text-white pt-24 pb-32">
-      <SEO title="Mon Espace — L'Excellence Green Mood" description="Votre espace personnel Green Mood." />
+      <SEO title="Mon Espace — L'Excellence Shop-ia" description="Votre espace personnel Shop-ia." />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 

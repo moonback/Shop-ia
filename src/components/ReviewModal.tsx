@@ -241,7 +241,7 @@ export default function ReviewModal({ order, isOpen, onClose }: ReviewModalProps
                                 </div>
                                 <h4 className="text-2xl font-serif font-black text-white uppercase italic">Expérience Partagée</h4>
                                 <p className="text-zinc-500 text-sm leading-relaxed max-w-sm mx-auto">
-                                    Toute l'équipe Green Mood vous remercie pour vos précieuses impressions. Vos témoignages contribuent à l'excellence de notre boutique.
+                                    Toute l'équipe Shop-ia vous remercie pour vos précieuses impressions. Vos témoignages contribuent à l'excellence de notre boutique.
                                 </p>
                                 <button
                                     onClick={onClose}

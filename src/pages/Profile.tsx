@@ -4,13 +4,13 @@ import { motion, AnimatePresence } from 'motion/react';
 import { User, Mail, Shield, ArrowLeft, Save, Sparkles, Phone, BrainCircuit, Target, Zap, Waves, Coins, Cake, Flame, Leaf, ChevronDown, SlidersHorizontal, LockKeyhole, Eye, EyeOff, Monitor, Smartphone, LogOut } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import { useAuthStore } from '../store/authStore';
-import { useBudTenderMemory, SavedPrefs } from '../hooks/useBudTenderMemory';
-import { BUDTENDER_DEFAULT_QUIZ, QuizStep, fetchBudTenderSettings } from '../lib/budtenderSettings';
+import { useShopiaAssistantMemory, SavedPrefs } from '../hooks/useShopiaAssistantMemory';
+import { SHOPIA_ASSISTANT_DEFAULTS, QuizStep, fetchShopiaAssistantSettings } from '../lib/shopiaAssistantSettings';
 import SEO from '../components/SEO';
 
 export default function Profile() {
     const { user, profile, setProfile } = useAuthStore();
-    const { savedPrefs, savePrefs, isLoading: isPrefsLoading } = useBudTenderMemory();
+    const { savedPrefs, savePrefs, isLoading: isPrefsLoading } = useShopiaAssistantMemory();
 
     const [fullName, setFullName] = useState('');
     const [phone, setPhone] = useState('');
@@ -22,14 +22,14 @@ export default function Profile() {
     const [showConfirmNewPassword, setShowConfirmNewPassword] = useState(false);
     const [isSaving, setIsSaving] = useState(false);
     const [message, setMessage] = useState<{ type: 'success' | 'error', text: string } | null>(null);
-    const [showBudTender, setShowBudTender] = useState(false);
+    const [showAssistant, setShowAssistant] = useState(false);
 
     const [sessions, setSessions] = useState<Array<{ id: string; device_id: string; device_name: string | null; user_agent: string | null; last_seen: string }>>([]);
     const [isSessionsLoading, setIsSessionsLoading] = useState(false);
     const [isRevokingOthers, setIsRevokingOthers] = useState(false);
 
     // Dynamic quiz steps from DB
-    const [quizSteps, setQuizSteps] = useState<QuizStep[]>(BUDTENDER_DEFAULT_QUIZ);
+    const [quizSteps, setQuizSteps] = useState<QuizStep[]>(SHOPIA_ASSISTANT_DEFAULTS.quiz_steps);
 
     // State for preferences (user's answers)
     const [prefs, setPrefs] = useState<SavedPrefs>({
@@ -39,15 +39,15 @@ export default function Profile() {
         budget: '',
         age: '',
         intensity: '',
-        terpenes: []
+        aromas: []
     });
 
     useEffect(() => {
         // Load dynamically configured quiz steps and merge with defaults
         const loadSteps = async () => {
             try {
-                const settings = await fetchBudTenderSettings();
-                let steps = [...BUDTENDER_DEFAULT_QUIZ];
+                const settings = await fetchShopiaAssistantSettings();
+                let steps = [...SHOPIA_ASSISTANT_DEFAULTS.quiz_steps];
 
                 if (settings.quiz_steps && settings.quiz_steps.length > 0) {
                     // Keep custom steps but ensure default ones exist if they are official categories
@@ -69,7 +69,7 @@ export default function Profile() {
                 setQuizSteps(steps);
             } catch (err) {
                 console.error('Error loading quiz steps:', err);
-                setQuizSteps(BUDTENDER_DEFAULT_QUIZ);
+                setQuizSteps(SHOPIA_ASSISTANT_DEFAULTS.quiz_steps);
             }
         };
         loadSteps();
@@ -183,7 +183,7 @@ export default function Profile() {
     };
 
     const updatePref = (key: string, value: string) => {
-        if (key === 'terpenes' || key === 'terpene_preferences') {
+        if (key === 'aromas' || key === 'aroma_preferences') {
             const current = (prefs[key as keyof SavedPrefs] || []) as string[];
             const updated = current.includes(value)
                 ? current.filter(v => v !== value)
@@ -248,7 +248,7 @@ export default function Profile() {
 
     const isPrefSelected = (key: string, value: any) => {
         const val = prefs[key as keyof SavedPrefs];
-        if (key === 'terpenes' || key === 'terpene_preferences') {
+        if (key === 'aromas' || key === 'aroma_preferences') {
             return Array.isArray(val) && val.includes(value);
         }
         return val === value;
@@ -256,7 +256,7 @@ export default function Profile() {
 
     return (
         <div className="min-h-screen bg-zinc-950 text-white pt-24 pb-32">
-            <SEO title="Paramètres Profil — L'Excellence Green Mood" description="Gérez vos informations personnelles et préférences de bien-être." />
+            <SEO title="Paramètres Profil — L'Excellence Shop-ia" description="Gérez vos informations personnelles et préférences alimentaires." />
 
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
@@ -467,7 +467,7 @@ export default function Profile() {
 
                     </motion.div>
 
-                    {/* Section 2: Préférences BudTender — Collapsible */}
+                    {/* Section 2: Préférences Shopia Assistant — Collapsible */}
                     <motion.div
                         initial={{ opacity: 0, y: 30 }}
                         animate={{ opacity: 1, y: 0 }}
@@ -476,14 +476,14 @@ export default function Profile() {
                         {/* Toggle button — always visible */}
                         <button
                             type="button"
-                            onClick={() => setShowBudTender(!showBudTender)}
-                            className={`w-full group relative overflow-hidden rounded-[3rem] border transition-all duration-500 ${showBudTender
+                            onClick={() => setShowAssistant(!showAssistant)}
+                            className={`w-full group relative overflow-hidden rounded-[3rem] border transition-all duration-500 ${showAssistant
                                 ? 'bg-white/[0.02] border-green-neon/20 p-8 md:p-12'
                                 : 'bg-gradient-to-br from-green-neon/[0.04] via-white/[0.02] to-emerald-500/[0.03] border-white/5 hover:border-green-neon/30 p-8 md:p-10'
                                 }`}
                         >
                             {/* Glow background */}
-                            <div className={`absolute inset-0 transition-opacity duration-700 ${showBudTender ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'
+                            <div className={`absolute inset-0 transition-opacity duration-700 ${showAssistant ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'
                                 }`}>
                                 <div className="absolute top-0 right-1/4 w-48 h-48 bg-green-neon/5 blur-[80px]" />
                                 <div className="absolute bottom-0 left-1/4 w-32 h-32 bg-emerald-400/5 blur-[60px]" />
@@ -491,33 +491,33 @@ export default function Profile() {
 
                             <div className="relative flex items-center justify-between">
                                 <div className="flex items-center gap-4">
-                                    <div className={`w-12 h-12 rounded-2xl flex items-center justify-center transition-all duration-500 ${showBudTender
+                                    <div className={`w-12 h-12 rounded-2xl flex items-center justify-center transition-all duration-500 ${showAssistant
                                         ? 'bg-green-neon/15 border border-green-neon/30 shadow-[0_0_20px_rgba(57,255,20,0.1)]'
                                         : 'bg-green-neon/10 border border-green-neon/20 group-hover:shadow-[0_0_25px_rgba(57,255,20,0.15)] group-hover:border-green-neon/40'
                                         }`}>
-                                        <SlidersHorizontal className={`w-5 h-5 text-green-neon transition-transform duration-500 ${showBudTender ? 'rotate-90' : 'group-hover:rotate-12'
+                                        <SlidersHorizontal className={`w-5 h-5 text-green-neon transition-transform duration-500 ${showAssistant ? 'rotate-90' : 'group-hover:rotate-12'
                                             }`} />
                                     </div>
                                     <div className="text-left">
                                         <h2 className="text-xl font-serif italic uppercase tracking-wider text-white flex items-center gap-3">
-                                            Préférences BudTender
-                                            <Sparkles className={`w-4 h-4 text-green-neon transition-all duration-300 ${showBudTender ? 'opacity-100' : 'opacity-50 group-hover:opacity-100'
+                                            Préférences Shopia Assistant
+                                            <Sparkles className={`w-4 h-4 text-green-neon transition-all duration-300 ${showAssistant ? 'opacity-100' : 'opacity-50 group-hover:opacity-100'
                                                 }`} />
                                         </h2>
                                         <p className="text-[10px] font-mono text-zinc-500 uppercase tracking-[0.2em] mt-1">
-                                            {showBudTender ? 'Cliquez pour réduire' : 'Personnalisez vos recommandations IA'}
+                                            {showAssistant ? 'Cliquez pour réduire' : 'Personnalisez vos recommandations IA'}
                                         </p>
                                     </div>
                                 </div>
                                 <div className="flex items-center gap-3">
-                                    {!showBudTender && (
+                                    {!showAssistant && (
                                         <span className="hidden md:inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-green-neon/60 group-hover:text-green-neon transition-colors">
                                             <BrainCircuit className="w-3.5 h-3.5" />
                                             Configurer
                                         </span>
                                     )}
                                     <motion.div
-                                        animate={{ rotate: showBudTender ? 180 : 0 }}
+                                        animate={{ rotate: showAssistant ? 180 : 0 }}
                                         transition={{ duration: 0.3, ease: 'easeInOut' }}
                                         className="w-8 h-8 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center group-hover:border-green-neon/30 transition-colors"
                                     >
@@ -529,7 +529,7 @@ export default function Profile() {
 
                         {/* Expandable content */}
                         <AnimatePresence>
-                            {showBudTender && (
+                            {showAssistant && (
                                 <motion.div
                                     initial={{ height: 0, opacity: 0 }}
                                     animate={{ height: 'auto', opacity: 1 }}
@@ -541,7 +541,7 @@ export default function Profile() {
                                         <div className="absolute bottom-0 left-0 w-32 h-32 bg-green-neon/5 blur-[50px] -z-10" />
 
                                         <p className="text-[10px] font-mono text-zinc-500 uppercase tracking-[0.2em] mb-8 leading-relaxed">
-                                            Ces informations permettent à notre IA BudTender de personnaliser vos recommandations et d'adapter son expertise à vos besoins réels.
+                                            Ces informations permettent à notre IA Shopia Assistant de personnaliser vos recommandations et d'adapter son expertise à vos besoins réels.
                                         </p>
 
                                         <div className="space-y-10">
@@ -560,8 +560,8 @@ export default function Profile() {
                                                         {step.id === 'budget' && <Coins className="w-3 h-3 text-green-neon" />}
                                                         {step.id === 'age' && <Cake className="w-3 h-3 text-green-neon" />}
                                                         {(step.id === 'intensity' || step.id === 'intensity_preference') && <Flame className="w-3 h-3 text-green-neon" />}
-                                                        {(step.id === 'terpenes' || step.id === 'terpene_preferences') && <Leaf className="w-3 h-3 text-green-neon" />}
-                                                        {!['goal', 'experience', 'format', 'budget', 'age', 'intensity', 'terpenes', 'intensity_preference', 'terpene_preferences'].includes(step.id) && <BrainCircuit className="w-3 h-3 text-green-neon" />}
+                                                        {(step.id === 'aromas' || step.id === 'aroma_preferences') && <Leaf className="w-3 h-3 text-green-neon" />}
+                                                        {!['goal', 'experience', 'format', 'budget', 'age', 'intensity', 'aromas', 'intensity_preference', 'aroma_preferences'].includes(step.id) && <BrainCircuit className="w-3 h-3 text-green-neon" />}
                                                         {step.question}
                                                     </label>
                                                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">

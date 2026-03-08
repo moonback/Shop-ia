@@ -82,11 +82,11 @@ export default function App() {
             {/* Catalogue en ligne */}
             <Route path="catalogue" element={<Catalog />} />
             <Route path="guides" element={<Guides />} />
-            <Route path="guides/guide-huile-cbd" element={<GuidePage slug="guide-huile-cbd" />} />
-            <Route path="guides/guide-dosage-cbd" element={<GuidePage slug="guide-dosage-cbd" />} />
-            <Route path="guides/guide-cbd-sommeil" element={<GuidePage slug="guide-cbd-sommeil" />} />
-            <Route path="guides/guide-cbd-anxiete" element={<GuidePage slug="guide-cbd-anxiete" />} />
-            <Route path="guides/guide-legalite-cbd-france" element={<GuidePage slug="guide-legalite-cbd-france" />} />
+            <Route path="guides/conservation-produits-frais" element={<GuidePage slug="guide-conservation-produits-frais" />} />
+            <Route path="guides/saisonnalite-fruits-legumes" element={<GuidePage slug="guide-saisonnalite-fruits-legumes" />} />
+            <Route path="guides/choisir-huile-olive" element={<GuidePage slug="guide-choisir-huile-olive" />} />
+            <Route path="guides/epicerie-fine" element={<GuidePage slug="guide-epicerie-fine" />} />
+            <Route path="guides/achat-local" element={<GuidePage slug="guide-achat-local" />} />
 
             <Route path="catalogue/:slug" element={<ProductDetail />} />
             <Route path="panier" element={<Cart />} />

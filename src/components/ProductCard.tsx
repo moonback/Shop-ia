@@ -44,13 +44,7 @@ export default function ProductCard({ product }: ProductCardProps) {
   };
 
 
-  const isBulkProduct = (
-    product.category?.slug?.includes('fleurs') ||
-    product.category?.slug?.includes('resines') ||
-    product.category?.slug === 'nouveautes' ||
-    product.category?.slug === CATEGORY_SLUGS.FLOWERS ||
-    product.category?.slug === CATEGORY_SLUGS.RESINS
-  );
+  const isBulkProduct = false; // Simplified for Shop-ia gourmet domain
 
   const isPerUnit = !isBulkProduct || product.is_bundle || (!!product.weight_grams && product.weight_grams > 1 && !product.name.toLowerCase().includes('pack'));
 
@@ -58,7 +52,7 @@ export default function ProductCard({ product }: ProductCardProps) {
 
   // Limit to 2 key tags for cleaner card
   const tags: { label: string; variant: 'spec' | 'benefit' | 'aroma' }[] = [];
-  if (product.cbd_percentage != null) tags.push({ label: `CBD ${product.cbd_percentage}%`, variant: 'spec' });
+  if (product.nutriscore != null) tags.push({ label: `Nutri-Score ${product.nutriscore}`, variant: 'spec' });
   if (product.weight_grams != null && tags.length < 2) tags.push({ label: `${product.weight_grams}g`, variant: 'spec' });
   for (const b of (product.attributes?.benefits || []).slice(0, 1)) {
     if (tags.length < 2) tags.push({ label: b, variant: 'benefit' });
@@ -119,7 +113,7 @@ export default function ProductCard({ product }: ProductCardProps) {
       {/* Image — aspect 4:5 */}
       <Link to={`/catalogue/${product.slug}`} className="relative block aspect-[4/5] overflow-hidden bg-zinc-950/20 group-hover:bg-zinc-950/0 transition-colors duration-500">
         <img
-          src={product.image_url ?? 'https://images.unsplash.com/photo-1617791160505-6f00504e3519?w=400'}
+          src={product.image_url ?? 'https://images.unsplash.com/photo-1540331547168-8b63100a446c?w=400'}
           alt={product.name}
           className="w-full h-full object-cover grayscale-[0.2] transition-all duration-700 group-hover:scale-110 group-hover:grayscale-0"
         />

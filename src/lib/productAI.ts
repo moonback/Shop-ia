@@ -6,8 +6,8 @@ const AI_MODEL = 'liquid/lfm-2-24b-a2b:latest';
 
 export interface GeneratedProductData {
     description?: string;
-    cbd_percentage?: number;
-    thc_max?: number;
+    nutriscore?: string;
+    weight_info?: string;
     attributes?: {
         benefits?: string[];
         aromas?: string[];
@@ -25,23 +25,22 @@ export async function generateProductInfo(productName: string, categoryName?: st
     }
 
     const prompt = `
-    Tu es un expert en CBD et cannabis légal. 
+    Tu es un expert en gastronomie et produits d'épicerie fine. 
     Génère des informations précises pour un produit nommé : "${productName}" ${categoryName ? `dans la catégorie "${categoryName}"` : ''}.
     
     Réponds EXCLUSIVEMENT au format JSON avec la structure suivante :
     {
-        "description": "Une description marketing attrayante de 2-3 phrases mettant en avant les caractéristiques du produit.",
-        "cbd_percentage": 15.5, (un nombre entre 0 et 30, ou null si inconnu)
-        "thc_max": 0.2, (un nombre entre 0 et 0.3)
+        "description": "Une description marketing attrayante de 2-3 phrases mettant en avant le goût, l'origine et la qualité du produit.",
+        "nutriscore": "A", (A, B, C, D ou E)
+        "weight_info": "500g", (Spécifie le poids ou le volume probable)
         "attributes": {
-            "benefits": ["Relaxation", "Anti-stress", "Sommeil"], (minimum 3 bénéfices)
-            "aromas": ["Citron", "Terreux", "Sucré"] (minimum 3 arômes/saveurs)
+            "benefits": ["Sain", "Bio", " Artisanal"], (minimum 3 caractéristiques)
+            "aromas": ["Savoureux", "Frais", "Naturel"] (minimum 3 notes gustatives)
         }
     }
     
     IMPORTANT : 
-    - Sois réaliste par rapport au nom du produit.
-    - Si c'est une fleur connue comme "Amnesia", utilise ses vraies propriétés.
+    - Sois réaliste par vrai rapport au nom du produit.
     - Langue : Français.
     `;
 
@@ -51,7 +50,7 @@ export async function generateProductInfo(productName: string, categoryName?: st
             headers: {
                 'Content-Type': 'application/json',
                 Authorization: `Bearer ${apiKey}`,
-                'X-Title': 'Green Mood Admin AI',
+                'X-Title': 'Shop-ia Admin AI',
                 'HTTP-Referer': window.location.origin,
             },
             body: JSON.stringify({
@@ -86,8 +85,8 @@ export async function autoFillProductSync(product: Product): Promise<boolean> {
 
     const updates: any = {};
     if (!product.description && generated.description) updates.description = generated.description;
-    if (!product.cbd_percentage && generated.cbd_percentage) updates.cbd_percentage = generated.cbd_percentage;
-    if (!product.thc_max && generated.thc_max) updates.thc_max = generated.thc_max;
+    if (!product.nutriscore && generated.nutriscore) updates.nutriscore = generated.nutriscore;
+    if (!product.weight_info && generated.weight_info) updates.weight_info = generated.weight_info;
 
     const currentAttrs = product.attributes || {};
     const hasBenefits = currentAttrs.benefits && currentAttrs.benefits.length > 0;

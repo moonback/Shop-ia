@@ -12,7 +12,7 @@ interface State {
 }
 
 /**
- * Composant de Error Boundary global pour Green Mood.
+ * Composant de Error Boundary global pour Shop-ia.
  * Capture les erreurs JavaScript dans les composants enfants et affiche un UI de repli.
  */
 class ErrorBoundary extends Component<Props, State> {
@@ -57,11 +57,11 @@ class ErrorBoundary extends Component<Props, State> {
                         </div>
 
                         <h2 className="text-3xl font-black text-white mb-6 tracking-tight">
-                            Oops ! Un grain de CBD s'est glissé dans la machine. 🌿🔧
+                            Oops ! Un grain de poivre s'est glissé dans la recette. 🧂🔧
                         </h2>
 
                         <p className="text-zinc-400 mb-10 leading-relaxed max-w-md mx-auto">
-                            Une erreur inattendue est survenue dans l'application. Nos ingénieurs Green Mood ont été notifiés (enfin, ils bossent déjà dessus !).
+                            Une erreur inattendue est survenue dans l'application. Nos ingénieurs Shop-ia ont été notifiés (enfin, ils bossent déjà dessus !).
                         </p>
 
                         {/* Error Message Tooltip-style (optionnel, affiché seulement en dev ou pour les admins) */}
@@ -94,8 +94,8 @@ class ErrorBoundary extends Component<Props, State> {
                         </div>
 
                         <div className="mt-12 flex items-center justify-center gap-2 opacity-30 grayscale hover:grayscale-0 transition-all cursor-default group">
-                            <img src="/logo.jpeg" alt="Green Mood" className="w-6 h-6 rounded-lg group-hover:rotate-12 transition-transform duration-500" />
-                            <span className="text-[10px] font-black uppercase tracking-widest text-white">Green Mood System</span>
+                            <img src="/logo.jpeg" alt="Shop-ia" className="w-6 h-6 rounded-lg group-hover:rotate-12 transition-transform duration-500" />
+                            <span className="text-[10px] font-black uppercase tracking-widest text-white">Shop-ia System</span>
                         </div>
                     </motion.div>
                 </div>

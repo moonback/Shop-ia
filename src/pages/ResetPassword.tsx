@@ -68,8 +68,8 @@ export default function ResetPassword() {
   return (
     <>
       <SEO
-        title="Nouveau mot de passe — Green Mood CBD"
-        description="Définissez un nouveau mot de passe pour votre compte Green Mood CBD."
+        title="Nouveau mot de passe — Shop-ia Gourmet"
+        description="Définissez un nouveau mot de passe pour votre compte Shop-ia Gourmet."
       />
 
       <div className="min-h-[calc(100vh-10rem)] bg-zinc-950 flex items-center justify-center px-4 py-16">

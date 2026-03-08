@@ -98,18 +98,18 @@ export default function AdminProductPreviewModal({
                                     </div>
                                 </div>
 
-                                {(product.cbd_percentage != null || product.thc_max != null) && (
+                                {(product.nutriscore != null || product.weight_info != null) && (
                                     <div className="flex items-center gap-4">
-                                        {product.cbd_percentage != null && (
+                                        {product.nutriscore != null && (
                                             <div className="bg-zinc-800 rounded-lg px-3 py-2 flex-1">
-                                                <span className="text-[10px] text-zinc-500 uppercase block font-bold">CBD</span>
-                                                <span className="text-white font-medium">{product.cbd_percentage}%</span>
+                                                <span className="text-[10px] text-zinc-500 uppercase block font-bold">Nutri-Score</span>
+                                                <span className="text-amber-400 font-bold">{product.nutriscore}</span>
                                             </div>
                                         )}
-                                        {product.thc_max != null && (
+                                        {product.weight_info != null && (
                                             <div className="bg-zinc-800 rounded-lg px-3 py-2 flex-1">
-                                                <span className="text-[10px] text-zinc-500 uppercase block font-bold">THC Max</span>
-                                                <span className="text-white font-medium">&lt; {product.thc_max}%</span>
+                                                <span className="text-[10px] text-zinc-500 uppercase block font-bold">Poids</span>
+                                                <span className="text-white font-medium">{product.weight_info}</span>
                                             </div>
                                         )}
                                     </div>

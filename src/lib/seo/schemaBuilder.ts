@@ -10,9 +10,9 @@ export function organizationSchema(): JsonLd {
     name: SEO_SITE.name,
     url: SEO_SITE.url,
     logo: withSiteUrl('/logo.png'),
-    sameAs: ['https://www.instagram.com/greenmoodcbd', 'https://www.facebook.com/greenmoodcbd'],
-    contactPoint: [{ '@type': 'ContactPoint', contactType: 'customer support', email: 'support@greenmood.fr', availableLanguage: ['fr', 'en'] }],
-    knowsAbout: ['CBD', 'Cannabidiol', 'Sleep', 'Anxiety', 'Pain relief', 'Relaxation'],
+    sameAs: ['https://www.instagram.com/shopia', 'https://www.facebook.com/shopia'],
+    contactPoint: [{ '@type': 'ContactPoint', contactType: 'customer support', email: 'support@shop-ia.fr', availableLanguage: ['fr', 'en'] }],
+    knowsAbout: ['Épicerie', 'Alimentation', 'Produits Frais', 'Qualité', 'Service Client'],
   };
 }
 
@@ -44,7 +44,7 @@ export function localBusinessSchema(): JsonLd {
       addressCountry: 'FR',
       addressLocality: 'Paris',
       postalCode: '75001',
-      streetAddress: 'Rue du Bien-Être',
+      streetAddress: 'Rue de la Fraîcheur',
     },
     geo: {
       '@type': 'GeoCoordinates',
@@ -92,7 +92,7 @@ export function articleSchema(data: { title: string; description: string; path: 
     description: data.description,
     datePublished: data.datePublished,
     dateModified: data.dateModified ?? data.datePublished,
-    author: { '@type': 'Person', name: data.authorName ?? 'Équipe Green Mood CBD' },
+    author: { '@type': 'Person', name: data.authorName ?? 'Équipe Shop-ia' },
     publisher: { '@type': 'Organization', name: SEO_SITE.name, logo: { '@type': 'ImageObject', url: withSiteUrl('/logo.png') } },
     mainEntityOfPage: withSiteUrl(data.path),
   };
@@ -117,7 +117,7 @@ export function productSchema(product: Product): JsonLd {
     image: product.image_url,
     sku: product.sku,
     gtin: product.sku ?? product.id,
-    brand: { '@type': 'Brand', name: 'Green Mood CBD' },
+    brand: { '@type': 'Brand', name: 'Shop-ia' },
     aggregateRating: {
       '@type': 'AggregateRating',
       ratingValue: product.avg_rating ?? 4.9,
@@ -128,7 +128,7 @@ export function productSchema(product: Product): JsonLd {
         '@type': 'Review',
         author: { '@type': 'Person', name: 'Client vérifié' },
         reviewRating: { '@type': 'Rating', ratingValue: product.avg_rating ?? 5 },
-        reviewBody: 'Produit premium avec excellente traçabilité.',
+        reviewBody: 'Produit de qualité avec excellente traçabilité.',
       },
     ],
     offers: {
@@ -150,8 +150,8 @@ export function productSchema(product: Product): JsonLd {
       },
     },
     additionalProperty: [
-      { '@type': 'PropertyValue', name: 'Lab tested', value: 'Oui' },
-      { '@type': 'PropertyValue', name: 'Certification', value: 'THC < 0.3%' },
+      { '@type': 'PropertyValue', name: 'Fraîcheur', value: 'Garantie' },
+      { '@type': 'PropertyValue', name: 'Origine', value: 'France' },
     ],
   };
 }

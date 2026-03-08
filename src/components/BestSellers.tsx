@@ -63,10 +63,10 @@ export default function BestSellers() {
                             viewport={{ once: true }}
                             className="text-4xl md:text-6xl font-serif font-bold text-white leading-tight"
                         >
-                            Nos meilleures <span className="text-green-neon italic">ventes CBN</span>
+                            Nos meilleures <span className="text-green-neon italic">ventes Gourmet</span>
                         </motion.h2>
                         <p className="text-zinc-400 text-lg md:text-xl font-light max-w-2xl leading-relaxed">
-                            Découvrez les produits les plus appréciés par notre communauté. Sélectionnés pour leur efficacité, pureté et qualité premium, ces produits sont parfaits pour profiter pleinement des bienfaits du CBN.
+                            Découvrez les produits les plus appréciés par notre communauté. Sélectionnés pour leur goût, authenticité et qualité premium, ces produits sont parfaits pour profiter pleinement des plaisirs de la table.
                         </p>
                     </div>
 

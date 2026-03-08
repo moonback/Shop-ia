@@ -66,7 +66,7 @@ export default function Favorites() {
 
     return (
         <div className="min-h-screen bg-zinc-950 text-white pt-24 pb-32">
-            <SEO title="Mes Favoris — L'Excellence Green Mood" description="Retrouvez vos sélections préférées." />
+            <SEO title="Mes Favoris — L'Excellence Shop-ia" description="Retrouvez vos sélections préférées." />
 
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 {/* Header */}

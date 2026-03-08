@@ -1,6 +1,6 @@
 import { motion } from "motion/react";
 import {
-  Leaf,
+  Utensils,
   Droplet,
   Coffee,
   Info,
@@ -9,8 +9,8 @@ import {
   ShieldCheck,
   Sparkles,
   Zap,
-  Moon,
-  Wind
+  Egg,
+  Cookie
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import SEO from "../components/SEO";
@@ -25,8 +25,8 @@ export default function Products() {
         "position": 1,
         "item": {
           "@type": "Product",
-          "name": "Huiles CBN Full Spectrum",
-          "description": "Huiles de CBN premium testées en laboratoire, pour une relaxation profonde et un meilleur sommeil."
+          "name": "Épicerie Salée Fine",
+          "description": "Une sélection d'huiles d'olive extra vierge, épices rares et bases culinaires pour vos plats."
         }
       },
       {
@@ -34,8 +34,8 @@ export default function Products() {
         "position": 2,
         "item": {
           "@type": "Product",
-          "name": "Fleurs CBN Premium",
-          "description": "Fleurs naturelles riches en CBN aux arômes authentiques et préservés."
+          "name": "Épicerie Sucrée Artisanale",
+          "description": "Biscuits, miels et chocolats fins issus des meilleurs terroirs de France."
         }
       },
       {
@@ -43,8 +43,8 @@ export default function Products() {
         "position": 3,
         "item": {
           "@type": "Product",
-          "name": "Résines CBN",
-          "description": "Résines de chanvre hautement concentrées en CBN pour une détente intense."
+          "name": "Produits Frais de Saison",
+          "description": "Légumes, fromages et crémerie livrés en direct des producteurs locaux."
         }
       }
     ]
@@ -52,55 +52,55 @@ export default function Products() {
 
   const categories = [
     {
-      id: "huiles",
-      title: "Huiles CBN Full Spectrum",
-      subtitle: "Absorption & Précision",
-      icon: <Droplet className="h-6 w-6 text-green-neon" />,
-      description: "Nos huiles CBN premium sont extraites au CO2 supercritique pour préserver l'ensemble des cannabinoïdes et terpènes naturels. Idéales pour une routine du soir apaisante et un dosage précis sous la langue.",
-      image: "/images/cbd-oil.png",
-      tag: "Sommeil & Relaxation",
+      id: "epicerie-salee",
+      title: "Épicerie Salée Fine",
+      subtitle: "Saveurs & Terroirs",
+      icon: <Utensils className="h-6 w-6 text-green-neon" />,
+      description: "Notre sélection culinaire est sourcée auprès d'artisans passionnés. Des huiles d'olive de Provence aux épices lointaines, chaque produit est choisi pour son excellence gustative et sa traçabilité exemplaire.",
+      image: "https://images.unsplash.com/photo-1542838132-92c53300491e?w=800",
+      tag: "Cuisine & Gastronomie",
       features: [
-        { icon: <Droplet className="w-4 h-4" />, text: "Action Rapide" },
-        { icon: <ShieldCheck className="w-4 h-4" />, text: "Full Spectrum" },
+        { icon: <Droplet className="w-4 h-4" />, text: "Extra Vierge" },
+        { icon: <ShieldCheck className="w-4 h-4" />, text: "AOP / IGP" },
       ],
-      items: ["Huile CBN 5%", "Huile CBN 10%", "Huile CBN 20%", "Huile Sommeil Profond"],
+      items: ["Huile d'Olive Bio", "Pâtes Artisanales", "Sels & Poivres Rares", "Sauces Maison"],
     },
     {
-      id: "fleurs",
-      title: "Fleurs CBN Premium",
-      subtitle: "Nature & Authenticité",
-      icon: <Leaf className="h-6 w-6 text-green-neon" />,
-      description: "Découvrez nos fleurs naturelles enrichies ou naturellement riches en CBN. Cultivées avec soin en Europe, elles offrent des arômes authentiques et une expérience de détente par excellence.",
-      image: "/images/products-flower.png",
-      tag: "Arômes Authentiques",
+      id: "epicerie-sucree",
+      title: "Douceurs Artisanales",
+      subtitle: "Gourmandise & Tradition",
+      icon: <Cookie className="h-6 w-6 text-green-neon" />,
+      description: "Succombez à notre gamme sucrée : miels de montagne, chocolats grands crus et biscuits pur beurre. Une célébration du savoir-faire pâtissier français pour vos moments de douceur.",
+      image: "https://images.unsplash.com/photo-1481391319762-47dff72954d9?w=800",
+      tag: "Plaisirs Sucrés",
       features: [
-        { icon: <Leaf className="w-4 h-4" />, text: "100% Naturel" },
-        { icon: <Wind className="w-4 h-4" />, text: "Terpènes Préservés" },
+        { icon: <Cookie className="w-4 h-4" />, text: "Beau & Bon" },
+        { icon: <Sparkles className="w-4 h-4" />, text: "Artisanal" },
       ],
-      items: ["Amnesia CBN", "White Widow CBN", "Purple Haze CBN", "OG Kush CBN"],
+      items: ["Chocolat Noir 70%", "Miel de Lavande", "Biscuits de Provence", "Confiseries Fins"],
     },
     {
-      id: "resines",
-      title: "Résines CBN Concentrées",
-      subtitle: "Intensité & Tradition",
-      icon: <Sparkles className="h-6 w-6 text-green-neon" />,
-      description: "Pour les amateurs de textures authentiques et d'effets plus marqués. Nos résines CBN sont confectionnées selon des méthodes traditionnelles, garantissant une concentration optimale.",
-      image: "/images/products-resin.png",
-      tag: "Concentration Maximale",
+      id: "produits-frais",
+      title: "Produits Frais & Fermiers",
+      subtitle: "Fraîcheur & Proximité",
+      icon: <Egg className="h-6 w-6 text-green-neon" />,
+      description: "Directement issus des fermes partenaires, nos produits frais garantissent une qualité nutritionnelle et un goût incomparable. Fromages affinés, œufs bio et fruits de saison sélectionnés pour vous.",
+      image: "https://images.unsplash.com/photo-1546487813-f931b2691761?w=800",
+      tag: "Direct Producteur",
       features: [
-        { icon: <Sparkles className="w-4 h-4" />, text: "Haute Concentration" },
-        { icon: <Moon className="w-4 h-4" />, text: "Détente Intense" },
+        { icon: <Egg className="w-4 h-4" />, text: "100% Frais" },
+        { icon: <Zap className="w-4 h-4" />, text: "Circuit Court" },
       ],
-      items: ["Afghan CBN", "Olive CBN", "Hash Filtré CBN", "Jaune CBN"],
+      items: ["Fromage de Chèvre", "Yaourts Bio", "Beurre de Baratte", "Corbeille du Maraîcher"],
     },
   ];
 
   return (
     <div className="min-h-screen bg-zinc-950 text-white overflow-hidden pb-32">
       <SEO
-        title="Nos Produits CBN Premium : Huiles, Fleurs & Résines — Green Mood"
-        description="Découvrez nos gammes de produits infusés au CBN. Fleurs, huiles et résines de haute qualité pour la relaxation, la détente musculaire et le sommeil."
-        keywords="CBN, produits CBN, Huile CBN, Fleurs CBN, Résine CBN, achat CBN, CBD sommeil"
+        title="Nos Produits Frais & Épicerie Fine — Shop-ia"
+        description="Découvrez nos gammes de produits alimentaires d'exception. Frais, épicerie fine et spécialités locales pour une cuisine saine et gourmande."
+        keywords="épicerie fine, produits frais, bio, gastronomie Paris, alimentation saine"
         schema={productsSchema}
       />
 
@@ -109,12 +109,10 @@ export default function Products() {
         {/* Cinematic Background */}
         <div className="absolute inset-0 z-0">
           <img
-            src="/images/presentation-cbd2.png"
-            className="w-full h-full object-cover opacity-100 filter blur-[1px]"
-            alt="N10 Mood"
+            src="https://images.unsplash.com/photo-1542838132-92c53300491e?w=1600"
+            className="w-full h-full object-cover opacity-30 filter blur-[2px]"
+            alt="Gastronomie Shop-ia"
           />
-          {/* <div className="absolute inset-0 bg-gradient-to-b from-zinc-950/20 via-zinc-950/60 to-zinc-950" />
-          <div className="absolute inset-0 bg-gradient-to-r from-zinc-950/40 via-transparent to-zinc-950/40" /> */}
 
           {/* Animated Glows */}
           <motion.div
@@ -135,7 +133,7 @@ export default function Products() {
             transition={{ duration: 1.5 }}
             className="text-green-neon font-black uppercase text-xs mb-8"
           >
-            L'EXCELLENCE NATURELLE DU CHANVRE.
+            L'EXCELLENCE CULINAIRE À VOTRE PORTE.
           </motion.div>
 
           <motion.h1
@@ -145,7 +143,7 @@ export default function Products() {
             className="text-5xl md:text-7xl lg:text-8xl font-serif font-black tracking-tighter leading-[0.85] uppercase"
           >
             L'APOGÉE <br />
-            <span className="text-green-neon italic glow-green-strong">DU CBN.</span>
+            <span className="text-green-neon italic glow-green-strong">DES SAVEURS.</span>
           </motion.h1>
 
           <motion.div
@@ -155,10 +153,10 @@ export default function Products() {
             className="max-w-4xl mx-auto"
           >
             <p className="text-2xl md:text-4xl text-white font-serif italic font-light leading-relaxed mb-6">
-              Découvrez notre collection exclusive dédiée au Cannabinol (CBN).
+              Découvrez notre collection exclusive d'épicerie fine et produits frais.
             </p>
             <p className="text-lg md:text-xl text-zinc-400 font-sans font-light uppercase tracking-widest leading-relaxed">
-              Des produits premium conçus pour la relaxation et le bien-être nocturne.
+              Une sélection rigoureuse pour une cuisine saine, éthique et résolument gourmande.
             </p>
           </motion.div>
 
@@ -284,10 +282,10 @@ export default function Products() {
       <section className="mt-40 py-20 bg-zinc-900/30 border-y border-white/5">
         <div className="max-w-7xl mx-auto px-4 flex flex-wrap justify-around gap-12 text-center">
           {[
-            { icon: <ShieldCheck className="w-8 h-8 text-green-neon mx-auto mb-4" />, title: "Légalité", text: "Taux THC < 0.3%" },
-            { icon: <Leaf className="h-8 w-8 text-green-neon mx-auto mb-4" />, title: "Naturel", text: "Culture organique" },
-            { icon: <Droplet className="h-8 w-8 text-green-neon mx-auto mb-4" />, title: "Pureté", text: "Sans additifs" },
-            { icon: <Info className="h-8 w-8 text-green-neon mx-auto mb-4" />, title: "Conseil", text: "Expertise locale" },
+            { icon: <ShieldCheck className="w-8 h-8 text-green-neon mx-auto mb-4" />, title: "Qualité", text: "Sélection rigoureuse" },
+            { icon: <Utensils className="h-8 w-8 text-green-neon mx-auto mb-4" />, title: "Naturel", text: "Agriculture Bio/Durable" },
+            { icon: <Zap className="h-8 w-8 text-green-neon mx-auto mb-4" />, title: "Traçabilité", text: "Direct Producteur" },
+            { icon: <Info className="h-8 w-8 text-green-neon mx-auto mb-4" />, title: "Conseil", text: "Assistant Culinaire IA" },
           ].map((item, i) => (
             <div key={i} className="space-y-1">
               {item.icon}
@@ -314,12 +312,12 @@ export default function Products() {
             <ShoppingBag className="w-16 h-16 text-green-neon mx-auto animate-bounce-slow" />
             <div className="space-y-4">
               <h2 className="text-5xl md:text-7xl font-serif font-black text-white italic">
-                L'expérience <br /> Green Mood <span className="text-green-neon not-italic font-sans">Online.</span>
+                L'expérience <br /> Shop-ia <span className="text-green-neon not-italic font-sans">Online.</span>
               </h2>
               <p className="text-xl text-zinc-400 font-light max-w-2xl mx-auto leading-relaxed">
                 Profitez du Click & Collect rapide à Paris ou de la livraison
-                discrète partout en France. Tous nos produits sont expédiés
-                dans des emballages neutres et hermétiques.
+                fraîcheur partout en France. Tous nos produits sont expédiés
+                dans des emballages isothermes et protecteurs.
               </p>
             </div>
 

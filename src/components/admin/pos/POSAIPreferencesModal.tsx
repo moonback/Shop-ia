@@ -14,36 +14,36 @@ interface POSAIPreferencesModalProps {
 
 const PREF_LABELS: Record<string, string> = {
     // Goals
-    'sleep': 'Sommeil & Relaxation',
-    'stress': 'Stress & Anxiété',
-    'pain': 'Douleurs & Récupération',
-    'wellness': 'Bien-être général',
+    'bio': 'Produits Bio & Naturels',
+    'local': 'Circuit Court & Local',
+    'gourmet': 'Épicerie Fine & Gastronomie',
+    'health': 'Santé & Nutrition',
     // Experience
-    'beginner': 'Débutant',
-    'intermediate': 'Intermédiaire',
-    'expert': 'Expert',
+    'novice': 'Débutant en cuisine',
+    'amateur': 'Amateur éclairé',
+    'chef': 'Passionné / Chef',
     // Intensity
-    'low': 'Légère',
-    'mid': 'Modérée',
-    'high': 'Puissante',
+    'fresh': 'Très Frais',
+    'matured': 'Affiné / Équilibré',
+    'intense': 'Saveurs Intenses',
     // Budget
     'budget_low': 'Moins de 20 €',
     'budget_mid': '20 € – 50 €',
     'budget_high': 'Plus de 50 €',
     // Format
-    'oil': 'Huile sublinguale',
-    'flower': 'Fleur ou résine',
-    'infusion': 'Infusion',
-    'bundle': 'Pack découverte',
+    'oil': 'Huiles & Condiments',
+    'fresh_produce': 'Fruits & Légumes',
+    'box': 'Panier Garni',
+    'grocery': 'Épicerie Sèche',
     // Age
     'adult': '18 – 65 ans',
     'senior': 'Plus de 65 ans',
-    // Terpenes
-    'limonene': 'Citronné',
-    'myrcene': 'Terreux',
-    'linalool': 'Floral',
-    'pinene': 'Boisé',
-    'caryophyllene': 'Poivré',
+    // Flavors/Attributes
+    'sweet': 'Sucré',
+    'salty': 'Salé',
+    'spicy': 'Épicé',
+    'fruity': 'Fruité',
+    'herbal': 'Herbacé',
 };
 
 const t = (value: string | null | undefined, context?: string) => {
@@ -177,7 +177,7 @@ export default function POSAIPreferencesModal({
                         <div className={`mt-6 sm:mt-8 p-4 sm:p-6 rounded-2xl sm:rounded-[2rem] border transition-all ${isLightTheme ? 'bg-white border-emerald-100 shadow-sm shadow-emerald-100/50' : 'bg-zinc-950/50 border-zinc-800/50'}`}>
                             <div className="flex items-center gap-3 mb-3 sm:mb-4">
                                 <Sparkles className={`w-4 h-4 ${isLightTheme ? 'text-emerald-500' : 'text-green-400'}`} />
-                                <span className={`text-[10px] sm:text-[11px] font-black uppercase tracking-[0.2em] ${isLightTheme ? 'text-emerald-950' : 'text-zinc-400'}`}>Terpènes Préférés</span>
+                                <span className={`text-[10px] sm:text-[11px] font-black uppercase tracking-[0.2em] ${isLightTheme ? 'text-emerald-950' : 'text-zinc-400'}`}>Arômes Préférés</span>
                             </div>
                             <div className="flex flex-wrap gap-2">
                                 {preferences.terpene_preferences?.map((terpene) => (
@@ -194,7 +194,7 @@ export default function POSAIPreferencesModal({
 
                     <div className="mt-6 sm:mt-8 flex items-center justify-between px-2 opacity-50">
                         <p className={`text-[8px] sm:text-[9px] font-black uppercase tracking-[0.2em] ${isLightTheme ? 'text-emerald-200' : 'text-zinc-600'}`}>
-                            BudTender AI Analysis v2.0
+                            Assistant Shop-ia Analysis v2.0
                         </p>
                         <p className={`text-[8px] sm:text-[9px] font-black uppercase tracking-[0.2em] ${isLightTheme ? 'text-emerald-200' : 'text-zinc-600'}`}>
                             {preferences.updated_at ? new Date(preferences.updated_at).toLocaleDateString('fr-FR', { day: '2-digit', month: 'long', year: 'numeric' }) : ''}

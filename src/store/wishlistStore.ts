@@ -26,6 +26,6 @@ export const useWishlistStore = create<WishlistStore>()(
 
       clearAll: () => set({ items: [] }),
     }),
-    { name: 'greenMood-wishlist' }
+    { name: 'shopia-wishlist' }
   )
 );

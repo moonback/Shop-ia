@@ -1,4 +1,4 @@
-import { getCachedEmbedding, setCachedEmbedding } from './budtenderCache';
+import { getCachedEmbedding, setCachedEmbedding } from './shopiaAssistantCache';
 
 const OPENROUTER_EMBED_URL = 'https://openrouter.ai/api/v1/embeddings';
 const OPENROUTER_EMBED_MODEL = import.meta.env.VITE_OPENROUTER_EMBED_MODEL ?? 'openai/text-embedding-3-large';
@@ -29,7 +29,7 @@ export async function generateEmbedding(text: string): Promise<number[]> {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${apiKey}`,
             'HTTP-Referer': typeof window !== 'undefined' ? window.location.origin : 'http://localhost:3000',
-            'X-Title': 'Green Mood Vector Sync',
+            'X-Title': 'Shop-ia Vector Sync',
         },
         body: JSON.stringify({
             model: OPENROUTER_EMBED_MODEL,

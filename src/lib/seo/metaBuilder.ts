@@ -1,13 +1,13 @@
 import { Product } from '../types';
 
 export const SEO_SITE = {
-  name: 'Green Mood CBD',
-  url: 'https://greenmood.fr',
+  name: 'Shop-ia',
+  url: 'https://shop-ia.fr',
   locale: 'fr_FR',
   language: 'fr',
-  defaultImage: 'https://greenmood.fr/logo.png',
-  twitterHandle: '@greenmoodcbd',
-  author: 'Green Mood CBD',
+  defaultImage: 'https://shop-ia.fr/logo.png',
+  twitterHandle: '@shopia',
+  author: 'Shop-ia',
   geo: {
     region: 'FR-IDF',
     placename: 'Paris, France',
@@ -63,7 +63,7 @@ export function buildSEO(data: Partial<SEOData> & Pick<SEOData, 'title' | 'descr
     topic: data.topic,
     semanticKeywords: Array.isArray(data.semanticKeywords) ? data.semanticKeywords : data.semanticKeywords ? [data.semanticKeywords] : undefined,
     aiSummary: data.aiSummary ?? data.description,
-    aiEntity: data.aiEntity ?? 'CBD, Cannabidiol, Green Mood CBD',
+    aiEntity: data.aiEntity ?? 'Épicerie',
     og: {
       title: data.og?.title ?? data.title,
       description: data.og?.description ?? data.description,
@@ -81,28 +81,28 @@ export function buildSEO(data: Partial<SEOData> & Pick<SEOData, 'title' | 'descr
 }
 
 export function buildProductSEO(product: Product): SEOData {
-  const baseTitle = `${product.name} | Green Mood CBD`;
-  const description = product.description ?? `Découvrez ${product.name}, un produit CBD premium disponible sur Green Mood.`;
+  const baseTitle = `${product.name} | Shop-ia`;
+  const description = product.description ?? `Découvrez ${product.name}, un produit de qualité disponible sur Shop-ia.`;
 
   return buildSEO({
     title: baseTitle,
     description,
     canonical: `/catalogue/${product.slug}`,
     keywords: [
-      'cbd',
+      'épicerie',
       product.name,
-      product.category?.name ?? 'produit cbd',
-      'cbd france',
-      'green mood cbd',
+      product.category?.name ?? 'alimentation',
+      'course en ligne',
+      'shop-ia',
     ],
-    topic: `Produit CBD: ${product.name}`,
+    topic: `Produit: ${product.name}`,
     semanticKeywords: [
-      'cannabidiol premium',
-      'produits cbd testés en laboratoire',
-      'bien-être naturel',
-      'dosage cbd',
+      'alimentation saine',
+      'produits frais',
+      'épicerie fine',
+      'qualité premium',
     ],
-    aiEntity: `Product:${product.name};Brand:Green Mood CBD;Category:${product.category?.name ?? 'CBD'}`,
+    aiEntity: `Product:${product.name};Brand:Shop-ia;Category:${product.category?.name ?? 'Alimentation'}`,
     og: {
       title: baseTitle,
       description,

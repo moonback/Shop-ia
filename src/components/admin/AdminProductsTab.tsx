@@ -41,8 +41,8 @@ const EMPTY_PRODUCT = {
     name: '',
     sku: null as string | null,
     description: null as string | null,
-    cbd_percentage: null as number | null,
-    thc_max: 0.2 as number | null,
+    nutriscore: null as string | null,
+    weight_info: null as string | null,
     weight_grams: null as number | null,
     price: 0,
     original_value: null as number | null,
@@ -101,8 +101,8 @@ export default function AdminProductsTab({ products, categories, onRefresh }: Ad
                 name: product.name,
                 sku: product.sku ?? null,
                 description: product.description,
-                cbd_percentage: product.cbd_percentage,
-                thc_max: product.thc_max,
+                nutriscore: product.nutriscore,
+                weight_info: product.weight_info,
                 weight_grams: product.weight_grams,
                 price: product.price,
                 original_value: product.original_value ?? null,
@@ -169,7 +169,7 @@ export default function AdminProductsTab({ products, categories, onRefresh }: Ad
             const textToEmbed = [
                 payload.name,
                 payload.description ?? '',
-                payload.cbd_percentage ? `CBD ${payload.cbd_percentage}%` : '',
+                payload.nutriscore ? `Nutri-Score ${payload.nutriscore}` : '',
                 ...(Array.isArray(payload.attributes?.benefits) ? payload.attributes.benefits : []),
             ].filter(Boolean).join(' ').trim();
 
@@ -230,8 +230,8 @@ export default function AdminProductsTab({ products, categories, onRefresh }: Ad
                 setProductForm(prev => ({
                     ...prev,
                     description: prev.description || data.description || null,
-                    cbd_percentage: prev.cbd_percentage ?? data.cbd_percentage ?? null,
-                    thc_max: prev.thc_max ?? data.thc_max ?? 0.2,
+                    nutriscore: prev.nutriscore ?? data.nutriscore ?? null,
+                    weight_info: prev.weight_info ?? data.weight_info ?? null,
                     attributes: {
                         benefits: (prev.attributes?.benefits?.length ?? 0) > 0 ? prev.attributes.benefits : data.attributes?.benefits || [],
                         aromas: (prev.attributes?.aromas?.length ?? 0) > 0 ? prev.attributes.aromas : data.attributes?.aromas || [],
@@ -251,8 +251,8 @@ export default function AdminProductsTab({ products, categories, onRefresh }: Ad
 
             const updates: any = {};
             if (!product.description && data.description) updates.description = data.description;
-            if (product.cbd_percentage == null && data.cbd_percentage != null) updates.cbd_percentage = data.cbd_percentage;
-            if (product.thc_max == null && data.thc_max != null) updates.thc_max = data.thc_max;
+            if (product.nutriscore == null && data.nutriscore != null) updates.nutriscore = data.nutriscore;
+            if (product.weight_info == null && data.weight_info != null) updates.weight_info = data.weight_info;
 
             const currentAttrs = product.attributes || {};
             const hasBenefits = currentAttrs.benefits && currentAttrs.benefits.length > 0;
@@ -283,7 +283,7 @@ export default function AdminProductsTab({ products, categories, onRefresh }: Ad
 
     const isAIComplete = (product: Product) => {
         return !!product.description &&
-            !!product.cbd_percentage &&
+            !!product.nutriscore &&
             (product.attributes?.benefits?.length ?? 0) > 0 &&
             (product.attributes?.aromas?.length ?? 0) > 0 &&
             hasEmbedding(product.embedding);
@@ -297,7 +297,7 @@ export default function AdminProductsTab({ products, categories, onRefresh }: Ad
         return [
             product.name,
             product.description ?? '',
-            product.cbd_percentage ? `CBD ${product.cbd_percentage}%` : '',
+            product.nutriscore ? `Nutri-Score ${product.nutriscore}` : '',
             benefits,
         ]
             .filter(Boolean)
@@ -360,7 +360,7 @@ export default function AdminProductsTab({ products, categories, onRefresh }: Ad
 
     const productsNeedingEnrichment = products.filter(p =>
         !p.description ||
-        !p.cbd_percentage ||
+        !p.nutriscore ||
         (p.attributes?.benefits?.length ?? 0) === 0 ||
         (p.attributes?.aromas?.length ?? 0) === 0
     );
@@ -552,7 +552,7 @@ export default function AdminProductsTab({ products, categories, onRefresh }: Ad
                                     <th className="px-5 py-4 font-bold">Produit</th>
                                     <th className="px-5 py-4 font-bold">Catégorie</th>
                                     <th className="px-5 py-4 font-bold">Prix</th>
-                                    <th className="px-5 py-4 font-bold">CBD</th>
+                                    <th className="px-5 py-4 font-bold">NutriScore</th>
                                     <th className="px-5 py-4 font-bold">Stock</th>
                                     <th className="px-5 py-4 font-bold">Statut</th>
                                     <th className="px-5 py-4 text-center font-bold" title="Statut IA">IA</th>
@@ -594,8 +594,8 @@ export default function AdminProductsTab({ products, categories, onRefresh }: Ad
                                             {product.price.toFixed(2)} €
                                         </td>
                                         <td className="px-5 py-4 text-sm font-medium text-zinc-400">
-                                            {product.cbd_percentage != null ? (
-                                                <span className="text-green-neon/80">{product.cbd_percentage}%</span>
+                                            {product.nutriscore != null ? (
+                                                <span className="text-amber-400 font-bold">{product.nutriscore}</span>
                                             ) : '—'}
                                         </td>
                                         <td className="px-5 py-4">
@@ -779,8 +779,8 @@ export default function AdminProductsTab({ products, categories, onRefresh }: Ad
                                         </span>
                                     </div>
                                     <div className="flex flex-col items-end">
-                                        <span className="text-zinc-500 text-[10px] uppercase font-bold tracking-tighter">CBD</span>
-                                        <span className="font-bold text-green-neon/80">{product.cbd_percentage ?? 0}%</span>
+                                        <span className="text-zinc-500 text-[10px] uppercase font-bold tracking-tighter">Nutri-Score</span>
+                                        <span className="font-bold text-amber-400">{product.nutriscore ?? 'N/A'}</span>
                                     </div>
                                 </div>
 
@@ -1029,32 +1029,27 @@ export default function AdminProductsTab({ products, categories, onRefresh }: Ad
                                     </div>
 
                                     <div>
-                                        <label className={LABEL}>CBD (%)</label>
+                                        <label className={LABEL}>Nutri-Score (A-E)</label>
                                         <input
-                                            type="number"
-                                            step="0.1"
-                                            min="0"
-                                            max="100"
-                                            value={productForm.cbd_percentage ?? ''}
+                                            maxLength={1}
+                                            value={productForm.nutriscore ?? ''}
                                             onChange={(e) =>
-                                                setProductForm({ ...productForm, cbd_percentage: e.target.value ? parseFloat(e.target.value) : null })
+                                                setProductForm({ ...productForm, nutriscore: e.target.value.toUpperCase() || null })
                                             }
                                             className={INPUT}
+                                            placeholder="A, B, C, D ou E"
                                         />
                                     </div>
 
                                     <div>
-                                        <label className={LABEL}>THC max (%)</label>
+                                        <label className={LABEL}>Infos Poids (ex: 250g)</label>
                                         <input
-                                            type="number"
-                                            step="0.01"
-                                            min="0"
-                                            max="0.3"
-                                            value={productForm.thc_max ?? ''}
+                                            value={productForm.weight_info ?? ''}
                                             onChange={(e) =>
-                                                setProductForm({ ...productForm, thc_max: e.target.value ? parseFloat(e.target.value) : null })
+                                                setProductForm({ ...productForm, weight_info: e.target.value || null })
                                             }
                                             className={INPUT}
+                                            placeholder="250g, 1kg..."
                                         />
                                     </div>
 

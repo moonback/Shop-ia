@@ -86,7 +86,7 @@ export default function Subscriptions() {
 
   return (
     <>
-      <SEO title="Mes abonnements — Green Mood CBD" description="Gérez vos livraisons automatiques." />
+      <SEO title="Mes abonnements — Shop-ia" description="Gérez vos livraisons automatiques." />
 
       <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
         <div className="flex items-center gap-3 mb-8">
@@ -114,7 +114,7 @@ export default function Subscriptions() {
           <div className="text-center py-16 text-zinc-500">
             <RefreshCw className="w-12 h-12 mx-auto mb-4 opacity-30" />
             <p className="font-medium">Aucun abonnement actif</p>
-            <p className="text-sm mt-1 mb-6">Abonnez-vous à vos produits CBD préférés pour des livraisons automatiques.</p>
+            <p className="text-sm mt-1 mb-6">Abonnez-vous à vos produits gourmets préférés pour des livraisons automatiques.</p>
             <Link
               to="/catalogue"
               className="inline-flex items-center gap-2 bg-green-neon hover:bg-green-600 text-white px-5 py-2.5 rounded-xl text-sm font-semibold transition-colors"
