@@ -355,7 +355,7 @@ export default function Layout() {
                     (link.path !== "/" && location.pathname.startsWith(link.path));
                   return (
                     <Link
-                      key={link.path}
+                      key={`${link.path}-${link.name}`}
                       to={link.path}
                       className={`relative px-3.5 py-2 text-[10px] xl:text-[11px] font-bold uppercase tracking-[0.15em] transition-all duration-300 rounded-lg group whitespace-nowrap ${isActive
                         ? "text-green-neon"
@@ -560,7 +560,7 @@ export default function Layout() {
                       (link.path !== "/" && location.pathname.startsWith(link.path));
                     return (
                       <motion.div
-                        key={link.path}
+                        key={`${link.path}-${link.name}`}
                         initial={{ opacity: 0, x: 16 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ delay: 0.08 + i * 0.04, duration: 0.3 }}
@@ -715,7 +715,7 @@ export default function Layout() {
               <h3 className="font-serif text-base font-semibold mb-4 text-zinc-200">Navigation</h3>
               <ul className="space-y-2.5">
                 {navLinks.map((link) => (
-                  <li key={link.path}>
+                  <li key={`${link.path}-${link.name}`}>
                     <Link
                       to={link.path}
                       className="text-zinc-500 hover:text-green-neon transition-colors text-sm"
