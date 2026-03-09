@@ -1,5 +1,5 @@
 import { useState, useCallback, useMemo } from 'react';
-import { motion, AnimatePresence, Reorder } from 'framer-motion';
+import { motion, AnimatePresence, Reorder } from 'motion/react';
 import {
   TrendingUp,
   Package,
@@ -15,16 +15,21 @@ import {
   EyeOff,
   Maximize2,
   Minimize2,
-  RefreshCw,
-  Calendar,
-  Clock,
   ArrowUpRight,
   ArrowDownRight,
-  MoreVertical,
-  X,
   Plus,
   LayoutDashboard,
+  Receipt,
 } from 'lucide-react';
+import {
+  AreaChart,
+  Area,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+} from 'recharts';
 import type { Order, Product, Profile } from '../../lib/types';
 
 // Types pour les widgets
@@ -90,11 +95,20 @@ const DEFAULT_WIDGETS: WidgetConfig[] = [
     isVisible: true,
   },
   {
+    id: 'avg-order-kpi',
+    type: 'kpi',
+    title: 'Panier Moyen',
+    size: 'small',
+    position: { x: 3, y: 0 },
+    isMinimized: false,
+    isVisible: true,
+  },
+  {
     id: 'stock-alerts',
     type: 'alert',
     title: 'Alertes Stock',
     size: 'small',
-    position: { x: 3, y: 0 },
+    position: { x: 4, y: 0 },
     isMinimized: false,
     isVisible: true,
   },
@@ -118,10 +132,25 @@ const DEFAULT_WIDGETS: WidgetConfig[] = [
   },
 ];
 
+function loadWidgetsFromStorage(): WidgetConfig[] {
+  try {
+    const saved = localStorage.getItem('admin-widgets');
+    if (saved) {
+      const parsed = JSON.parse(saved) as WidgetConfig[];
+      // Merge with defaults to handle new widgets added after save
+      const savedIds = new Set(parsed.map((w) => w.id));
+      const newDefaults = DEFAULT_WIDGETS.filter((w) => !savedIds.has(w.id));
+      return [...parsed, ...newDefaults];
+    }
+  } catch {
+    // ignore
+  }
+  return DEFAULT_WIDGETS;
+}
+
 export default function AdminDashboardV2({ stats, onViewOrders, onViewStock }: AdminDashboardV2Props) {
-  const [widgets, setWidgets] = useState<WidgetConfig[]>(DEFAULT_WIDGETS);
+  const [widgets, setWidgets] = useState<WidgetConfig[]>(loadWidgetsFromStorage);
   const [isEditMode, setIsEditMode] = useState(false);
-  const [selectedWidget, setSelectedWidget] = useState<string | null>(null);
   const [compactMode, setCompactMode] = useState(false);
 
   // Tailles de widgets
@@ -135,9 +164,33 @@ export default function AdminDashboardV2({ stats, onViewOrders, onViewStock }: A
   // Grille responsive
   const gridCols = compactMode ? 'grid-cols-2' : 'grid-cols-4';
 
+  // Données chart : revenus des 7 derniers jours depuis recentOrders
+  const chartData = useMemo(() => {
+    const days: Record<string, number> = {};
+    const now = new Date();
+    for (let i = 6; i >= 0; i--) {
+      const d = new Date(now);
+      d.setDate(d.getDate() - i);
+      const key = d.toLocaleDateString('fr-FR', { weekday: 'short', day: 'numeric' });
+      days[key] = 0;
+    }
+    (stats.recentOrders ?? []).forEach((order) => {
+      const d = new Date(order.created_at);
+      const key = d.toLocaleDateString('fr-FR', { weekday: 'short', day: 'numeric' });
+      if (key in days) {
+        days[key] += Number(order.total ?? 0);
+      }
+    });
+    return Object.entries(days).map(([date, revenue]) => ({ date, revenue: Math.round(revenue * 100) / 100 }));
+  }, [stats.recentOrders]);
+
+  const avgOrderValue = useMemo(
+    () => stats.avgOrderValue ?? (stats.ordersTotal > 0 ? stats.totalRevenue / stats.ordersTotal : 0),
+    [stats]
+  );
+
   // Gestion du réordonnancement
   const handleReorder = useCallback((newOrder: WidgetConfig[]) => {
-    // Recalculer les positions
     const reordered = newOrder.map((widget, index) => ({
       ...widget,
       position: {
@@ -146,29 +199,25 @@ export default function AdminDashboardV2({ stats, onViewOrders, onViewStock }: A
       },
     }));
     setWidgets(reordered);
-    // Sauvegarder dans localStorage
     localStorage.setItem('admin-widgets', JSON.stringify(reordered));
   }, [compactMode]);
 
-  // Toggle visibilité widget
   const toggleWidgetVisibility = useCallback((widgetId: string) => {
-    setWidgets(prev => 
-      prev.map(w => 
-        w.id === widgetId ? { ...w, isVisible: !w.isVisible } : w
-      )
-    );
+    setWidgets((prev) => {
+      const next = prev.map((w) => (w.id === widgetId ? { ...w, isVisible: !w.isVisible } : w));
+      localStorage.setItem('admin-widgets', JSON.stringify(next));
+      return next;
+    });
   }, []);
 
-  // Toggle minimisation widget
   const toggleWidgetMinimize = useCallback((widgetId: string) => {
-    setWidgets(prev => 
-      prev.map(w => 
-        w.id === widgetId ? { ...w, isMinimized: !w.isMinimized } : w
-      )
-    );
+    setWidgets((prev) => {
+      const next = prev.map((w) => (w.id === widgetId ? { ...w, isMinimized: !w.isMinimized } : w));
+      localStorage.setItem('admin-widgets', JSON.stringify(next));
+      return next;
+    });
   }, []);
 
-  // Ajouter widget
   const addWidget = useCallback(() => {
     const newWidget: WidgetConfig = {
       id: `custom-${Date.now()}`,
@@ -179,48 +228,66 @@ export default function AdminDashboardV2({ stats, onViewOrders, onViewStock }: A
       isMinimized: false,
       isVisible: true,
     };
-    setWidgets(prev => [...prev, newWidget]);
+    setWidgets((prev) => {
+      const next = [...prev, newWidget];
+      localStorage.setItem('admin-widgets', JSON.stringify(next));
+      return next;
+    });
   }, []);
 
   // Widget KPI Component
-  const KPIWidget = ({ widget, data }: { widget: WidgetConfig; data?: any }) => {
+  const KPIWidget = ({ widget }: { widget: WidgetConfig }) => {
     const getKPIData = () => {
       switch (widget.id) {
         case 'revenue-kpi':
           return {
             value: `${stats.totalRevenue.toFixed(2)} €`,
             sub: `${stats.revenueThisMonth.toFixed(2)} € ce mois`,
-            change: 12.5,
+            change: null,
             icon: DollarSign,
             color: 'text-green-400',
             bgColor: 'bg-green-400/10 border-green-400/20',
+            accent: 'from-green-500/10',
           };
         case 'orders-kpi':
           return {
             value: stats.ordersTotal,
-            sub: `${stats.ordersToday} aujourd'hui`,
-            change: 8.2,
+            sub: `${stats.ordersToday} aujourd'hui · ${stats.ordersPending} en attente`,
+            change: null,
             icon: Package,
             color: 'text-blue-400',
             bgColor: 'bg-blue-400/10 border-blue-400/20',
+            accent: 'from-blue-500/10',
           };
         case 'customers-kpi':
           return {
             value: stats.totalCustomers,
             sub: 'clients inscrits',
-            change: 15.3,
+            change: null,
             icon: Users,
             color: 'text-purple-400',
             bgColor: 'bg-purple-400/10 border-purple-400/20',
+            accent: 'from-purple-500/10',
+          };
+        case 'avg-order-kpi':
+          return {
+            value: `${avgOrderValue.toFixed(2)} €`,
+            sub: 'panier moyen',
+            change: null,
+            icon: Receipt,
+            color: 'text-amber-400',
+            bgColor: 'bg-amber-400/10 border-amber-400/20',
+            accent: 'from-amber-500/10',
           };
         default:
           return {
-            value: '0',
+            value: '—',
             sub: 'Donnée indisponible',
-            change: 0,
+            change: null,
             icon: Activity,
             color: 'text-zinc-400',
             bgColor: 'bg-zinc-400/10 border-zinc-400/20',
+            accent: 'from-zinc-500/10',
           };
       }
     };
@@ -229,33 +296,16 @@ export default function AdminDashboardV2({ stats, onViewOrders, onViewStock }: A
     const Icon = kpiData.icon;
 
     return (
-      <div className={`h-full p-6 rounded-2xl border transition-all duration-300 bg-zinc-900/90 border-zinc-800 hover:border-zinc-700`}>
-        <div className="flex items-start justify-between mb-4">
+      <div className={`h-full p-6 rounded-2xl border transition-all duration-300 bg-gradient-to-br from-zinc-900 to-zinc-950 border-zinc-800 hover:border-zinc-600 relative overflow-hidden`}>
+        <div className={`absolute inset-0 bg-gradient-to-br ${kpiData.accent} to-transparent pointer-events-none`} />
+        <div className="relative z-10 flex items-start justify-between mb-4">
           <div className={`w-12 h-12 rounded-xl border flex items-center justify-center ${kpiData.bgColor}`}>
             <Icon className={`w-6 h-6 ${kpiData.color}`} />
           </div>
-          <div className="flex items-center gap-1">
-            {kpiData.change > 0 && (
-              <div className="flex items-center gap-1 text-green-400 text-sm">
-                <ArrowUpRight className="w-4 h-4" />
-                <span>+{kpiData.change}%</span>
-              </div>
-            )}
-            {kpiData.change < 0 && (
-              <div className="flex items-center gap-1 text-red-400 text-sm">
-                <ArrowDownRight className="w-4 h-4" />
-                <span>{kpiData.change}%</span>
-              </div>
-            )}
-          </div>
         </div>
-        <div>
-          <div className={`text-2xl font-bold text-white`}>
-            {kpiData.value}
-          </div>
-          <div className={`text-sm text-zinc-400`}>
-            {kpiData.sub}
-          </div>
+        <div className="relative z-10">
+          <div className="text-2xl font-bold text-white">{kpiData.value}</div>
+          <div className="text-sm text-zinc-400 mt-1">{kpiData.sub}</div>
         </div>
       </div>
     );
@@ -271,6 +321,7 @@ export default function AdminDashboardV2({ stats, onViewOrders, onViewStock }: A
         icon: AlertTriangle,
         color: 'text-red-400',
         bgColor: 'bg-red-400/10 border-red-400/20',
+        btnColor: 'bg-red-500 hover:bg-red-400 text-white',
       },
       {
         type: 'warning',
@@ -279,37 +330,32 @@ export default function AdminDashboardV2({ stats, onViewOrders, onViewStock }: A
         icon: AlertTriangle,
         color: 'text-yellow-400',
         bgColor: 'bg-yellow-400/10 border-yellow-400/20',
+        btnColor: 'bg-yellow-500 hover:bg-yellow-400 text-black',
       },
-    ].filter(alert => alert.count > 0);
+    ].filter((alert) => alert.count > 0);
 
     return (
-      <div className={`h-full p-6 rounded-2xl border bg-zinc-900/90 border-zinc-800`}>
-        <h3 className={`text-lg font-semibold mb-4 text-white`}>
-          Alertes
-        </h3>
+      <div className="h-full p-6 rounded-2xl border bg-gradient-to-br from-zinc-900 to-zinc-950 border-zinc-800 hover:border-zinc-600 transition-all">
+        <h3 className="text-sm font-bold text-zinc-400 uppercase tracking-widest mb-4">Alertes Stock</h3>
         <div className="space-y-3">
           {alerts.length === 0 ? (
-            <div className="text-center py-4 text-zinc-400">
-              <Activity className="w-8 h-8 mx-auto mb-2 opacity-50" />
-              <p className="text-sm">Aucune alerte active</p>
+            <div className="text-center py-4 text-zinc-500">
+              <Activity className="w-8 h-8 mx-auto mb-2 opacity-40" />
+              <p className="text-sm">Tout est en ordre</p>
             </div>
           ) : (
-            alerts.map((alert, index) => {
+            alerts.map((alert) => {
               const Icon = alert.icon;
               return (
-                <div className={`flex items-center gap-3 p-3 rounded-xl border ${alert.bgColor}`}>
-                  <Icon className={`w-5 h-5 ${alert.color}`} />
-                  <div className="flex-1">
-                    <div className="font-medium text-white">
-                      {alert.label}
-                    </div>
-                    <div className="text-sm text-zinc-400">
-                      {alert.count} produit{alert.count > 1 ? 's' : ''}
-                    </div>
+                <div key={alert.type} className={`flex items-center gap-3 p-3 rounded-xl border ${alert.bgColor}`}>
+                  <Icon className={`w-5 h-5 ${alert.color} shrink-0`} />
+                  <div className="flex-1 min-w-0">
+                    <div className="font-medium text-white text-sm">{alert.label}</div>
+                    <div className="text-xs text-zinc-400">{alert.count} produit{alert.count > 1 ? 's' : ''}</div>
                   </div>
                   <button
                     onClick={() => onViewStock()}
-                    className={`px-3 py-1 rounded-lg text-xs font-medium transition-colors bg-red-400 text-black hover:bg-red-300`}
+                    className={`px-3 py-1 rounded-lg text-xs font-medium transition-colors shrink-0 ${alert.btnColor}`}
                   >
                     Voir
                   </button>
@@ -323,41 +369,31 @@ export default function AdminDashboardV2({ stats, onViewOrders, onViewStock }: A
   };
 
   // Widget List Component
-  const ListWidget = ({ widget }: { widget: WidgetConfig }) => {
+  const ListWidget = () => {
     return (
-      <div className={`h-full p-6 rounded-2xl border bg-zinc-900/90 border-zinc-800`}>
-        <div className={`flex items-center justify-between mb-4`}>
-          <h3 className={`text-lg font-semibold text-white`}>
-            Commandes Récentes
-          </h3>
+      <div className="h-full p-6 rounded-2xl border bg-gradient-to-br from-zinc-900 to-zinc-950 border-zinc-800 hover:border-zinc-600 transition-all flex flex-col">
+        <div className="flex items-center justify-between mb-4 shrink-0">
+          <h3 className="text-sm font-bold text-zinc-400 uppercase tracking-widest">Commandes Récentes</h3>
           <button
             onClick={() => onViewOrders()}
-            className={`px-3 py-1 rounded-lg text-sm font-medium transition-colors bg-green-neon text-black hover:bg-green-400`}
+            className="px-3 py-1 rounded-lg text-xs font-medium transition-colors bg-green-neon text-black hover:bg-green-400"
           >
             Voir tout
           </button>
         </div>
-        <div className="space-y-3 overflow-y-auto max-h-64">
-          {stats.recentOrders?.slice(0, 5).map((order) => (
+        <div className="space-y-2 overflow-y-auto flex-1 custom-scrollbar">
+          {(stats.recentOrders ?? []).slice(0, 6).map((order) => (
             <div
               key={order.id}
-              className={`flex items-center justify-between p-3 rounded-xl border border-zinc-700`}
+              className="flex items-center justify-between p-3 rounded-xl border border-zinc-800 hover:border-zinc-700 transition-colors"
             >
-              <div>
-                <div className={`font-medium text-white`}>
-                  Commande #{order.id?.slice(0, 8)}
-                </div>
-                <div className={`text-sm text-zinc-400`}>
-                  {order.profile?.full_name || 'Client anonyme'}
-                </div>
+              <div className="min-w-0">
+                <div className="font-medium text-white text-sm">#{order.id?.slice(0, 8).toUpperCase()}</div>
+                <div className="text-xs text-zinc-500 truncate">{order.profile?.full_name || 'Client anonyme'}</div>
               </div>
-              <div className="text-right">
-                <div className={`font-semibold text-white`}>
-                  {Number(order.total).toFixed(2)} €
-                </div>
-                <div className={`text-xs text-zinc-500`}>
-                  {new Date(order.created_at).toLocaleDateString()}
-                </div>
+              <div className="text-right shrink-0 ml-3">
+                <div className="font-semibold text-white text-sm">{Number(order.total).toFixed(2)} €</div>
+                <div className="text-xs text-zinc-500">{new Date(order.created_at).toLocaleDateString('fr-FR')}</div>
               </div>
             </div>
           ))}
@@ -366,19 +402,52 @@ export default function AdminDashboardV2({ stats, onViewOrders, onViewStock }: A
     );
   };
 
-  // Widget Chart Component
-  const ChartWidget = ({ widget }: { widget: WidgetConfig }) => {
+  // Widget Chart Component avec Recharts
+  const ChartWidget = () => {
     return (
-      <div className={`h-full p-6 rounded-2xl border bg-zinc-900/90 border-zinc-800`}>
-        <h3 className={`text-lg font-semibold mb-4 text-white`}>
-          Évolution Chiffre d'Affaires
-        </h3>
-        <div className={`h-48 flex items-center justify-center`}>
-          <div className={`text-center text-zinc-400`}>
-            <BarChart3 className="w-12 h-12 mx-auto mb-3 opacity-50" />
-            <p className="text-sm">Graphique en cours de développement</p>
-            <p className="text-xs mt-1">Intégration Recharts prévue</p>
-          </div>
+      <div className="h-full p-6 rounded-2xl border bg-gradient-to-br from-zinc-900 to-zinc-950 border-zinc-800 hover:border-zinc-600 transition-all flex flex-col">
+        <div className="flex items-center justify-between mb-4 shrink-0">
+          <h3 className="text-sm font-bold text-zinc-400 uppercase tracking-widest">Évolution CA — 7 jours</h3>
+          <TrendingUp className="w-4 h-4 text-green-400" />
+        </div>
+        <div className="flex-1 min-h-0">
+          <ResponsiveContainer width="100%" height="100%">
+            <AreaChart data={chartData} margin={{ top: 4, right: 4, left: -20, bottom: 0 }}>
+              <defs>
+                <linearGradient id="revenueGradient" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor="#fbbf24" stopOpacity={0.3} />
+                  <stop offset="95%" stopColor="#fbbf24" stopOpacity={0} />
+                </linearGradient>
+              </defs>
+              <CartesianGrid strokeDasharray="3 3" stroke="#27272a" vertical={false} />
+              <XAxis
+                dataKey="date"
+                tick={{ fill: '#71717a', fontSize: 11 }}
+                axisLine={false}
+                tickLine={false}
+              />
+              <YAxis
+                tick={{ fill: '#71717a', fontSize: 11 }}
+                axisLine={false}
+                tickLine={false}
+                tickFormatter={(v) => `${v}€`}
+              />
+              <Tooltip
+                contentStyle={{ backgroundColor: '#18181b', border: '1px solid #3f3f46', borderRadius: '12px', color: '#fff' }}
+                labelStyle={{ color: '#a1a1aa', fontSize: 11 }}
+                formatter={(value: number) => [`${value.toFixed(2)} €`, 'CA']}
+              />
+              <Area
+                type="monotone"
+                dataKey="revenue"
+                stroke="#fbbf24"
+                strokeWidth={2}
+                fill="url(#revenueGradient)"
+                dot={{ fill: '#fbbf24', r: 3 }}
+                activeDot={{ r: 5, fill: '#fbbf24' }}
+              />
+            </AreaChart>
+          </ResponsiveContainer>
         </div>
       </div>
     );
@@ -391,17 +460,17 @@ export default function AdminDashboardV2({ stats, onViewOrders, onViewStock }: A
     const widgetContent = () => {
       switch (widget.type) {
         case 'kpi':
-          return <KPIWidget widget={widget} data={stats} />;
+          return <KPIWidget widget={widget} />;
         case 'alert':
           return <AlertWidget widget={widget} />;
         case 'list':
-          return <ListWidget widget={widget} />;
+          return <ListWidget />;
         case 'chart':
-          return <ChartWidget widget={widget} />;
+          return <ChartWidget />;
         default:
           return (
-            <div className={`h-full p-6 rounded-2xl border flex items-center justify-center bg-zinc-900/90 border-zinc-800`}>
-              <div className={`text-center text-zinc-400`}>
+            <div className="h-full p-6 rounded-2xl border flex items-center justify-center bg-gradient-to-br from-zinc-900 to-zinc-950 border-zinc-800">
+              <div className="text-center text-zinc-400">
                 <Settings className="w-8 h-8 mx-auto mb-2 opacity-50" />
                 <p className="text-sm">Widget personnalisé</p>
               </div>
@@ -413,55 +482,51 @@ export default function AdminDashboardV2({ stats, onViewOrders, onViewStock }: A
     return (
       <motion.div
         layout
-        className={`${widgetSizes[widget.size]} relative group ${
-          widget.isMinimized ? 'row-span-1' : ''
-        }`}
-        whileHover={{ scale: isEditMode ? 1.02 : 1 }}
-        transition={{ duration: 0.2 }}
+        className={`${widgetSizes[widget.size]} relative group ${widget.isMinimized ? 'row-span-1' : ''}`}
+        whileHover={{ scale: isEditMode ? 1.01 : 1 }}
+        transition={{ duration: 0.15 }}
       >
-        {/* Header du widget en mode édition */}
+        {/* Controls en mode édition */}
         {isEditMode && (
-          <div className={`absolute top-2 right-2 z-10 flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity`}>
+          <div className="absolute top-3 right-3 z-10 flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
             <button
               onClick={() => toggleWidgetMinimize(widget.id)}
-              className={`w-8 h-8 rounded-lg border flex items-center justify-center transition-colors bg-zinc-800 border-zinc-700 hover:bg-zinc-700 text-zinc-400`}
+              className="w-7 h-7 rounded-lg border flex items-center justify-center transition-colors bg-zinc-800 border-zinc-700 hover:bg-zinc-700 text-zinc-400"
             >
-              {widget.isMinimized ? <Maximize2 className="w-4 h-4" /> : <Minimize2 className="w-4 h-4" />}
+              {widget.isMinimized ? <Maximize2 className="w-3 h-3" /> : <Minimize2 className="w-3 h-3" />}
             </button>
             <button
               onClick={() => toggleWidgetVisibility(widget.id)}
-              className={`w-8 h-8 rounded-lg border flex items-center justify-center transition-colors bg-zinc-800 border-zinc-700 hover:bg-zinc-700 text-zinc-400`}
+              className="w-7 h-7 rounded-lg border flex items-center justify-center transition-colors bg-zinc-800 border-zinc-700 hover:bg-zinc-700 text-zinc-400"
             >
-              {widget.isVisible ? <Eye className="w-4 h-4" /> : <EyeOff className="w-4 h-4" />}
+              <EyeOff className="w-3 h-3" />
             </button>
           </div>
         )}
 
-        {/* Contenu du widget */}
         <AnimatePresence mode="wait">
           {!widget.isMinimized ? (
             <motion.div
               key="content"
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: 'auto' }}
-              exit={{ opacity: 0, height: 0 }}
-              transition={{ duration: 0.2 }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.15 }}
+              className="h-full"
             >
               {widgetContent()}
             </motion.div>
           ) : (
             <motion.div
               key="minimized"
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: 'auto' }}
-              exit={{ opacity: 0, height: 0 }}
-              transition={{ duration: 0.2 }}
-              className={`h-full p-4 rounded-2xl border flex items-center justify-center bg-zinc-900/90 border-zinc-800`}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.15 }}
+              className="h-full p-4 rounded-2xl border flex items-center gap-3 bg-gradient-to-br from-zinc-900 to-zinc-950 border-zinc-800"
             >
-              <div className={`text-center text-zinc-400`}>
-                <LayoutDashboard className="w-6 h-6 mx-auto mb-1" />
-                <p className="text-xs font-medium">{widget.title}</p>
-              </div>
+              <LayoutDashboard className="w-4 h-4 text-zinc-500 shrink-0" />
+              <p className="text-xs font-medium text-zinc-500 truncate">{widget.title}</p>
             </motion.div>
           )}
         </AnimatePresence>
@@ -470,105 +535,85 @@ export default function AdminDashboardV2({ stats, onViewOrders, onViewStock }: A
   };
 
   return (
-    <div className="min-h-screen bg-zinc-950 transition-colors duration-300">
-      {/* Header avec contrôles */}
-      <header className="sticky top-0 z-40 border-b backdrop-blur-xl bg-zinc-900/90 border-zinc-800 text-white">
-        <div className="max-w-12xl mx-auto px-6 py-4">
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-2xl font-bold">Dashboard Administration</h1>
-              <p className="text-sm text-zinc-400">
-                Widgets personnalisables • Mode sombre
-              </p>
-            </div>
-            
-            <div className="flex items-center gap-3">
-              {/* Mode compact */}
-              <button
-                onClick={() => setCompactMode(!compactMode)}
-                className="px-4 py-2 rounded-xl border flex items-center gap-2 transition-colors bg-zinc-800 border-zinc-700 hover:bg-zinc-700 text-zinc-300"
-              >
-                <Grid3x3 className="w-4 h-4" />
-                <span className="text-sm font-medium">
-                  {compactMode ? 'Normal' : 'Compact'}
-                </span>
-              </button>
-
-              {/* Mode édition */}
-              <button
-                onClick={() => setIsEditMode(!isEditMode)}
-                className={`px-4 py-2 rounded-xl border flex items-center gap-2 transition-colors bg-zinc-800 border-zinc-700 hover:bg-zinc-700 text-zinc-300`}
-              >
-                <Settings className="w-4 h-4" />
-                <span className="text-sm font-medium">
-                  {isEditMode ? 'Terminer' : 'Personnaliser'}
-                </span>
-              </button>
-
-
-              {/* Ajouter widget */}
-              {isEditMode && (
-                <button
-                  onClick={addWidget}
-                  className="px-4 py-2 rounded-xl bg-green-neon text-black font-medium hover:bg-green-400 transition-colors flex items-center gap-2"
-                >
-                  <Plus className="w-4 h-4" />
-                  <span className="text-sm">Widget</span>
-                </button>
-              )}
-            </div>
-          </div>
+    <div className="space-y-6">
+      {/* Toolbar */}
+      <div className="flex items-center justify-between gap-3 flex-wrap">
+        <p className="text-xs text-zinc-500 font-medium">
+          {widgets.filter((w) => w.isVisible).length} widget{widgets.filter((w) => w.isVisible).length > 1 ? 's' : ''} actif{widgets.filter((w) => w.isVisible).length > 1 ? 's' : ''}
+        </p>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={() => setCompactMode(!compactMode)}
+            className="px-3 py-1.5 rounded-xl border flex items-center gap-2 transition-colors bg-zinc-900 border-zinc-800 hover:border-zinc-700 text-zinc-400 text-xs font-medium"
+          >
+            <Grid3x3 className="w-3.5 h-3.5" />
+            {compactMode ? 'Normal' : 'Compact'}
+          </button>
+          <button
+            onClick={() => setIsEditMode(!isEditMode)}
+            className={`px-3 py-1.5 rounded-xl border flex items-center gap-2 transition-colors text-xs font-medium ${
+              isEditMode
+                ? 'bg-green-neon text-black border-green-neon'
+                : 'bg-zinc-900 border-zinc-800 hover:border-zinc-700 text-zinc-400'
+            }`}
+          >
+            <Settings className="w-3.5 h-3.5" />
+            {isEditMode ? 'Terminer' : 'Personnaliser'}
+          </button>
+          {isEditMode && (
+            <button
+              onClick={addWidget}
+              className="px-3 py-1.5 rounded-xl bg-zinc-800 border border-zinc-700 hover:border-zinc-600 text-zinc-300 transition-colors flex items-center gap-2 text-xs font-medium"
+            >
+              <Plus className="w-3.5 h-3.5" />
+              Widget
+            </button>
+          )}
         </div>
-      </header>
+      </div>
 
       {/* Grille de widgets */}
-      <main className="max-w-12xl mx-auto p-6">
-        <AnimatePresence mode="wait">
-          {isEditMode ? (
-            <Reorder.Group
-              axis="y"
-              values={widgets.filter(w => w.isVisible)}
-              onReorder={handleReorder}
-              className={`grid ${gridCols} gap-4 auto-rows-min`}
-            >
-              {widgets.filter(w => w.isVisible).map((widget) => (
-                <Reorder.Item key={widget.id} value={widget} className="cursor-move">
-                  {renderWidget(widget)}
-                </Reorder.Item>
-              ))}
-            </Reorder.Group>
-          ) : (
-            <div className={`grid ${gridCols} gap-4 auto-rows-min`}>
-              {widgets.filter(w => w.isVisible).map((widget) => (
-                <div key={widget.id}>
-                  {renderWidget(widget)}
-                </div>
-              ))}
-            </div>
-          )}
-        </AnimatePresence>
-
-        {/* Widgets invisibles en mode édition */}
-        {isEditMode && widgets.some(w => !w.isVisible) && (
-          <div className={`mt-8 p-6 rounded-2xl border bg-zinc-900/90 border-zinc-800`}>
-            <h3 className={`text-lg font-semibold mb-4 text-white`}>
-              Widgets masqués
-            </h3>
-            <div className="flex flex-wrap gap-3">
-              {widgets.filter(w => !w.isVisible).map((widget) => (
-                <button
-                  key={widget.id}
-                  onClick={() => toggleWidgetVisibility(widget.id)}
-                  className={`px-4 py-2 rounded-xl border flex items-center gap-2 transition-colors bg-zinc-800 border-zinc-700 hover:bg-zinc-700 text-zinc-300`}
-                >
-                  <Eye className="w-4 h-4" />
-                  <span className="text-sm">{widget.title}</span>
-                </button>
-              ))}
-            </div>
+      <AnimatePresence mode="wait">
+        {isEditMode ? (
+          <Reorder.Group
+            axis="y"
+            values={widgets.filter((w) => w.isVisible)}
+            onReorder={handleReorder}
+            className={`grid ${gridCols} gap-4 auto-rows-[minmax(140px,auto)]`}
+          >
+            {widgets.filter((w) => w.isVisible).map((widget) => (
+              <Reorder.Item key={widget.id} value={widget} className="cursor-move">
+                {renderWidget(widget)}
+              </Reorder.Item>
+            ))}
+          </Reorder.Group>
+        ) : (
+          <div className={`grid ${gridCols} gap-4 auto-rows-[minmax(140px,auto)]`}>
+            {widgets.filter((w) => w.isVisible).map((widget) => (
+              <div key={widget.id}>{renderWidget(widget)}</div>
+            ))}
           </div>
         )}
-      </main>
+      </AnimatePresence>
+
+      {/* Widgets masqués */}
+      {isEditMode && widgets.some((w) => !w.isVisible) && (
+        <div className="p-4 rounded-2xl border bg-zinc-900/60 border-zinc-800">
+          <h3 className="text-xs font-bold text-zinc-500 uppercase tracking-widest mb-3">Widgets masqués</h3>
+          <div className="flex flex-wrap gap-2">
+            {widgets.filter((w) => !w.isVisible).map((widget) => (
+              <button
+                key={widget.id}
+                onClick={() => toggleWidgetVisibility(widget.id)}
+                className="px-3 py-1.5 rounded-xl border flex items-center gap-2 transition-colors bg-zinc-800 border-zinc-700 hover:border-zinc-600 text-zinc-300 text-xs"
+              >
+                <Eye className="w-3 h-3" />
+                {widget.title}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

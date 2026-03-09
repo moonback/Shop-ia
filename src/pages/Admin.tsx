@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef, lazy, Suspense } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import {
   LayoutDashboard,
@@ -29,8 +29,7 @@ import { Product, Category, Order, StockMovement, Profile } from '../lib/types';
 import { useSettingsStore } from '../store/settingsStore';
 import SEO from '../components/SEO';
 
-// Tab Components
-import AdminDashboardTab, { DashboardStats } from '../components/admin/AdminDashboardTab';
+// ─── Imports statiques (onglets fréquents) ───────────────────────────────────
 import AdminDashboardV2 from '../components/admin/AdminDashboardV2';
 import AdminProductsTab from '../components/admin/AdminProductsTab';
 import AdminCategoriesTab from '../components/admin/AdminCategoriesTab';
@@ -38,15 +37,47 @@ import AdminOrdersTab from '../components/admin/AdminOrdersTab';
 import AdminStockTab from '../components/admin/AdminStockTab';
 import AdminCustomersTab from '../components/admin/AdminCustomersTab';
 import AdminSettingsTab from '../components/admin/AdminSettingsTab';
-import AdminAnalyticsTab from '../components/admin/AdminAnalyticsTab';
-import AdminReferralsTab from '../components/admin/AdminReferralsTab';
-import AdminSubscriptionsTab from '../components/admin/AdminSubscriptionsTab';
-import AdminReviewsTab from '../components/admin/AdminReviewsTab';
-import AdminPromoCodesTab from '../components/admin/AdminPromoCodesTab';
-import AdminRecommendationsTab from '../components/admin/AdminRecommendationsTab';
-import AdminAssistantTab from '../components/admin/AdminAssistantTab';
-import AdminPOSTab from '../components/admin/AdminPOSTab';
-import AdminMarketingTab from '../components/admin/AdminMarketingTab';
+import AdminDashboardTab, { DashboardStats } from '../components/admin/AdminDashboardTab';
+
+// ─── Lazy-loaded (onglets moins fréquents / lourds) ──────────────────────────
+const AdminAnalyticsTab = lazy(() => import('../components/admin/AdminAnalyticsTab'));
+const AdminReferralsTab = lazy(() => import('../components/admin/AdminReferralsTab'));
+const AdminSubscriptionsTab = lazy(() => import('../components/admin/AdminSubscriptionsTab'));
+const AdminReviewsTab = lazy(() => import('../components/admin/AdminReviewsTab'));
+const AdminPromoCodesTab = lazy(() => import('../components/admin/AdminPromoCodesTab'));
+const AdminRecommendationsTab = lazy(() => import('../components/admin/AdminRecommendationsTab'));
+const AdminAssistantTab = lazy(() => import('../components/admin/AdminAssistantTab'));
+const AdminPOSTab = lazy(() => import('../components/admin/AdminPOSTab'));
+const AdminMarketingTab = lazy(() => import('../components/admin/AdminMarketingTab'));
+
+// ─── Skeleton de chargement ───────────────────────────────────────────────────
+function TabSkeleton() {
+  return (
+    <div className="space-y-4 animate-pulse">
+      <div className="h-8 bg-zinc-800 rounded-xl w-1/3" />
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        {[...Array(4)].map((_, i) => (
+          <div key={i} className="h-32 bg-zinc-800 rounded-2xl" />
+        ))}
+      </div>
+      <div className="h-64 bg-zinc-800 rounded-2xl" />
+      <div className="h-48 bg-zinc-800 rounded-2xl" />
+    </div>
+  );
+}
+
+// ─── Map prefetch pour les lazy tabs ─────────────────────────────────────────
+const PREFETCH_MAP: Partial<Record<string, () => Promise<any>>> = {
+  analytics: () => import('../components/admin/AdminAnalyticsTab'),
+  referrals: () => import('../components/admin/AdminReferralsTab'),
+  subscriptions: () => import('../components/admin/AdminSubscriptionsTab'),
+  reviews: () => import('../components/admin/AdminReviewsTab'),
+  promo_codes: () => import('../components/admin/AdminPromoCodesTab'),
+  recommendations: () => import('../components/admin/AdminRecommendationsTab'),
+  assistant: () => import('../components/admin/AdminAssistantTab'),
+  pos: () => import('../components/admin/AdminPOSTab'),
+  marketing: () => import('../components/admin/AdminMarketingTab'),
+};
 
 type Tab =
   | 'dashboard'
@@ -81,6 +112,40 @@ export default function Admin() {
   const [isLoading, setIsLoading] = useState(true);
 
   const { fetchSettings, settings } = useSettingsStore();
+
+  // ─── Swipe gesture ─────────────────────────────────────────────────────────
+  const touchStartX = useRef<number | null>(null);
+  const touchStartY = useRef<number | null>(null);
+
+  const tabKeys = [
+    'dashboard', 'products', 'categories', 'orders', 'stock', 'customers',
+    'referrals', 'subscriptions', 'reviews', 'promo_codes', 'recommendations',
+    'assistant', 'analytics', 'pos', 'marketing', 'settings',
+  ] as Tab[];
+
+  const handleTouchStart = useCallback((e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+    touchStartY.current = e.touches[0].clientY;
+  }, []);
+
+  const handleTouchEnd = useCallback((e: React.TouchEvent) => {
+    if (touchStartX.current === null || touchStartY.current === null) return;
+    const dx = e.changedTouches[0].clientX - touchStartX.current;
+    const dy = e.changedTouches[0].clientY - touchStartY.current;
+    // Only trigger if horizontal movement is dominant and significant
+    if (Math.abs(dx) > 80 && Math.abs(dx) > Math.abs(dy) * 1.5) {
+      const currentIndex = tabKeys.indexOf(tab);
+      if (dx < 0 && currentIndex < tabKeys.length - 1) {
+        setTab(tabKeys[currentIndex + 1]);
+      } else if (dx > 0 && currentIndex > 0) {
+        setTab(tabKeys[currentIndex - 1]);
+      }
+    }
+    touchStartX.current = null;
+    touchStartY.current = null;
+  }, [tab, tabKeys]);
+
+  // ─── Data loading ──────────────────────────────────────────────────────────
 
   const loadDashboard = async () => {
     const now = new Date();
@@ -253,6 +318,7 @@ export default function Admin() {
               <button
                 key={t.key}
                 onClick={() => setTab(t.key)}
+                onMouseEnter={() => PREFETCH_MAP[t.key]?.()}
                 className={`w-full flex items-center gap-4 px-4 py-3.5 rounded-2xl transition-all relative group ${tab === t.key
                   ? 'bg-white/5 border border-white/10 text-white shadow-xl'
                   : 'text-zinc-500 hover:text-zinc-300 hover:bg-white/5'
@@ -345,6 +411,7 @@ export default function Admin() {
                       setTab(t.key);
                       setIsMobileMenuOpen(false);
                     }}
+                    onTouchStart={() => PREFETCH_MAP[t.key]?.()}
                     className={`w-full flex items-center gap-4 px-4 py-4 rounded-2xl transition-all ${tab === t.key
                       ? 'bg-green-neon text-black font-black uppercase text-[11px] tracking-widest shadow-lg shadow-green-neon/20'
                       : 'text-zinc-500 hover:text-white'
@@ -371,7 +438,11 @@ export default function Admin() {
       </AnimatePresence>
 
       {/* Main Content Area */}
-      <main className={`flex-1 bg-zinc-950 relative overflow-hidden ${tab === 'pos' ? 'h-screen' : 'overflow-y-auto pt-20 md:pt-0'}`}>
+      <main
+        className={`flex-1 bg-zinc-950 relative overflow-hidden ${tab === 'pos' ? 'h-screen' : 'overflow-y-auto pt-20 md:pt-0'}`}
+        onTouchStart={tab !== 'pos' ? handleTouchStart : undefined}
+        onTouchEnd={tab !== 'pos' ? handleTouchEnd : undefined}
+      >
         {/* Dynamic Background Accents */}
         {tab !== 'pos' && (
           <>
@@ -402,67 +473,69 @@ export default function Admin() {
             </header>
           )}
 
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={tab}
-              initial={tab === 'pos' ? undefined : { opacity: 0, y: 10 }}
-              animate={tab === 'pos' ? undefined : { opacity: 1, y: 0 }}
-              exit={tab === 'pos' ? undefined : { opacity: 0, y: -10 }}
-              transition={{ duration: 0.2 }}
-              className={tab === 'pos' ? 'h-full' : ''}
-            >
-              {tab === 'dashboard' && stats && (
-                <AdminDashboardV2
-                  stats={stats}
-                  onViewOrders={() => setTab('orders')}
-                  onViewStock={() => setTab('stock')}
-                />
-              )}
-              {tab === 'products' && (
-                <AdminProductsTab
-                  products={products}
-                  categories={categories}
-                  onRefresh={loadProducts}
-                />
-              )}
-              {tab === 'categories' && (
-                <AdminCategoriesTab categories={categories} onRefresh={loadCategories} />
-              )}
-              {tab === 'orders' && (
-                <AdminOrdersTab
-                  orders={orders}
-                  onRefresh={loadOrders}
-                  storeName={settings.store_name}
-                  storeAddress={settings.store_address}
-                />
-              )}
-              {tab === 'stock' && (
-                <AdminStockTab products={products} movements={movements} onRefresh={loadStock} />
-              )}
-              {tab === 'customers' && (
-                <AdminCustomersTab customers={customers} onRefresh={loadCustomers} />
-              )}
-              {tab === 'referrals' && <AdminReferralsTab />}
-              {tab === 'subscriptions' && <AdminSubscriptionsTab />}
-              {tab === 'reviews' && <AdminReviewsTab />}
-              {tab === 'analytics' && <AdminAnalyticsTab />}
-              {tab === 'promo_codes' && <AdminPromoCodesTab />}
-              {tab === 'recommendations' && <AdminRecommendationsTab />}
-              {tab === 'assistant' && <AdminAssistantTab />}
-              {tab === 'pos' && <AdminPOSTab onExit={() => setTab('dashboard')} />}
-              {tab === 'marketing' && (
-                <AdminMarketingTab
-                  customers={customers}
-                  products={products}
-                  onRefresh={() => {
-                    loadCustomers();
-                    loadProducts();
-                  }}
-                />
-              )}
-              {tab === 'settings' && <AdminSettingsTab />}
-            </motion.div>
-          </AnimatePresence>
+          <Suspense fallback={<TabSkeleton />}>
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={tab}
+                initial={tab === 'pos' ? undefined : { opacity: 0, y: 10 }}
+                animate={tab === 'pos' ? undefined : { opacity: 1, y: 0 }}
+                exit={tab === 'pos' ? undefined : { opacity: 0, y: -10 }}
+                transition={{ duration: 0.2 }}
+                className={tab === 'pos' ? 'h-full' : ''}
+              >
+                {tab === 'dashboard' && stats && (
+                  <AdminDashboardV2
+                    stats={stats}
+                    onViewOrders={() => setTab('orders')}
+                    onViewStock={() => setTab('stock')}
+                  />
+                )}
+                {tab === 'products' && (
+                  <AdminProductsTab
+                    products={products}
+                    categories={categories}
+                    onRefresh={loadProducts}
+                  />
+                )}
+                {tab === 'categories' && (
+                  <AdminCategoriesTab categories={categories} onRefresh={loadCategories} />
+                )}
+                {tab === 'orders' && (
+                  <AdminOrdersTab
+                    orders={orders}
+                    onRefresh={loadOrders}
+                    storeName={settings.store_name}
+                    storeAddress={settings.store_address}
+                  />
+                )}
+                {tab === 'stock' && (
+                  <AdminStockTab products={products} movements={movements} onRefresh={loadStock} />
+                )}
+                {tab === 'customers' && (
+                  <AdminCustomersTab customers={customers} onRefresh={loadCustomers} />
+                )}
+                {tab === 'referrals' && <AdminReferralsTab />}
+                {tab === 'subscriptions' && <AdminSubscriptionsTab />}
+                {tab === 'reviews' && <AdminReviewsTab />}
+                {tab === 'analytics' && <AdminAnalyticsTab />}
+                {tab === 'promo_codes' && <AdminPromoCodesTab />}
+                {tab === 'recommendations' && <AdminRecommendationsTab />}
+                {tab === 'assistant' && <AdminAssistantTab />}
+                {tab === 'pos' && <AdminPOSTab onExit={() => setTab('dashboard')} />}
+                {tab === 'marketing' && (
+                  <AdminMarketingTab
+                    customers={customers}
+                    products={products}
+                    onRefresh={() => {
+                      loadCustomers();
+                      loadProducts();
+                    }}
+                  />
+                )}
+                {tab === 'settings' && <AdminSettingsTab />}
+              </motion.div>
+            </AnimatePresence>
+          </Suspense>
         </div>
       </main>
     </div>
