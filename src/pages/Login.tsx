@@ -82,18 +82,25 @@ export default function Login() {
 
       <div className="min-h-screen bg-zinc-950 flex pt-16">
         {/* ── Left panel (value proposition) ── */}
-        <div className="hidden lg:flex flex-col justify-between flex-1 bg-gradient-to-br from-zinc-900 via-zinc-950 to-zinc-900 border-r border-white/[0.06] p-16 relative overflow-hidden">
-          {/* Background glow */}
-          <div className="absolute top-0 right-0 w-96 h-96 bg-amber-400/5 blur-[120px] rounded-full pointer-events-none" />
-          <div className="absolute bottom-0 left-0 w-64 h-64 bg-amber-400/5 blur-[100px] rounded-full pointer-events-none" />
+        <div className="hidden lg:flex flex-col justify-between flex-1 bg-zinc-950 border-r border-white/[0.06] p-16 relative overflow-hidden">
+          {/* Background image + overlays */}
+          <img
+            src="/images/hero-premium.png"
+            alt=""
+            className="absolute inset-0 w-full h-full object-cover opacity-25 pointer-events-none"
+          />
+          <div className="absolute inset-0 bg-gradient-to-br from-zinc-950/95 via-zinc-950/80 to-zinc-950/95 pointer-events-none" />
+          <div className="absolute top-0 right-0 w-96 h-96 bg-amber-400/10 blur-[120px] rounded-full pointer-events-none" />
+          <div className="absolute bottom-0 left-0 w-64 h-64 bg-amber-400/10 blur-[100px] rounded-full pointer-events-none" />
 
           {/* Logo area */}
-          <div>
-            <Link to="/" className="inline-flex items-center gap-3 group">
-              <div className="w-10 h-10 rounded-xl bg-amber-400 flex items-center justify-center">
-                <span className="text-black font-black text-lg">S</span>
-              </div>
-              <span className="text-xl font-serif font-bold text-white group-hover:text-amber-400 transition-colors">Shop-ia</span>
+          <div className="relative z-10">
+            <Link to="/" className="inline-flex items-center group" aria-label="Retour à l'accueil">
+              <img
+                src="/logo.png"
+                alt="Shop-ia"
+                className="h-12 w-auto object-contain opacity-90 group-hover:opacity-100 transition-opacity"
+              />
             </Link>
           </div>
 
@@ -146,11 +153,8 @@ export default function Login() {
           >
             {/* Mobile logo */}
             <div className="flex lg:hidden justify-center mb-8">
-              <Link to="/" className="inline-flex items-center gap-3">
-                <div className="w-9 h-9 rounded-xl bg-amber-400 flex items-center justify-center">
-                  <span className="text-black font-black text-base">S</span>
-                </div>
-                <span className="text-lg font-serif font-bold text-white">Shop-ia</span>
+              <Link to="/" className="inline-flex items-center" aria-label="Retour à l'accueil">
+                <img src="/logo.png" alt="Shop-ia" className="h-11 w-auto object-contain" />
               </Link>
             </div>
 
