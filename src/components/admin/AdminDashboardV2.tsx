@@ -151,7 +151,7 @@ function loadWidgetsFromStorage(): WidgetConfig[] {
 export default function AdminDashboardV2({ stats, onViewOrders, onViewStock }: AdminDashboardV2Props) {
   const [widgets, setWidgets] = useState<WidgetConfig[]>(loadWidgetsFromStorage);
   const [isEditMode, setIsEditMode] = useState(false);
-  const [compactMode, setCompactMode] = useState(false);
+  const [compactMode, setCompactMode] = useState(true);
 
   // Tailles de widgets
   const widgetSizes = {
@@ -551,11 +551,10 @@ export default function AdminDashboardV2({ stats, onViewOrders, onViewStock }: A
           </button>
           <button
             onClick={() => setIsEditMode(!isEditMode)}
-            className={`px-3 py-1.5 rounded-xl border flex items-center gap-2 transition-colors text-xs font-medium ${
-              isEditMode
+            className={`px-3 py-1.5 rounded-xl border flex items-center gap-2 transition-colors text-xs font-medium ${isEditMode
                 ? 'bg-green-neon text-black border-green-neon'
                 : 'bg-zinc-900 border-zinc-800 hover:border-zinc-700 text-zinc-400'
-            }`}
+              }`}
           >
             <Settings className="w-3.5 h-3.5" />
             {isEditMode ? 'Terminer' : 'Personnaliser'}
