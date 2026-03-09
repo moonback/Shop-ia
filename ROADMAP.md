@@ -122,7 +122,7 @@ Enrichissement spécifique aux produits du terroir.
 
 | # | Fonctionnalité | Description | Statut |
 |---|----------------|-------------|--------|
-| 1 | **Nutriscore affiché** | Badge Nutriscore visible sur fiches et listings | 📋 |
+| 1 | **Nutriscore affiché** | Badge Nutriscore visible sur fiches et listings | ✅  |
 | 2 | **Origine géographique** | Région, appellation, label (AOP/IGP/Bio) | 📋 |
 | 3 | **Allergènes** | Déclaration obligatoire CE 1169/2011 | 📋 |
 | 4 | **Saisonnalité** | Indicateur de disponibilité par mois | 📋 |
