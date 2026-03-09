@@ -203,7 +203,7 @@ export default function Home() {
         {/* ════════════════════════════════════════
             HERO — style full-width slider
         ════════════════════════════════════════ */}
-        <section className="relative min-h-[90vh] flex flex-col items-center justify-center pt-20 overflow-hidden">
+        <section className="relative min-h-[92vh] md:min-h-[90vh] flex flex-col items-center justify-center pt-16 md:pt-20 overflow-hidden px-4 sm:px-5">
           {/* Background image with crossfade */}
           <AnimatePresence mode="wait">
             <motion.div
@@ -224,7 +224,7 @@ export default function Home() {
           </AnimatePresence>
 
           {/* Content */}
-          <div className="relative z-20 max-w-5xl mx-auto text-center px-5 flex flex-col items-center gap-8">
+          <div className="relative z-20 w-full max-w-5xl mx-auto text-center flex flex-col items-center gap-6 md:gap-8">
             <AnimatePresence mode="wait">
               <motion.div
                 key={`text-${heroIndex}`}
@@ -234,7 +234,7 @@ export default function Home() {
                 transition={{ duration: 0.6 }}
                 className="space-y-5"
               >
-                <span className={`inline-block py-1.5 px-5 rounded-full border text-[11px] font-bold tracking-[0.4em] uppercase backdrop-blur-sm
+                <span className={`inline-block py-1.5 px-4 md:px-5 rounded-full border text-[10px] md:text-[11px] font-bold tracking-[0.25em] md:tracking-[0.4em] uppercase backdrop-blur-sm
                   ${slide.accent === "amber" ? "border-amber-400/30 bg-amber-400/10 text-amber-400" :
                     slide.accent === "green" ? "border-green-neon/30 bg-green-neon/10 text-green-neon" :
                       "border-purple-400/30 bg-purple-400/10 text-purple-400"}`}
@@ -242,7 +242,7 @@ export default function Home() {
                   {slide.badge}
                 </span>
 
-                <h1 className="text-5xl md:text-7xl lg:text-8xl font-serif font-bold tracking-tighter leading-none text-white">
+                <h1 className="text-3xl sm:text-5xl md:text-7xl lg:text-8xl font-serif font-bold tracking-tight md:tracking-tighter leading-[0.95] text-white">
                   {slide.headline}
                   <br />
                   <span className={`italic ${slide.accent === "amber" ? "text-amber-400" : slide.accent === "green" ? "text-green-neon" : "text-purple-400"}`}>
@@ -250,7 +250,7 @@ export default function Home() {
                   </span>
                 </h1>
 
-                <p className="text-zinc-300 text-lg md:text-xl max-w-2xl mx-auto font-light">
+                <p className="text-zinc-300 text-sm sm:text-base md:text-xl max-w-2xl mx-auto font-light px-2 sm:px-0">
                   {slide.sub}
                 </p>
               </motion.div>
@@ -258,18 +258,18 @@ export default function Home() {
 
             {/* Amazon-style prominent search bar */}
             <form onSubmit={handleSearch} className="w-full max-w-2xl relative group">
-              <div className="flex items-center bg-white rounded-2xl shadow-2xl overflow-hidden border-2 border-transparent focus-within:border-amber-400 transition-all">
-                <Search className="absolute left-5 w-5 h-5 text-zinc-400 pointer-events-none" />
+              <div className="flex flex-col sm:flex-row sm:items-center bg-white rounded-2xl shadow-2xl overflow-hidden border-2 border-transparent focus-within:border-amber-400 transition-all">
+                <Search className="absolute left-4 top-3.5 sm:left-5 sm:top-1/2 sm:-translate-y-1/2 w-4 h-4 sm:w-5 sm:h-5 text-zinc-400 pointer-events-none" />
                 <input
                   type="text"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder="Rechercher un produit, une catégorie…"
-                  className="flex-1 bg-transparent text-zinc-900 placeholder-zinc-400 pl-14 pr-4 py-4 text-base focus:outline-none"
+                  className="flex-1 bg-transparent text-zinc-900 placeholder-zinc-400 pl-11 sm:pl-14 pr-4 py-3.5 sm:py-4 text-sm sm:text-base focus:outline-none"
                 />
                 <button
                   type="submit"
-                  className="bg-amber-400 hover:bg-amber-300 text-black font-bold px-6 py-4 transition-colors text-sm uppercase tracking-widest whitespace-nowrap flex-shrink-0"
+                  className="bg-amber-400 hover:bg-amber-300 text-black font-bold px-5 sm:px-6 py-3.5 sm:py-4 transition-colors text-[11px] sm:text-sm uppercase tracking-[0.2em] sm:tracking-widest whitespace-nowrap flex-shrink-0 w-full sm:w-auto"
                 >
                   Rechercher
                 </button>
@@ -277,12 +277,12 @@ export default function Home() {
             </form>
 
             {/* Quick category pills */}
-            <div className="flex flex-wrap gap-2 justify-center">
+            <div className="flex flex-wrap gap-2 justify-center max-w-3xl">
               {["Coffrets", "Huiles & Vinaigres", "Épices", "Cafés & Thés", "Fromages"].map((q) => (
                 <button
                   key={q}
                   onClick={() => navigate(`/catalogue?search=${encodeURIComponent(q)}`)}
-                  className="px-4 py-1.5 bg-white/10 backdrop-blur-md border border-white/20 rounded-full text-xs text-white hover:bg-amber-400 hover:text-black hover:border-amber-400 transition-all"
+                  className="px-3.5 sm:px-4 py-1.5 bg-white/10 backdrop-blur-md border border-white/20 rounded-full text-[11px] sm:text-xs text-white hover:bg-amber-400 hover:text-black hover:border-amber-400 transition-all"
                 >
                   {q}
                 </button>
@@ -292,7 +292,7 @@ export default function Home() {
             {/* CTA button */}
             <Link
               to={slide.ctaLink}
-              className={`group relative px-10 py-4 font-bold rounded-full overflow-hidden transition-all hover:scale-105 active:scale-95 text-sm uppercase tracking-widest
+              className={`group relative px-7 sm:px-10 py-3.5 sm:py-4 font-bold rounded-full overflow-hidden transition-all hover:scale-105 active:scale-95 text-[11px] sm:text-sm uppercase tracking-[0.2em] sm:tracking-widest
                 ${slide.accent === "amber"
                   ? "bg-amber-400 text-black hover:shadow-[0_0_40px_rgba(251,191,36,0.6)]"
                   : slide.accent === "green"
@@ -306,7 +306,7 @@ export default function Home() {
           </div>
 
           {/* Slider controls */}
-          <div className="absolute bottom-10 left-1/2 -translate-x-1/2 z-20 flex items-center gap-6">
+          <div className="absolute bottom-6 md:bottom-10 left-1/2 -translate-x-1/2 z-20 hidden sm:flex items-center gap-6">
             <button
               onClick={() => setHeroIndex((i) => (i - 1 + HERO_SLIDES.length) % HERO_SLIDES.length)}
               className="p-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 hover:bg-white/20 transition-all"
@@ -335,15 +335,15 @@ export default function Home() {
             TRUST BAR — Icon strip like Amazon
         ════════════════════════════════════════ */}
         <div className="bg-zinc-900 border-y border-white/[0.06]">
-          <div className="max-w-7xl mx-auto px-6">
-            <div className="grid grid-cols-2 lg:grid-cols-4 divide-x divide-white/[0.06]">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 divide-y sm:divide-y-0 sm:divide-x divide-white/[0.06]">
               {TRUST.map((t, i) => (
-                <div key={i} className="flex items-center gap-4 px-6 py-5">
+                <div key={i} className="flex items-center gap-3 sm:gap-4 px-4 sm:px-6 py-4 sm:py-5">
                   <div className="w-10 h-10 rounded-xl bg-amber-400/10 flex items-center justify-center text-amber-400 flex-shrink-0">
                     {t.icon}
                   </div>
                   <div>
-                    <p className="text-sm font-bold text-white">{t.label}</p>
+                    <p className="text-xs sm:text-sm font-bold text-white">{t.label}</p>
                     <p className="text-xs text-zinc-500">{t.sub}</p>
                   </div>
                 </div>
@@ -356,8 +356,8 @@ export default function Home() {
             QUICK LINKS — Amazon departments bar
         ════════════════════════════════════════ */}
         <div className="bg-zinc-950 border-b border-white/[0.05] sticky top-16 z-30 backdrop-blur-xl shadow-md">
-          <div className="max-w-7xl mx-auto px-6">
-            <div className="flex items-center gap-1 overflow-x-auto py-3 hide-scrollbar">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6">
+            <div className="flex items-center gap-1.5 overflow-x-auto py-2.5 sm:py-3 hide-scrollbar">
               {[
                 { label: "Toute la boutique", link: "/catalogue", icon: <Package className="w-4 h-4" /> },
                 { label: "Meilleures ventes", link: "/catalogue?featured=1", icon: <Flame className="w-4 h-4 text-orange-500" /> },
@@ -369,7 +369,7 @@ export default function Home() {
                 <Link
                   key={item.label}
                   to={item.link}
-                  className="flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-semibold text-zinc-300 hover:text-white hover:bg-white/[0.06] transition-all whitespace-nowrap"
+                  className="flex items-center gap-2 px-3 sm:px-4 py-2 rounded-lg text-[11px] sm:text-xs font-semibold text-zinc-300 hover:text-white hover:bg-white/[0.06] transition-all whitespace-nowrap"
                 >
                   {item.icon}
                   {item.label}
@@ -382,8 +382,8 @@ export default function Home() {
         {/* ════════════════════════════════════════
             3-UP PROMO BANNERS
         ════════════════════════════════════════ */}
-        <section className="py-10 px-5">
-          <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-4">
+        <section className="py-8 md:py-10 px-4 sm:px-5">
+          <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-4">
             {PROMO_BANNERS.map((b, i) => (
               <motion.div
                 key={i}
@@ -394,11 +394,11 @@ export default function Home() {
               >
                 <Link
                   to={b.link}
-                  className={`group relative flex flex-col gap-3 p-6 rounded-2xl border bg-gradient-to-br ${b.bg} ${b.border} overflow-hidden hover:border-white/20 transition-all`}
+                  className={`group relative flex flex-col gap-2.5 sm:gap-3 p-5 sm:p-6 rounded-2xl border bg-gradient-to-br ${b.bg} ${b.border} overflow-hidden hover:border-white/20 transition-all`}
                 >
                   <div className="absolute inset-0 bg-white/0 group-hover:bg-white/[0.02] transition-colors" />
                   <span className="text-sm font-bold">{b.tag}</span>
-                  <h3 className={`text-2xl font-serif font-bold text-white ${b.accent}`}>{b.title}</h3>
+                  <h3 className={`text-xl sm:text-2xl font-serif font-bold text-white ${b.accent}`}>{b.title}</h3>
                   <p className="text-sm text-zinc-400">{b.desc}</p>
                   <span className={`inline-flex items-center gap-1 text-xs font-bold uppercase tracking-widest mt-2 ${b.accent}`}>
                     Explorer <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
@@ -412,9 +412,9 @@ export default function Home() {
         {/* ════════════════════════════════════════
             SHOP BY CATEGORY — Amazon-style grid
         ════════════════════════════════════════ */}
-        <section className="py-12 px-5">
+        <section className="py-10 md:py-12 px-4 sm:px-5">
           <div className="max-w-7xl mx-auto">
-            <div className="flex items-center justify-between mb-8">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-6 sm:mb-8">
               <div>
                 <h2 className="text-2xl md:text-3xl font-bold text-white">Nos Rayons</h2>
                 <p className="text-zinc-500 text-sm mt-1">Naviguez par catégorie</p>
@@ -425,7 +425,7 @@ export default function Home() {
             </div>
 
             {/* Dynamic from DB, fallback to static */}
-            <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-3 md:gap-4">
+            <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 gap-3 md:gap-4">
               {(allCategories.length > 0 ? allCategories : CAT_LINKS.slice(0, 6)).map((cat: any, i) => (
                 <motion.div
                   key={cat.id || cat.slug}
@@ -436,14 +436,14 @@ export default function Home() {
                 >
                   <Link
                     to={`/catalogue?category=${cat.slug}`}
-                    className="group flex flex-col items-center gap-3 p-4 rounded-2xl border border-white/[0.06] bg-zinc-900/40 hover:border-amber-400/30 hover:bg-zinc-900 transition-all"
+                    className="group flex flex-col items-center gap-2.5 sm:gap-3 p-3.5 sm:p-4 rounded-2xl border border-white/[0.06] bg-zinc-900/40 hover:border-amber-400/30 hover:bg-zinc-900 transition-all"
                   >
                     {cat.image_url ? (
-                      <div className="w-14 h-14 rounded-2xl overflow-hidden">
+                      <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl overflow-hidden">
                         <img src={cat.image_url} alt={cat.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
                       </div>
                     ) : (
-                      <div className="w-14 h-14 rounded-2xl bg-amber-400/10 flex items-center justify-center text-3xl">
+                      <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-amber-400/10 flex items-center justify-center text-2xl sm:text-3xl">
                         {CAT_LINKS.find(c => c.slug === cat.slug)?.emoji || "🛒"}
                       </div>
                     )}
@@ -464,7 +464,7 @@ export default function Home() {
                   to="/catalogue"
                   className="group flex flex-col items-center gap-3 p-4 rounded-2xl border border-dashed border-white/10 bg-transparent hover:border-amber-400/30 transition-all"
                 >
-                  <div className="w-14 h-14 rounded-2xl bg-zinc-800 flex items-center justify-center">
+                  <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-zinc-800 flex items-center justify-center">
                     <ArrowRight className="w-6 h-6 text-zinc-500 group-hover:text-amber-400 transition-colors" />
                   </div>
                   <span className="text-xs font-medium text-zinc-500 text-center group-hover:text-amber-400">Tout voir</span>
@@ -640,10 +640,10 @@ export default function Home() {
         {/* ════════════════════════════════════════
             TRUST CHECKLIST — Simplified guarantees
         ════════════════════════════════════════ */}
-        <section className="py-16 px-5 bg-zinc-900/20 border-y border-white/[0.05]">
+        <section className="py-12 md:py-16 px-4 sm:px-5 bg-zinc-900/20 border-y border-white/[0.05]">
           <div className="max-w-4xl mx-auto text-center">
-            <h2 className="text-2xl font-bold text-white mb-8">Nos garanties</h2>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+            <h2 className="text-2xl font-bold text-white mb-6 md:mb-8">Nos garanties</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-5 md:gap-6">
               {[
                 "Paiement sécurisé 100%",
                 "Livraison fraîcheur garantie",
@@ -667,7 +667,7 @@ export default function Home() {
         {/* ════════════════════════════════════════
             FINAL CTA — Simplified
         ════════════════════════════════════════ */}
-        <section className="py-24 md:py-32 text-center px-5 relative overflow-hidden">
+        <section className="py-16 md:py-32 text-center px-4 sm:px-5 relative overflow-hidden">
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(251,191,36,0.08)_0%,transparent_70%)] pointer-events-none" />
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
@@ -675,17 +675,17 @@ export default function Home() {
             viewport={{ once: true }}
             className="relative z-10 space-y-8 max-w-3xl mx-auto"
           >
-            <h2 className="text-5xl md:text-7xl font-serif font-bold text-white tracking-tighter leading-none uppercase">
+            <h2 className="text-3xl sm:text-5xl md:text-7xl font-serif font-bold text-white tracking-tight md:tracking-tighter leading-[0.95] uppercase">
               REDÉCOUVREZ LE GOÛT
               <br />
               <span className="text-amber-400 italic">AVEC SHOP-IA.</span>
             </h2>
-            <p className="text-zinc-400 text-xl font-light">
+            <p className="text-zinc-400 text-base sm:text-xl font-light">
               Des produits frais, sélectionnés pour vous et livrés à votre porte.
             </p>
             <Link
               to="/catalogue"
-              className="inline-flex items-center gap-3 px-12 py-5 bg-amber-400 text-black font-bold rounded-full text-lg hover:shadow-[0_0_40px_rgba(251,191,36,0.4)] hover:scale-105 active:scale-95 transition-all"
+              className="inline-flex items-center gap-3 px-7 sm:px-12 py-3.5 sm:py-5 bg-amber-400 text-black font-bold rounded-full text-sm sm:text-lg hover:shadow-[0_0_40px_rgba(251,191,36,0.4)] hover:scale-105 active:scale-95 transition-all"
             >
               Accéder à la boutique <ArrowRight className="w-5 h-5" />
             </Link>
