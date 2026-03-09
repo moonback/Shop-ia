@@ -1,3 +1,10 @@
+<p align="center">
+  <img src="public/logo2.png" alt="Sho ia" width="240" />
+</p>
+<!-- <p align="center">
+  <img src="public/header.png" alt="Shop ia" width="100%" />
+</p> -->
+
 # Shop-ia 🍽️
 
 [![Build](https://img.shields.io/badge/build-vite-blue)](https://vitejs.dev)
