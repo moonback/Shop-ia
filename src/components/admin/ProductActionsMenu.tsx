@@ -17,6 +17,7 @@ import {
 import Papa from 'papaparse';
 import { supabase } from '../../lib/supabase';
 import { slugify } from '../../lib/utils';
+import { FOOD_PRODUCTS } from '../../lib/generateFoodProducts';
 import type { Product } from '../../lib/types';
 
 interface Progress { done: number; total: number }
@@ -389,7 +390,7 @@ export default function ProductActionsMenu({
                                     label={
                                         isGeneratingFood && foodProgress
                                             ? `Génération… ${foodProgress.done}/${foodProgress.total}`
-                                            : 'Générer Alim (20)'
+                                            : `Générer Alim (${FOOD_PRODUCTS.length})`
                                     }
                                     description="Créer 20 produits alimentaires variés"
                                     isRunning={isGeneratingFood}
