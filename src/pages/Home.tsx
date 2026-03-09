@@ -43,7 +43,7 @@ const HERO_SLIDES = [
     accent: "amber",
   },
   {
-    image: "/images/solution-hero-bg.png",
+    image: "/images/quality-hero-bg.png",
     badge: "Sélection Elite",
     headline: "QUALITÉ",
     highlight: "CERTIFIÉE.",
@@ -201,7 +201,7 @@ export default function Home() {
       <main>
 
         {/* ════════════════════════════════════════
-            HERO — Amazon-style full-width slider
+            HERO — style full-width slider
         ════════════════════════════════════════ */}
         <section className="relative min-h-[90vh] flex flex-col items-center justify-center pt-20 overflow-hidden">
           {/* Background image with crossfade */}
@@ -219,7 +219,7 @@ export default function Home() {
                 alt={slide.headline}
                 className="w-full h-full object-cover"
               />
-              <div className="absolute inset-0 bg-gradient-to-b from-zinc-950/60 via-zinc-950/70 to-zinc-950" />
+              <div className="absolute inset-0 bg-gradient-to-b from-zinc-950/50 via-zinc-950/60 to-zinc-950" />
             </motion.div>
           </AnimatePresence>
 
