@@ -1,4 +1,4 @@
-import { useState, FormEvent } from 'react';
+import { useState, FormEvent, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import {
     ShoppingBag,
@@ -18,11 +18,16 @@ import {
     ChevronRight,
     Sparkles,
     Zap,
-    Leaf
+    Leaf,
+    ChevronDown,
+    Upload,
+    FileDown,
+    AlertCircle,
+    CheckCircle2,
 } from 'lucide-react';
 import { supabase } from '../../lib/supabase';
 import type { Product, Category } from '../../lib/types';
-import CSVImporter from './CSVImporter';
+import Papa from 'papaparse';
 import MassModifyModal from './MassModifyModal';
 import AdminProductPreviewModal from './AdminProductPreviewModal';
 import ProductImageUpload from './ProductImageUpload';
@@ -91,6 +96,79 @@ export default function AdminProductsTab({ products, categories, onRefresh }: Ad
     const [aiSyncProgress, setAiSyncProgress] = useState<{ done: number; total: number } | null>(null);
     const [isGeneratingCBD, setIsGeneratingCBD] = useState(false);
     const [cbdProgress, setCbdProgress] = useState<{ done: number; total: number } | null>(null);
+
+    // ── Actions dropdown ──
+    const [showActionsMenu, setShowActionsMenu] = useState(false);
+    const actionsMenuRef = useRef<HTMLDivElement>(null);
+    const csvInputRef = useRef<HTMLInputElement>(null);
+    const [isImportingCSV, setIsImportingCSV] = useState(false);
+    const [csvFeedback, setCsvFeedback] = useState<{ type: 'error' | 'success'; msg: string } | null>(null);
+
+    useEffect(() => {
+        const handler = (e: MouseEvent) => {
+            if (actionsMenuRef.current && !actionsMenuRef.current.contains(e.target as Node)) {
+                setShowActionsMenu(false);
+            }
+        };
+        document.addEventListener('mousedown', handler);
+        return () => document.removeEventListener('mousedown', handler);
+    }, []);
+
+    const handleCSVImport = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+        setIsImportingCSV(true);
+        setCsvFeedback(null);
+        Papa.parse(file, {
+            header: true,
+            skipEmptyLines: true,
+            complete: async (results) => {
+                try {
+                    const data = results.data as any[];
+                    const { data: cats, error: catError } = await supabase.from('categories').select('id, slug');
+                    if (catError) throw catError;
+                    const catMap = new Map(cats?.map(c => [c.slug.trim().toLowerCase(), c.id]));
+                    const rows = data.map((row, idx) => {
+                        const rawSlug = (row.category_slug || '').toString().trim().toLowerCase();
+                        const categoryId = catMap.get(rawSlug);
+                        if (!categoryId) throw new Error(`Ligne ${idx + 2}: catégorie "${rawSlug}" introuvable.`);
+                        return {
+                            category_id: categoryId,
+                            name: row.name,
+                            slug: row.slug || slugify(row.name),
+                            sku: row.sku || null,
+                            description: row.description || null,
+                            price: parseFloat(row.price) || 0,
+                            original_value: row.original_value ? parseFloat(row.original_value) : null,
+                            stock_quantity: parseInt(row.stock_quantity) || 0,
+                            nutriscore: row.nutriscore || null,
+                            weight_info: row.weight_info || null,
+                            weight_grams: row.weight_grams ? parseFloat(row.weight_grams) : null,
+                            is_available: row.is_available === 'true' || row.is_available === true,
+                            is_active: row.is_active === 'true' || row.is_active === true,
+                            is_featured: row.is_featured === 'true' || row.is_featured === true,
+                            is_bundle: row.is_bundle === 'true' || row.is_bundle === true,
+                            image_url: row.image_url || null,
+                            attributes: { benefits: [], aromas: [] },
+                        };
+                    });
+                    const { error } = await supabase.from('products').upsert(rows, { onConflict: 'slug' });
+                    if (error) throw error;
+                    setCsvFeedback({ type: 'success', msg: `${data.length} produit(s) importé(s) avec succès.` });
+                    onRefresh();
+                    if (csvInputRef.current) csvInputRef.current.value = '';
+                } catch (err: any) {
+                    setCsvFeedback({ type: 'error', msg: err.message || 'Erreur lors de l\'importation.' });
+                } finally {
+                    setIsImportingCSV(false);
+                }
+            },
+            error: () => {
+                setCsvFeedback({ type: 'error', msg: 'Erreur lors de la lecture du fichier CSV.' });
+                setIsImportingCSV(false);
+            },
+        });
+    };
 
     const ITEMS_PER_PAGE = 20;
     const [currentPage, setCurrentPage] = useState(1);
@@ -808,11 +886,11 @@ export default function AdminProductsTab({ products, categories, onRefresh }: Ad
         for (let i = 0; i < foodProducts.length; i++) {
             try {
                 const product = foodProducts[i];
-                const categoryId = categories.find(c => c.name === "Épicerie")?.id || 
-                                 categories.find(c => c.name === "Fromages")?.id || 
-                                 categories.find(c => c.name === "Miels et Confitures")?.id || 
-                                 categories[0]?.id;
-                
+                const categoryId = categories.find(c => c.name === "Épicerie")?.id ||
+                    categories.find(c => c.name === "Fromages")?.id ||
+                    categories.find(c => c.name === "Miels et Confitures")?.id ||
+                    categories[0]?.id;
+
                 const newProduct = {
                     id: uuidv4(),
                     category_id: categoryId,
@@ -845,7 +923,7 @@ export default function AdminProductsTab({ products, categories, onRefresh }: Ad
 
                 const { error } = await supabase.from('products').insert(newProduct);
                 if (error) throw error;
-                
+
                 successCount++;
             } catch (error) {
                 console.error(`Erreur lors de la création du produit ${foodProducts[i].name}:`, error);
@@ -901,15 +979,14 @@ export default function AdminProductsTab({ products, categories, onRefresh }: Ad
                             <span className="px-2 py-0.5 bg-green-neon/10 text-green-neon border border-green-neon/20 rounded-full text-[12px] font-bold leading-none">
                                 {filteredProducts.length} PRODS
                             </span>
-                            <span className="px-2 py-0.5 bg-blue-500/10 text-blue-400 border border-blue-500/20 rounded-full text-[12px] font-bold leading-none">
-                                {(filteredProducts.reduce((acc, p) => acc + (p.stock_quantity * (p.weight_grams || 1)), 0) / 1000).toFixed(2)} KG
-                            </span>
+
                         </div>
                     </h2>
                     <p className="text-xs text-zinc-500 mt-1">Gérez votre catalogue et vos niveaux de stock.</p>
                 </div>
 
                 <div className="flex items-center gap-3">
+                    {/* View toggle */}
                     <div className="flex bg-zinc-900 border border-zinc-800 rounded-xl p-1">
                         <button
                             onClick={() => setViewMode('list')}
@@ -927,12 +1004,7 @@ export default function AdminProductsTab({ products, categories, onRefresh }: Ad
                         </button>
                     </div>
 
-                    <CSVImporter
-                        type="products"
-                        onComplete={onRefresh}
-                        exampleUrl="/examples/products_example.csv"
-                    />
-
+                    {/* Mass modify (contextual) */}
                     {selectedProductIds.length > 0 && (
                         <button
                             onClick={() => setShowMassModifyModal(true)}
@@ -943,58 +1015,152 @@ export default function AdminProductsTab({ products, categories, onRefresh }: Ad
                         </button>
                     )}
 
-                    <button
-                        onClick={handleMassAIFill}
-                        disabled={isSyncingAI || productsNeedingEnrichment.length === 0}
-                        className="flex items-center gap-2 bg-zinc-800 hover:bg-zinc-700 disabled:opacity-50 disabled:cursor-not-allowed text-white text-sm font-semibold px-4 py-2.5 rounded-xl transition-all border border-zinc-700"
-                        title="Enrichir les descriptions et attributs via IA"
-                    >
-                        <Sparkles className={`w-4 h-4 ${isSyncingAI ? 'animate-pulse text-green-neon' : 'text-zinc-300'}`} />
-                        <span>
-                            {isSyncingAI && aiSyncProgress
-                                ? `Enrich. IA ${aiSyncProgress.done}/${aiSyncProgress.total}`
-                                : `Enrich. IA (${productsNeedingEnrichment.length})`}
-                        </span>
-                    </button>
+                    {/* Actions dropdown */}
+                    <div className="relative" ref={actionsMenuRef}>
+                        <button
+                            onClick={() => setShowActionsMenu(!showActionsMenu)}
+                            className={`flex items-center gap-2 text-sm font-semibold px-4 py-2.5 rounded-xl transition-all border ${showActionsMenu ? 'bg-zinc-700 border-zinc-600 text-white' : 'bg-zinc-800 hover:bg-zinc-700 border-zinc-700 text-zinc-300 hover:text-white'}`}
+                        >
+                            <span>Actions</span>
+                            <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${showActionsMenu ? 'rotate-180' : ''}`} />
+                        </button>
 
-                    <button
-                        onClick={handleSyncMissingVectors}
-                        disabled={isSyncingVectors || productsWithoutVectors.length === 0}
-                        className="flex items-center gap-2 bg-zinc-800 hover:bg-zinc-700 disabled:opacity-50 disabled:cursor-not-allowed text-white text-sm font-semibold px-4 py-2.5 rounded-xl transition-all border border-zinc-700"
-                        title="Générer les vecteurs IA"
-                    >
-                        <Brain className={`w-4 h-4 ${isSyncingVectors ? 'animate-pulse text-green-neon' : 'text-zinc-300'}`} />
-                        <span>
-                            {isSyncingVectors && vectorSyncProgress
-                                ? `Sync IA ${vectorSyncProgress.done}/${vectorSyncProgress.total}`
-                                : `Sync IA manquante (${productsWithoutVectors.length})`}
-                        </span>
-                    </button>
+                        <AnimatePresence>
+                            {showActionsMenu && (
+                                <motion.div
+                                    initial={{ opacity: 0, y: -8, scale: 0.97 }}
+                                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                                    exit={{ opacity: 0, y: -8, scale: 0.97 }}
+                                    transition={{ duration: 0.15 }}
+                                    className="absolute right-0 top-full mt-2 w-72 bg-zinc-900 border border-zinc-800 rounded-2xl shadow-2xl shadow-black/60 z-50 overflow-hidden py-2"
+                                >
+                                    {/* CSV Import */}
+                                    <div className="px-2">
+                                        <p className="px-3 py-1.5 text-[10px] font-black uppercase tracking-widest text-zinc-500">Import</p>
+                                        <button
+                                            onClick={() => { csvInputRef.current?.click(); setShowActionsMenu(false); }}
+                                            disabled={isImportingCSV}
+                                            className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-zinc-800 text-zinc-300 hover:text-white transition-all text-sm disabled:opacity-50"
+                                        >
+                                            {isImportingCSV
+                                                ? <div className="w-4 h-4 border-2 border-zinc-500 border-t-white rounded-full animate-spin" />
+                                                : <Upload className="w-4 h-4 text-zinc-400" />}
+                                            <span>Importer CSV</span>
+                                        </button>
+                                        <a
+                                            href="/examples/products_example.csv"
+                                            download
+                                            onClick={() => setShowActionsMenu(false)}
+                                            className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-zinc-800 text-zinc-500 hover:text-zinc-300 transition-all text-sm"
+                                        >
+                                            <FileDown className="w-4 h-4" />
+                                            <span>Exemple CSV</span>
+                                        </a>
+                                    </div>
 
-                    <button
-                        onClick={handleGenerateFoodProducts}
-                        disabled={isGeneratingCBD}
-                        className="flex items-center gap-2 bg-orange-600 hover:bg-orange-700 disabled:opacity-50 disabled:cursor-not-allowed text-white text-sm font-semibold px-4 py-2.5 rounded-xl transition-all shadow-lg shadow-orange-600/20 active:scale-95"
-                        title="Générer 20 produits alimentaires complets"
-                    >
-                        <ShoppingBag className={`w-4 h-4 ${isGeneratingCBD ? 'animate-pulse text-green-neon' : 'text-white'}`} />
-                        <span>
-                            {isGeneratingCBD && cbdProgress
-                                ? `Alim ${cbdProgress.done}/${cbdProgress.total}`
-                                : 'Générer Alim (20)'}
-                        </span>
-                    </button>
+                                    <div className="my-2 border-t border-zinc-800" />
 
+                                    {/* IA actions */}
+                                    <div className="px-2">
+                                        <p className="px-3 py-1.5 text-[10px] font-black uppercase tracking-widest text-zinc-500">Intelligence IA</p>
+                                        <button
+                                            onClick={() => { handleMassAIFill(); setShowActionsMenu(false); }}
+                                            disabled={isSyncingAI || productsNeedingEnrichment.length === 0}
+                                            className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-zinc-800 text-zinc-300 hover:text-white transition-all text-sm disabled:opacity-40 disabled:cursor-not-allowed"
+                                        >
+                                            <Sparkles className={`w-4 h-4 ${isSyncingAI ? 'animate-pulse text-green-neon' : 'text-zinc-400'}`} />
+                                            <span>
+                                                {isSyncingAI && aiSyncProgress
+                                                    ? `Enrich. IA ${aiSyncProgress.done}/${aiSyncProgress.total}…`
+                                                    : `Enrich. IA (${productsNeedingEnrichment.length})`}
+                                            </span>
+                                        </button>
+                                        <button
+                                            onClick={() => { handleSyncMissingVectors(); setShowActionsMenu(false); }}
+                                            disabled={isSyncingVectors || productsWithoutVectors.length === 0}
+                                            className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-zinc-800 text-zinc-300 hover:text-white transition-all text-sm disabled:opacity-40 disabled:cursor-not-allowed"
+                                        >
+                                            <Brain className={`w-4 h-4 ${isSyncingVectors ? 'animate-pulse text-green-neon' : 'text-zinc-400'}`} />
+                                            <span>
+                                                {isSyncingVectors && vectorSyncProgress
+                                                    ? `Sync IA ${vectorSyncProgress.done}/${vectorSyncProgress.total}…`
+                                                    : `Sync IA manquante (${productsWithoutVectors.length})`}
+                                            </span>
+                                        </button>
+                                    </div>
+
+                                    <div className="my-2 border-t border-zinc-800" />
+
+                                    {/* Generate */}
+                                    <div className="px-2">
+                                        <p className="px-3 py-1.5 text-[10px] font-black uppercase tracking-widest text-zinc-500">Génération</p>
+                                        <button
+                                            onClick={() => { handleGenerateFoodProducts(); setShowActionsMenu(false); }}
+                                            disabled={isGeneratingCBD}
+                                            className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-orange-500/10 text-orange-400 hover:text-orange-300 transition-all text-sm disabled:opacity-40 disabled:cursor-not-allowed"
+                                        >
+                                            <ShoppingBag className={`w-4 h-4 ${isGeneratingCBD ? 'animate-pulse' : ''}`} />
+                                            <span>
+                                                {isGeneratingCBD && cbdProgress
+                                                    ? `Alim ${cbdProgress.done}/${cbdProgress.total}…`
+                                                    : 'Générer Alim (20)'}
+                                            </span>
+                                        </button>
+                                    </div>
+
+                                    <div className="my-2 border-t border-zinc-800" />
+
+                                    {/* New product */}
+                                    <div className="px-2 pb-1">
+                                        <button
+                                            onClick={() => { openProductModal(); setShowActionsMenu(false); }}
+                                            className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl bg-green-neon/10 hover:bg-green-neon/20 text-green-neon transition-all text-sm font-semibold"
+                                        >
+                                            <Plus className="w-4 h-4" />
+                                            <span>Nouveau produit</span>
+                                        </button>
+                                    </div>
+                                </motion.div>
+                            )}
+                        </AnimatePresence>
+
+                        <input
+                            type="file"
+                            ref={csvInputRef}
+                            onChange={handleCSVImport}
+                            accept=".csv"
+                            className="hidden"
+                        />
+                    </div>
+
+                    {/* Primary CTA always visible */}
                     <button
                         onClick={() => openProductModal()}
-                        className="flex items-center gap-2 bg-green-neon hover:bg-green-600 text-white text-sm font-semibold px-4 py-2.5 rounded-xl transition-all shadow-lg shadow-green-neon/20 active:scale-95"
+                        className="flex items-center gap-2 bg-green-neon hover:bg-green-600 text-black text-sm font-black px-4 py-2.5 rounded-xl transition-all shadow-lg shadow-green-neon/20 active:scale-95 uppercase tracking-wider"
                     >
                         <Plus className="w-4 h-4" />
-                        <span className="hidden sm:inline">Nouveau produit</span>
-                        <span className="sm:hidden">Ajouter</span>
+                        <span className="hidden sm:inline">Nouveau</span>
                     </button>
                 </div>
             </div>
+
+            {/* CSV Feedback */}
+            <AnimatePresence>
+                {csvFeedback && (
+                    <motion.div
+                        initial={{ opacity: 0, y: -6 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -6 }}
+                        className={`flex items-center gap-2 px-4 py-3 rounded-xl text-sm border ${csvFeedback.type === 'error' ? 'bg-red-500/10 border-red-500/20 text-red-400' : 'bg-green-500/10 border-green-500/20 text-green-400'}`}
+                    >
+                        {csvFeedback.type === 'error'
+                            ? <AlertCircle className="w-4 h-4 shrink-0" />
+                            : <CheckCircle2 className="w-4 h-4 shrink-0" />}
+                        <span>{csvFeedback.msg}</span>
+                        <button onClick={() => setCsvFeedback(null)} className="ml-auto opacity-60 hover:opacity-100"><X className="w-4 h-4" /></button>
+                    </motion.div>
+                )}
+            </AnimatePresence>
 
             {/* Filters & Search */}
             <div className="bg-zinc-900/50 backdrop-blur-sm border border-zinc-800 rounded-2xl p-4 flex flex-wrap items-center gap-4">
