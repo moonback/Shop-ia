@@ -9,6 +9,7 @@ import { useToastStore } from '../store/toastStore';
 import { useWishlistStore } from '../store/wishlistStore';
 import StarRating from './StarRating';
 import { useState } from 'react';
+import NutriscoreBadge from './NutriscoreBadge';
 
 
 interface ProductCardProps {
@@ -49,9 +50,8 @@ export default function ProductCard({ product, layout = 'grid' }: ProductCardPro
   // ── Tags ────────────────────────────────────────────────────────────────────
   const tags: { label: string; variant: 'spec' | 'benefit' }[] = [];
   if (product.weight_grams != null) tags.push({ label: `${product.weight_grams}g`, variant: 'spec' });
-  if (product.nutriscore != null) tags.push({ label: `Nutri-Score ${product.nutriscore}`, variant: 'spec' });
   for (const b of (product.attributes?.benefits || []).slice(0, 1)) {
-    if (tags.length < 2) tags.push({ label: b, variant: 'benefit' });
+    if (tags.length < 1) tags.push({ label: b, variant: 'benefit' });
   }
 
   const tagStyles = {
@@ -109,6 +109,13 @@ export default function ProductCard({ product, layout = 'grid' }: ProductCardPro
                     {tag.label}
                   </span>
                 ))}
+              </div>
+            )}
+
+            {/* Nutriscore Badge */}
+            {product.nutriscore && (
+              <div className="mb-2">
+                <NutriscoreBadge nutriscore={product.nutriscore} size="sm" showLabel={false} />
               </div>
             )}
 
@@ -245,6 +252,13 @@ export default function ProductCard({ product, layout = 'grid' }: ProductCardPro
                 {tag.label}
               </span>
             ))}
+          </div>
+        )}
+
+        {/* Nutriscore Badge */}
+        {product.nutriscore && (
+          <div>
+            <NutriscoreBadge nutriscore={product.nutriscore} size="sm" showLabel={false} />
           </div>
         )}
 

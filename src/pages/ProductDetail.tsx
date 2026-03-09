@@ -34,6 +34,7 @@ import { buildInternalLinks } from '../lib/seo/internalLinks';
 import RelatedProducts from '../components/RelatedProducts';
 import FrequentlyBoughtTogether from '../components/FrequentlyBoughtTogether';
 import { useSettingsStore } from '../store/settingsStore';
+import NutriscoreBadge from '../components/NutriscoreBadge';
 
 const FREQUENCY_LABELS: Record<SubscriptionFrequency, string> = {
   weekly: 'Chaque semaine',
@@ -433,13 +434,7 @@ export default function ProductDetail() {
             <div className="flex items-center flex-wrap gap-8 py-2 border-y border-white/[0.04]">
               {product.nutriscore != null && (
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-green-neon/5 border border-green-neon/10 flex items-center justify-center">
-                    <Zap className="w-4 h-4 text-green-neon" />
-                  </div>
-                  <div className="flex flex-col">
-                    <span className="text-[9px] font-black text-zinc-500 uppercase tracking-[0.1em] leading-tight">Nutri-Score</span>
-                    <span className="text-lg font-serif font-bold text-white leading-tight">{product.nutriscore}</span>
-                  </div>
+                  <NutriscoreBadge nutriscore={product.nutriscore} size="md" showLabel={true} />
                 </div>
               )}
 
@@ -575,14 +570,16 @@ export default function ProductDetail() {
                       <div className="flex-1 min-w-0">
                         <Link
                           to={`/catalogue/${item.product?.slug}`}
-                          className="text-sm font-bold uppercase tracking-wider text-white hover:text-green-neon transition-colors line-clamp-1"
+                          className="font-serif text-white hover:text-green-neon transition-colors"
                         >
                           {item.quantity > 1 && <span className="text-green-neon mr-2">{item.quantity}×</span>}
                           {item.product?.name}
                         </Link>
-                        {item.product?.nutriscore && (
-                          <p className="text-xs text-zinc-500 font-medium uppercase mt-1">NUTRI-SCORE : {item.product.nutriscore}</p>
-                        )}
+                        <div className="mt-1">
+                          {item.product?.nutriscore && (
+                            <NutriscoreBadge nutriscore={item.product.nutriscore} size="sm" showLabel={false} />
+                          )}
+                        </div>
                       </div>
                     </motion.div>
                   ))}
