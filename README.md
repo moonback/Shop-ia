@@ -1,4 +1,4 @@
-# Shop-ia 🌿
+# Shop-ia 🍽️
 
 [![Build](https://img.shields.io/badge/build-vite-blue)](https://vitejs.dev)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
@@ -6,9 +6,9 @@
 [![TypeScript](https://img.shields.io/badge/typescript-5.8-3178C6?logo=typescript)](https://www.typescriptlang.org)
 [![TailwindCSS](https://img.shields.io/badge/tailwind-4.1-06B6D4?logo=tailwindcss)](https://tailwindcss.com)
 
-> **Plateforme e-commerce intelligente pour le CBD et la cannabis légale**
+> **Plateforme e-commerce intelligente pour les produits alimentaires du terroir**
 
-Shop-ia est une solution e-commerce complète intégrant une IA conversationnelle (Shopia Assistant) pour guider les clients dans leur choix de produits CBD. Développée avec React, TypeScript et Supabase, elle offre une expérience d'achat personnalisée avec gestion de stocks, paiements sécurisés, programme de fidélité et parrainage.
+Shop-ia est une solution e-commerce complète dédiée aux producteurs locaux et à la gastronomie artisanale, intégrant une IA conversationnelle (Shopia Assistant) pour guider les clients dans leur découverte de produits du terroir. Développée avec React, TypeScript et Supabase, elle offre une expérience d'achat personnalisée avec gestion de stocks, paiements sécurisés, programme de fidélité et parrainage.
 
 ---
 
@@ -29,13 +29,13 @@ Shop-ia est une solution e-commerce complète intégrant une IA conversationnell
 
 ## 🎯 Pitch
 
-**Shop-ia** révolutionne l'expérience d'achat CBD en combinant :
+**Shop-ia** révolutionne l'expérience d'achat de produits alimentaires artisanaux en combinant :
 
-- **Catalogue produits intelligent** avec recherche vectorielle et recommandations personnalisées
-- **Assistant IA conversationnel** (Shopia) capable de conseiller les clients en temps réel
+- **Catalogue producteurs intelligent** avec recherche vectorielle et recommandations personnalisées
+- **Assistant IA conversationnel** (Shopia) capable de conseiller les clients sur l'origine, la saisonnalité et les accords mets
 - **Gestion omnicanale** : e-commerce, point de vente physique (POS), click & collect
 - **Programme de fidélité** avec points cumulables et système de parrainage
-- **Abonnements** pour les consommations régulières
+- **Abonnements** pour les paniers récurrents (fromages, miels, huiles…)
 - **Administration complète** avec analytics et gestion de stocks
 
 ---
@@ -69,12 +69,12 @@ Shop-ia est une solution e-commerce complète intégrant une IA conversationnell
 | 🔍 **Recherche intelligente** | Recherche sémantique vectorielle avec embeddings |
 | 🤖 **Shopia Assistant** | Conseiller IA avec quiz de préférences et chat |
 | 🛒 **Panier persistant** | Synchronisation cross-device via Supabase |
-| 📦 **Click & Collect** | Commande en ligne avec retrait en magasin |
+| 📦 **Click & Collect** | Commande en ligne avec retrait au marché ou en boutique |
 | 🚚 **Livraison** | Gestion des adresses et frais de port |
 | 💳 **Paiement sécurisé** | Intégration Viva Wallet |
 | 🎯 **Fidélité** | Points par achat, historique complet |
 | 👥 **Parrainage** | Code personnel, bonus de bienvenue |
-| 🔄 **Abonnements** | Livraison automatique récurrente |
+| 🔄 **Abonnements** | Panier récurrent (hebdomadaire, mensuel) |
 | ⭐ **Avis vérifiés** | Système de notation post-achat |
 | ❤️ **Favoris** | Liste de souhaits persistante |
 
@@ -83,8 +83,8 @@ Shop-ia est une solution e-commerce complète intégrant une IA conversationnell
 | Fonctionnalité | Description |
 |----------------|-------------|
 | 📊 **Dashboard** | Analytics temps réel (revenus, commandes, top produits) |
-| 📦 **Gestion produits** | CRUD complet, stocks, bundles, images |
-| 📂 **Catégories** | Organisation hiérarchique avec icônes |
+| 📦 **Gestion produits** | CRUD complet, stocks, bundles, images, Nutriscore |
+| 📂 **Catégories** | Organisation par familles (boulangerie, fromages, miels…) |
 | 🛍️ **Gestion commandes** | Workflow complet avec statuts |
 | 📈 **Stock avancé** | Mouvements, alertes, historique |
 | 👥 **Clients** | Profils, historique, actions administratives |
@@ -93,6 +93,7 @@ Shop-ia est une solution e-commerce complète intégrant une IA conversationnell
 | 💬 **Assistant IA** | Analytics conversations, ajustement prompts |
 | 🏪 **POS** | Point de vente physique avec affichage client |
 | 🔐 **RLS** | Sécurité row-level dans Supabase |
+| 🌾 **Import producteurs** | Import CSV, enrichissement IA, génération catalogue alimentaire |
 
 ---
 
@@ -197,6 +198,7 @@ vercel --prod
 Shop-ia/
 ├── public/                 # Assets statiques
 │   ├── images/
+│   ├── examples/          # Fichiers d'exemple (CSV producteurs…)
 │   ├── sw.js              # Service Worker
 │   └── model-context.json  # Contexte IA
 ├── src/
@@ -214,6 +216,7 @@ Shop-ia/
 │   │   ├── supabase.ts    # Client Supabase
 │   │   ├── types.ts       # Types TypeScript
 │   │   ├── embeddings.ts  # Gestion embeddings
+│   │   ├── generateFoodProducts.ts  # Catalogue alimentaire seed
 │   │   └── shopiaAssistant*.ts  # Config IA
 │   ├── pages/             # Pages (routing)
 │   │   ├── Home.tsx
