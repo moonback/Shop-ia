@@ -1,9 +1,9 @@
 <p align="center">
   <img src="public/logo2.png" alt="Sho ia" width="240" />
 </p>
-<!-- <p align="center">
-  <img src="public/header.png" alt="Shop ia" width="100%" />
-</p> -->
+<p align="center">
+  <img src="public/header-bg.png" alt="Shop ia" width="100%" />
+</p>
 
 # Shop-ia 🍽️
 
