@@ -196,6 +196,7 @@ export default function Layout() {
   ];
 
   const navLinks = baseNavLinks;
+  const shouldHideHeader = location.pathname === "/connexion";
 
   return (
     <div className="min-h-screen flex flex-col bg-zinc-950 text-zinc-100 font-sans">
@@ -210,38 +211,41 @@ export default function Layout() {
       <ToastContainer />
 
       {/* Promotional Banner */}
-      <AnimatePresence>
-        {isBannerVisible && settings.banner_enabled && (
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            className="bg-green-neon text-black relative flex items-center justify-center overflow-hidden z-[60]"
-          >
-            <div className="px-4 py-2.5 text-xs font-bold uppercase tracking-[0.2em] text-center w-full max-w-7xl mx-auto pr-10">
-              <BannerTicker messages={[
-                settings.banner_text,
-                ...(settings.ticker_messages || [])
-              ].filter(Boolean)} />
-            </div>
-            <button
-              onClick={() => setIsBannerVisible(false)}
-              className="absolute right-4 p-1.5 hover:bg-black/10 rounded-full transition-colors group"
-              aria-label="Fermer la bannière"
+      {!shouldHideHeader && (
+        <AnimatePresence>
+          {isBannerVisible && settings.banner_enabled && (
+            <motion.div
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: "auto", opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              className="bg-green-neon text-black relative flex items-center justify-center overflow-hidden z-[60]"
             >
-              <X className="h-3.5 w-3.5 transition-transform group-hover:rotate-90" />
-            </button>
-          </motion.div>
-        )}
-      </AnimatePresence>
+              <div className="px-4 py-2.5 text-xs font-bold uppercase tracking-[0.2em] text-center w-full max-w-7xl mx-auto pr-10">
+                <BannerTicker messages={[
+                  settings.banner_text,
+                  ...(settings.ticker_messages || [])
+                ].filter(Boolean)} />
+              </div>
+              <button
+                onClick={() => setIsBannerVisible(false)}
+                className="absolute right-4 p-1.5 hover:bg-black/10 rounded-full transition-colors group"
+                aria-label="Fermer la bannière"
+              >
+                <X className="h-3.5 w-3.5 transition-transform group-hover:rotate-90" />
+              </button>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      )}
 
       {/* Header */}
-      <motion.header
-        initial={{ y: -100 }}
-        animate={{ y: 0 }}
-        transition={{ type: "spring", stiffness: 100, damping: 20 }}
-        className="sticky top-0 z-[999] w-full"
-      >
+      {!shouldHideHeader && (
+        <motion.header
+          initial={{ y: -100 }}
+          animate={{ y: 0 }}
+          transition={{ type: "spring", stiffness: 100, damping: 20 }}
+          className="sticky top-0 z-[999] w-full"
+        >
         {/* ── Top Info Bar ── */}
         <AnimatePresence>
           {!isScrolled && (
@@ -637,7 +641,8 @@ export default function Layout() {
             </>
           )}
         </AnimatePresence>
-      </motion.header>
+        </motion.header>
+      )}
 
       {/* Loyalty Card Modal */}
       <AnimatePresence>
