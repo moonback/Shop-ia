@@ -80,7 +80,7 @@ export default function Login() {
         description="Connectez-vous ou créez un compte pour accéder à votre historique, fidélité et recommandations personnalisées."
       />
 
-      <div className="min-h-screen bg-zinc-950 flex pt-16">
+      <div className="min-h-screen bg-zinc-950 flex pt-1">
         {/* ── Left panel (value proposition) ── */}
         <div className="hidden lg:flex flex-col justify-between flex-1 bg-gradient-to-br from-zinc-900 via-zinc-950 to-zinc-900 border-r border-white/[0.06] p-16 relative overflow-hidden">
           {/* Background glow */}
@@ -175,8 +175,8 @@ export default function Login() {
                   onClick={() => switchMode(m)}
                   disabled={isLoading}
                   className={`flex-1 py-3 text-sm font-semibold transition-all border-b-2 -mb-px ${mode === m
-                      ? 'border-amber-400 text-amber-400'
-                      : 'border-transparent text-zinc-500 hover:text-zinc-300'
+                    ? 'border-amber-400 text-amber-400'
+                    : 'border-transparent text-zinc-500 hover:text-zinc-300'
                     }`}
                 >
                   {m === 'login' ? 'Connexion' : 'Inscription'}
